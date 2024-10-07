@@ -7,21 +7,21 @@
 # General application configuration
 import Config
 
-config :timeManagerApp,
-  namespace: Todolist,
-  ecto_repos: [Todolist.Repo],
+config :timemanagerapp,
+  namespace: TimeManagerApp,
+  ecto_repos: [TimeManagerApp.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
-config :timeManagerApp, TodolistWeb.Endpoint,
+config :timemanagerapp, TimeManagerAppWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [json: TodolistWeb.ErrorJSON],
+    formats: [json: TimeManagerAppWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Todolist.PubSub,
-  live_view: [signing_salt: "ZCESI0Ss"]
+  pubsub_server: TimeManagerApp.PubSub,
+  live_view: [signing_salt: "mnhOe2/g"]
 
 # Configures the mailer
 #
@@ -30,12 +30,12 @@ config :timeManagerApp, TodolistWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :timeManagerApp, Todolist.Mailer, adapter: Swoosh.Adapters.Local
+config :timemanagerapp, TimeManagerApp.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  timeManagerApp: [
+  timemanagerapp: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -45,7 +45,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  timeManagerApp: [
+  timemanagerapp: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

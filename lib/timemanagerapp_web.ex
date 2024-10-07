@@ -1,12 +1,12 @@
-defmodule TodolistWeb do
+defmodule TimeManagerAppWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use TodolistWeb, :controller
-      use TodolistWeb, :html
+      use TimeManagerAppWeb, :controller
+      use TimeManagerAppWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -39,10 +39,10 @@ defmodule TodolistWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: TodolistWeb.Layouts]
+        layouts: [html: TimeManagerAppWeb.Layouts]
 
       import Plug.Conn
-      import TodolistWeb.Gettext
+      import TimeManagerAppWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -51,9 +51,9 @@ defmodule TodolistWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: TodolistWeb.Endpoint,
-        router: TodolistWeb.Router,
-        statics: TodolistWeb.static_paths()
+        endpoint: TimeManagerAppWeb.Endpoint,
+        router: TimeManagerAppWeb.Router,
+        statics: TimeManagerAppWeb.static_paths()
     end
   end
 

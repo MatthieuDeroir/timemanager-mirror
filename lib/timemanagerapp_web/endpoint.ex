@@ -1,13 +1,13 @@
-defmodule TodolistWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :timeManagerApp
+defmodule TimeManagerAppWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :timemanagerapp
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_timeManagerApp_key",
-    signing_salt: "eptasS/R",
+    key: "_timemanagerapp_key",
+    signing_salt: "g3SNk/2v",
     same_site: "Lax"
   ]
 
@@ -21,15 +21,15 @@ defmodule TodolistWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :timeManagerApp,
+    from: :timemanagerapp,
     gzip: false,
-    only: TodolistWeb.static_paths()
+    only: TimeManagerAppWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :timeManagerApp
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :timemanagerapp
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -47,5 +47,5 @@ defmodule TodolistWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug TodolistWeb.Router
+  plug TimeManagerAppWeb.Router
 end

@@ -1,16 +1,17 @@
-defmodule TodolistWeb.Router do
-  use TodolistWeb, :router
+defmodule TimeManagerAppWeb.Router do
+  use TimeManagerAppWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/api", TodolistWeb do
+  scope "/api", TimeManagerAppWeb do
     pipe_through :api
+    resources "/users", UserController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
-  if Application.compile_env(:timeManagerApp, :dev_routes) do
+  if Application.compile_env(:timemanagerapp, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put
     # it behind authentication and allow only admins to access it.
     # If your application does not have an admins-only section yet,
@@ -21,7 +22,7 @@ defmodule TodolistWeb.Router do
     scope "/dev" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
-      live_dashboard "/dashboard", metrics: TodolistWeb.Telemetry
+      live_dashboard "/dashboard", metrics: TimeManagerAppWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end

@@ -1,9 +1,9 @@
-defmodule Todolist.MixProject do
+defmodule TimeManagerApp.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :timeManagerApp,
+      app: :timemanagerapp,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -18,7 +18,7 @@ defmodule Todolist.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Todolist.Application, []},
+      mod: {TimeManagerApp.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -70,10 +70,10 @@ defmodule Todolist.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind timeManagerApp", "esbuild timeManagerApp"],
+      "assets.build": ["tailwind timemanagerapp", "esbuild timemanagerapp"],
       "assets.deploy": [
-        "tailwind timeManagerApp --minify",
-        "esbuild timeManagerApp --minify",
+        "tailwind timemanagerapp --minify",
+        "esbuild timemanagerapp --minify",
         "phx.digest"
       ]
     ]
