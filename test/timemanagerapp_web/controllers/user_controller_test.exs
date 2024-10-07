@@ -1,23 +1,19 @@
 defmodule TimeManagerAppWeb.UserControllerTest do
   use TimeManagerAppWeb.ConnCase
 
-  import TimeManagerApp.AccountsFixtures
+  import TimeManagerApp.AccountFixtures
 
-  alias TimeManagerApp.Accounts.User
+  alias TimeManagerApp.Account.User
 
   @create_attrs %{
-    created_at: ~U[2024-10-06 13:58:00Z],
     first_name: "some first_name",
-    inserted_at: ~U[2024-10-06 13:58:00Z],
     last_name: "some last_name"
   }
   @update_attrs %{
-    created_at: ~U[2024-10-07 13:58:00Z],
     first_name: "some updated first_name",
-    inserted_at: ~U[2024-10-07 13:58:00Z],
     last_name: "some updated last_name"
   }
-  @invalid_attrs %{created_at: nil, first_name: nil, inserted_at: nil, last_name: nil}
+  @invalid_attrs %{first_name: nil, last_name: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -39,9 +35,7 @@ defmodule TimeManagerAppWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "created_at" => "2024-10-06T13:58:00Z",
                "first_name" => "some first_name",
-               "inserted_at" => "2024-10-06T13:58:00Z",
                "last_name" => "some last_name"
              } = json_response(conn, 200)["data"]
     end
@@ -63,9 +57,7 @@ defmodule TimeManagerAppWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "created_at" => "2024-10-07T13:58:00Z",
                "first_name" => "some updated first_name",
-               "inserted_at" => "2024-10-07T13:58:00Z",
                "last_name" => "some updated last_name"
              } = json_response(conn, 200)["data"]
     end

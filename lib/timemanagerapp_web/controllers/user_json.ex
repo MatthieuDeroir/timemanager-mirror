@@ -1,5 +1,5 @@
 defmodule TimeManagerAppWeb.UserJSON do
-  alias TimeManagerApp.Accounts.User
+  alias TimeManagerApp.Account.User
 
   @doc """
   Renders a list of users.
@@ -19,9 +19,7 @@ defmodule TimeManagerAppWeb.UserJSON do
     %{
       id: user.id,
       first_name: user.first_name,
-      last_name: user.last_name,
-      inserted_at: user.inserted_at,
-      created_at: user.created_at
+      last_name: user.last_name
     }
   end
 end
