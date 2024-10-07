@@ -6,14 +6,14 @@ defmodule TimeManagerAppWeb.UserControllerTest do
   alias TimeManagerApp.Account.User
 
   @create_attrs %{
-    first_name: "some first_name",
-    last_name: "some last_name"
+    email: "some email",
+    username: "some username"
   }
   @update_attrs %{
-    first_name: "some updated first_name",
-    last_name: "some updated last_name"
+    email: "some updated email",
+    username: "some updated username"
   }
-  @invalid_attrs %{first_name: nil, last_name: nil}
+  @invalid_attrs %{email: nil, username: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -35,8 +35,8 @@ defmodule TimeManagerAppWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "first_name" => "some first_name",
-               "last_name" => "some last_name"
+               "email" => "some email",
+               "username" => "some username"
              } = json_response(conn, 200)["data"]
     end
 
@@ -57,8 +57,8 @@ defmodule TimeManagerAppWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "first_name" => "some updated first_name",
-               "last_name" => "some updated last_name"
+               "email" => "some updated email",
+               "username" => "some updated username"
              } = json_response(conn, 200)["data"]
     end
 
