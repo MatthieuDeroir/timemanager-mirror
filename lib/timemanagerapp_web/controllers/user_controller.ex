@@ -11,11 +11,6 @@ defmodule TimeManagerAppWeb.UserController do
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())
 
-  def get_all(conn, _params) do
-    users = Account.list_users()
-    json(conn, users)
-  end
-
   # GET /api/users?email=XXX&username=YYY
   def index(conn, params) do
     users =
