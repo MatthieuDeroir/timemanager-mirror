@@ -1,6 +1,8 @@
 defmodule TimeManagerApp.TimeTest do
   use TimeManagerApp.DataCase
 
+  import TimeManagerApp.TimeFixtures
+
   alias TimeManagerApp.Time
 
   describe "clocks" do
