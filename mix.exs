@@ -34,6 +34,8 @@ defmodule TimeManagerApp.MixProject do
     [
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
+      {:phoenix_swagger, "~> 0.8"},
+      {:ex_json_schema, "~> 0.5"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_live_dashboard, "~> 0.8.3"},

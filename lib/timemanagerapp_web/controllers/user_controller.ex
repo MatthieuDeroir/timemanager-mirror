@@ -1,10 +1,15 @@
 defmodule TimeManagerAppWeb.UserController do
   use TimeManagerAppWeb, :controller
+  use PhoenixSwagger
 
   alias TimeManagerApp.Account
   alias TimeManagerApp.Account.User
+  alias TimeManagerAppWeb.Swagger.UserSwagger
 
   action_fallback TimeManagerAppWeb.FallbackController
+
+  # Inject paths from UserSwagger
+  Module.eval_quoted(__MODULE__, UserSwagger.paths())
 
   # GET /api/users?email=XXX&username=YYY
   def index(conn, params) do
@@ -67,5 +72,10 @@ defmodule TimeManagerAppWeb.UserController do
           send_resp(conn, :no_content, "")
         end
     end
+  end
+
+  # Swagger schema for User
+  def swagger_definitions do
+    UserSwagger.swagger_definitions()
   end
 end

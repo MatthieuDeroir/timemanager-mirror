@@ -22,6 +22,21 @@ defmodule TimeManagerAppWeb.Router do
     delete "/workingtime/:id", WorkingTimeController, :delete
   end
 
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI,
+      otp_app: :timemanagerapp,
+      swagger_file: "swagger.json"
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "TimeManagerApp API - T-POO-700-NAN_5"
+      }
+    }
+  end
+
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:timemanagerapp, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put
