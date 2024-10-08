@@ -8,7 +8,7 @@ defmodule TimeManagerApp.Account do
 
   alias TimeManagerApp.Account.User
 
-   @doc """
+  @doc """
   Gets a single user by email and username.
 
   Returns `nil` if no user is found.
@@ -19,7 +19,6 @@ defmodule TimeManagerApp.Account do
         where: u.email == ^email and u.username == ^username
     )
   end
-
 
   @doc """
   Gets a single user.
@@ -35,7 +34,7 @@ defmodule TimeManagerApp.Account do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user(id), do: Repo.get(User, id)
 
   @doc """
   Creates a user.

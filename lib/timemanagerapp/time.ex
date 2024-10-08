@@ -48,7 +48,7 @@ defmodule TimeManagerApp.Time do
   @doc """
   Gets a single working time entry by ID.
   """
-  def get_workingtime!(id), do: Repo.get!(WorkingTime, id)
+  def get_workingtime(id), do: Repo.get(WorkingTime, id)
 
   @doc """
   Creates a working time entry associated with a specific user.
