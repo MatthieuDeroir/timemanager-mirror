@@ -47,7 +47,7 @@ defmodule TimeManagerAppWeb.ClockControllerTest do
   end
 
   describe "update clock" do
-    setup [:create_clock]
+    setup [:create_clock_for_user]
 
     test "renders clock when data is valid", %{conn: conn, clock: %Clock{id: id} = clock} do
       conn = put(conn, ~p"/api/clocks/#{clock}", clock: @update_attrs)
@@ -69,7 +69,7 @@ defmodule TimeManagerAppWeb.ClockControllerTest do
   end
 
   describe "delete clock" do
-    setup [:create_clock]
+    setup [:create_clock_for_user]
 
     test "deletes chosen clock", %{conn: conn, clock: clock} do
       conn = delete(conn, ~p"/api/clocks/#{clock}")
@@ -81,7 +81,7 @@ defmodule TimeManagerAppWeb.ClockControllerTest do
     end
   end
 
-  defp create_clock(_) do
+  defp create_clock_for_user(_) do
     clock = clock_fixture()
     %{clock: clock}
   end

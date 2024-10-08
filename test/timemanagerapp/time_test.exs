@@ -20,16 +20,16 @@ defmodule TimeManagerApp.TimeTest do
       assert Time.get_clock!(clock.id) == clock
     end
 
-    test "create_clock/1 with valid data creates a clock" do
+    test "create_clock_for_user/1 with valid data creates a clock" do
       valid_attrs = %{status: true, time: ~U[2024-10-06 14:20:00Z]}
 
-      assert {:ok, %Clock{} = clock} = Time.create_clock(valid_attrs)
+      assert {:ok, %Clock{} = clock} = Time.create_clock_for_user(valid_attrs)
       assert clock.status == true
       assert clock.time == ~U[2024-10-06 14:20:00Z]
     end
 
-    test "create_clock/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Time.create_clock(@invalid_attrs)
+    test "create_clock_for_user/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Time.create_clock_for_user(@invalid_attrs)
     end
 
     test "update_clock/2 with valid data updates the clock" do
@@ -76,16 +76,16 @@ defmodule TimeManagerApp.TimeTest do
       assert Time.get_workingtime!(workingtime.id) == workingtime
     end
 
-    test "create_workingtime/1 with valid data creates a workingtime" do
+    test "create_workingtime_for_user/1 with valid data creates a workingtime" do
       valid_attrs = %{end: ~U[2024-10-06 14:20:00Z], start: ~U[2024-10-06 14:20:00Z]}
 
-      assert {:ok, %WorkingTime{} = workingtime} = Time.create_workingtime(valid_attrs)
+      assert {:ok, %WorkingTime{} = workingtime} = Time.create_workingtime_for_user(valid_attrs)
       assert workingtime.end == ~U[2024-10-06 14:20:00Z]
       assert workingtime.start == ~U[2024-10-06 14:20:00Z]
     end
 
-    test "create_workingtime/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Time.create_workingtime(@invalid_attrs)
+    test "create_workingtime_for_user/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Time.create_workingtime_for_user(@invalid_attrs)
     end
 
     test "update_workingtime/2 with valid data updates the workingtime" do

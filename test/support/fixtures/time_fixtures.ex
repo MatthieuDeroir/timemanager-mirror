@@ -14,7 +14,7 @@ defmodule TimeManagerApp.TimeFixtures do
         status: true,
         time: ~U[2024-10-06 14:20:00Z]
       })
-      |> TimeManagerApp.Time.create_clock()
+      |> TimeManagerApp.Time.create_clock_for_user()
 
     clock
   end
@@ -29,7 +29,7 @@ defmodule TimeManagerApp.TimeFixtures do
         end: ~U[2024-10-06 14:20:00Z],
         start: ~U[2024-10-06 14:20:00Z]
       })
-      |> TimeManagerApp.Time.create_workingtime()
+      |> TimeManagerApp.Time.create_workingtime_for_user()
 
     workingtime
   end
