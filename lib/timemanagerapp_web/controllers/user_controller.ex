@@ -6,8 +6,23 @@ defmodule TimeManagerAppWeb.UserController do
 
   action_fallback TimeManagerAppWeb.FallbackController
 
-  def index(conn, _params) do
-    users = Account.list_users()
+  # GET /api/users?email=XXX&username=YYY
+  def index(conn, params) do
+    users =
+      case {Map.get(params, "email"), Map.get(params, "username")} do
+        {nil, nil} ->
+          Account.list_users()
+
+        {email, nil} ->
+          Account.list_users_by_email(email)
+
+        {nil, username} ->
+          Account.list_users_by_username(username)
+
+        {email, username} ->
+          Account.list_users_by_email_and_username(email, username)
+      end
+
     render(conn, :index, users: users)
   end
 

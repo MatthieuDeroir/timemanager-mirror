@@ -1,43 +1,44 @@
 defmodule TimeManagerAppWeb.ClockController do
   use TimeManagerAppWeb, :controller
 
+  # Explicitly alias Routes
+  alias TimeManagerAppWeb.Router.Helpers, as: Routes
+
   alias TimeManagerApp.Time
   alias TimeManagerApp.Time.Clock
 
   action_fallback TimeManagerAppWeb.FallbackController
 
-  def index(conn, _params) do
-    clocks = Time.list_clocks()
-    render(conn, :index, clocks: clocks)
+  def index(conn, %{"user_id" => user_id}) do
+    clocks = Time.list_clocks_for_user(user_id)
+
+    render(conn, "index.json", clocks: clocks)
   end
 
-  def create(conn, %{"clock" => clock_params}) do
-    with {:ok, %Clock{} = clock} <- Time.create_clock(clock_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/clocks/#{clock}")
-      |> render(:show, clock: clock)
+
+  def create(conn, %{"user_id" => user_id, "clocks" => clock_params}) do
+    case Time.create_clock_for_user(user_id, clock_params) do
+      {:ok, clock} ->
+        conn
+        |> put_status(:created)
+        |> render("show.json", clock: clock)
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(TimeManagerAppWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    clock = Time.get_clock!(id)
-    render(conn, :show, clock: clock)
-  end
+  def show(conn, %{"user_id" => user_id, "id" => id}) do
+    case Time.get_clock(user_id, id) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> render(TimeManagerAppWeb.ErrorView, "404.json", message: "Clock not found")
 
-  def update(conn, %{"id" => id, "clock" => clock_params}) do
-    clock = Time.get_clock!(id)
-
-    with {:ok, %Clock{} = clock} <- Time.update_clock(clock, clock_params) do
-      render(conn, :show, clock: clock)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    clock = Time.get_clock!(id)
-
-    with {:ok, %Clock{}} <- Time.delete_clock(clock) do
-      send_resp(conn, :no_content, "")
+      clock ->
+        render(conn, "show.json", clock: clock)
     end
   end
 end

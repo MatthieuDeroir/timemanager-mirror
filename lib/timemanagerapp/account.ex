@@ -8,18 +8,18 @@ defmodule TimeManagerApp.Account do
 
   alias TimeManagerApp.Account.User
 
-  @doc """
-  Returns the list of users.
+   @doc """
+  Gets a single user by email and username.
 
-  ## Examples
-
-      iex> list_users()
-      [%User{}, ...]
-
+  Returns `nil` if no user is found.
   """
-  def list_users do
-    Repo.all(User)
+  def list_users_by_email_and_username(email, username) do
+    Repo.all(
+      from u in User,
+        where: u.email == ^email and u.username == ^username
+    )
   end
+
 
   @doc """
   Gets a single user.
