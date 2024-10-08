@@ -47,7 +47,7 @@ defmodule TimeManagerAppWeb.WorkingTimeControllerTest do
   end
 
   describe "update workingtime" do
-    setup [:create_workingtime]
+    setup [:create_workingtime_for_user]
 
     test "renders workingtime when data is valid", %{
       conn: conn,
@@ -72,7 +72,7 @@ defmodule TimeManagerAppWeb.WorkingTimeControllerTest do
   end
 
   describe "delete workingtime" do
-    setup [:create_workingtime]
+    setup [:create_workingtime_for_user]
 
     test "deletes chosen workingtime", %{conn: conn, workingtime: workingtime} do
       conn = delete(conn, ~p"/api/workingtime/#{workingtime}")
@@ -84,7 +84,7 @@ defmodule TimeManagerAppWeb.WorkingTimeControllerTest do
     end
   end
 
-  defp create_workingtime(_) do
+  defp create_workingtime_for_user(_) do
     workingtime = workingtime_fixture()
     %{workingtime: workingtime}
   end
