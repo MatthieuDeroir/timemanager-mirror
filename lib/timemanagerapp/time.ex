@@ -34,7 +34,7 @@ defmodule TimeManagerApp.Time do
   @doc """
   Returns the list of working times for a specific user within a date range.
   """
-  def list_working_time_for_user(user_id, start_datetime, end_datetime) do
+  def list_workingtime_for_user(user_id, start_datetime, end_datetime) do
     Repo.all(
       from wt in WorkingTime,
         where: wt.user_id == ^user_id and wt.start >= ^start_datetime and wt.end <= ^end_datetime
@@ -48,12 +48,12 @@ defmodule TimeManagerApp.Time do
   @doc """
   Gets a single working time entry by ID.
   """
-  def get_working_time!(id), do: Repo.get!(WorkingTime, id)
+  def get_workingtime!(id), do: Repo.get!(WorkingTime, id)
 
   @doc """
   Creates a working time entry associated with a specific user.
   """
-  def create_working_time_for_user(user_id, attrs \\ %{}) do
+  def create_workingtime_for_user(user_id, attrs \\ %{}) do
     %WorkingTime{}
     |> WorkingTime.changeset(Map.put(attrs, "user_id", user_id))
     |> Repo.insert()
@@ -62,8 +62,8 @@ defmodule TimeManagerApp.Time do
   @doc """
   Updates a working time entry.
   """
-  def update_working_time(%WorkingTime{} = working_time, attrs) do
-    working_time
+  def update_workingtime(%WorkingTime{} = workingtime, attrs) do
+    workingtime
     |> WorkingTime.changeset(attrs)
     |> Repo.update()
   end
@@ -71,9 +71,8 @@ defmodule TimeManagerApp.Time do
   @doc """
   Deletes a working time entry.
   """
-  def delete_working_time(%WorkingTime{} = working_time) do
-    Repo.delete(working_time)
-    {:ok, working_time}
+  def delete_workingtime(%WorkingTime{} = workingtime) do
+    Repo.delete(workingtime)
+    {:ok, workingtime}
   end
-
 end

@@ -20,17 +20,17 @@ defmodule TimeManagerApp.TimeFixtures do
   end
 
   @doc """
-  Generate a working_time.
+  Generate a workingtime.
   """
-  def working_time_fixture(attrs \\ %{}) do
-    {:ok, working_time} =
+  def workingtime_fixture(attrs \\ %{}) do
+    {:ok, workingtime} =
       attrs
       |> Enum.into(%{
         end: ~U[2024-10-06 14:20:00Z],
         start: ~U[2024-10-06 14:20:00Z]
       })
-      |> TimeManagerApp.Time.create_working_time()
+      |> TimeManagerApp.Time.create_workingtime()
 
-    working_time
+    workingtime
   end
 end

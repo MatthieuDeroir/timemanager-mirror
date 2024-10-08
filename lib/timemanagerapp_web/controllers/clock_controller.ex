@@ -15,7 +15,6 @@ defmodule TimeManagerAppWeb.ClockController do
     render(conn, "index.json", clocks: clocks)
   end
 
-
   def create(conn, %{"user_id" => user_id, "clocks" => clock_params}) do
     case Time.create_clock_for_user(user_id, clock_params) do
       {:ok, clock} ->

@@ -59,59 +59,61 @@ defmodule TimeManagerApp.TimeTest do
     end
   end
 
-  describe "working_time" do
+  describe "workingtime" do
     alias TimeManagerApp.Time.WorkingTime
 
     import TimeManagerApp.TimeFixtures
 
     @invalid_attrs %{end: nil, start: nil}
 
-    test "list_working_time/0 returns all working_time" do
-      working_time = working_time_fixture()
-      assert Time.list_working_time() == [working_time]
+    test "list_workingtime/0 returns all workingtime" do
+      workingtime = workingtime_fixture()
+      assert Time.list_workingtime() == [workingtime]
     end
 
-    test "get_working_time!/1 returns the working_time with given id" do
-      working_time = working_time_fixture()
-      assert Time.get_working_time!(working_time.id) == working_time
+    test "get_workingtime!/1 returns the workingtime with given id" do
+      workingtime = workingtime_fixture()
+      assert Time.get_workingtime!(workingtime.id) == workingtime
     end
 
-    test "create_working_time/1 with valid data creates a working_time" do
+    test "create_workingtime/1 with valid data creates a workingtime" do
       valid_attrs = %{end: ~U[2024-10-06 14:20:00Z], start: ~U[2024-10-06 14:20:00Z]}
 
-      assert {:ok, %WorkingTime{} = working_time} = Time.create_working_time(valid_attrs)
-      assert working_time.end == ~U[2024-10-06 14:20:00Z]
-      assert working_time.start == ~U[2024-10-06 14:20:00Z]
+      assert {:ok, %WorkingTime{} = workingtime} = Time.create_workingtime(valid_attrs)
+      assert workingtime.end == ~U[2024-10-06 14:20:00Z]
+      assert workingtime.start == ~U[2024-10-06 14:20:00Z]
     end
 
-    test "create_working_time/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Time.create_working_time(@invalid_attrs)
+    test "create_workingtime/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Time.create_workingtime(@invalid_attrs)
     end
 
-    test "update_working_time/2 with valid data updates the working_time" do
-      working_time = working_time_fixture()
+    test "update_workingtime/2 with valid data updates the workingtime" do
+      workingtime = workingtime_fixture()
       update_attrs = %{end: ~U[2024-10-07 14:20:00Z], start: ~U[2024-10-07 14:20:00Z]}
 
-      assert {:ok, %WorkingTime{} = working_time} = Time.update_working_time(working_time, update_attrs)
-      assert working_time.end == ~U[2024-10-07 14:20:00Z]
-      assert working_time.start == ~U[2024-10-07 14:20:00Z]
+      assert {:ok, %WorkingTime{} = workingtime} =
+               Time.update_workingtime(workingtime, update_attrs)
+
+      assert workingtime.end == ~U[2024-10-07 14:20:00Z]
+      assert workingtime.start == ~U[2024-10-07 14:20:00Z]
     end
 
-    test "update_working_time/2 with invalid data returns error changeset" do
-      working_time = working_time_fixture()
-      assert {:error, %Ecto.Changeset{}} = Time.update_working_time(working_time, @invalid_attrs)
-      assert working_time == Time.get_working_time!(working_time.id)
+    test "update_workingtime/2 with invalid data returns error changeset" do
+      workingtime = workingtime_fixture()
+      assert {:error, %Ecto.Changeset{}} = Time.update_workingtime(workingtime, @invalid_attrs)
+      assert workingtime == Time.get_workingtime!(workingtime.id)
     end
 
-    test "delete_working_time/1 deletes the working_time" do
-      working_time = working_time_fixture()
-      assert {:ok, %WorkingTime{}} = Time.delete_working_time(working_time)
-      assert_raise Ecto.NoResultsError, fn -> Time.get_working_time!(working_time.id) end
+    test "delete_workingtime/1 deletes the workingtime" do
+      workingtime = workingtime_fixture()
+      assert {:ok, %WorkingTime{}} = Time.delete_workingtime(workingtime)
+      assert_raise Ecto.NoResultsError, fn -> Time.get_workingtime!(workingtime.id) end
     end
 
-    test "change_working_time/1 returns a working_time changeset" do
-      working_time = working_time_fixture()
-      assert %Ecto.Changeset{} = Time.change_working_time(working_time)
+    test "change_workingtime/1 returns a workingtime changeset" do
+      workingtime = workingtime_fixture()
+      assert %Ecto.Changeset{} = Time.change_workingtime(workingtime)
     end
   end
 end

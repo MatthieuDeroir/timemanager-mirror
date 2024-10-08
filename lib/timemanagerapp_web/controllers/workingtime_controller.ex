@@ -10,11 +10,11 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
     start_datetime = Map.get(params, "start")
     end_datetime = Map.get(params, "end")
 
-    working_times = Time.list_working_time_for_user(user_id, start_datetime, end_datetime)
+    workingtimes = Time.list_workingtime_for_user(user_id, start_datetime, end_datetime)
 
-    if length(working_times) > 0 do
-      # Pass the expected key `working_time`, not `working_times`
-      render(conn, "index.json", working_time: working_times)
+    if length(workingtimes) > 0 do
+      # Pass the expected key `workingtime`, not `workingtimes`
+      render(conn, "index.json", workingtime: workingtimes)
     else
       conn
       |> put_status(:not_found)
@@ -22,19 +22,17 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
     end
   end
 
-
-
   def show(conn, %{"user_id" => _user_id, "id" => id}) do
-    working_time = Time.get_working_time!(id)
-    render(conn, "show.json", working_time: working_time)
+    workingtime = Time.get_workingtime!(id)
+    render(conn, "show.json", workingtime: workingtime)
   end
 
-  def create(conn, %{"user_id" => user_id, "working_time" => working_time_params}) do
-    case Time.create_working_time_for_user(user_id, working_time_params) do
-      {:ok, working_time} ->
+  def create(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
+    case Time.create_workingtime_for_user(user_id, workingtime_params) do
+      {:ok, workingtime} ->
         conn
         |> put_status(:created)
-        |> render("show.json", working_time: working_time)
+        |> render("show.json", workingtime: workingtime)
 
       {:error, changeset} ->
         conn
@@ -43,12 +41,12 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
     end
   end
 
-  def update(conn, %{"id" => id, "working_time" => working_time_params}) do
-    working_time = Time.get_working_time!(id)
+  def update(conn, %{"id" => id, "workingtime" => workingtime_params}) do
+    workingtime = Time.get_workingtime!(id)
 
-    case Time.update_working_time(working_time, working_time_params) do
-      {:ok, updated_working_time} ->
-        render(conn, "show.json", working_time: updated_working_time)
+    case Time.update_workingtime(workingtime, workingtime_params) do
+      {:ok, updated_workingtime} ->
+        render(conn, "show.json", workingtime: updated_workingtime)
 
       {:error, changeset} ->
         conn
@@ -58,13 +56,13 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    working_time = Time.get_working_time!(id)
+    workingtime = Time.get_workingtime!(id)
 
-    with {:ok, deleted_working_time} <- Time.delete_working_time(working_time) do
+    with {:ok, deleted_workingtime} <- Time.delete_workingtime(workingtime) do
       # Return the deleted working time with a 200 OK status
       conn
       |> put_status(:ok)
-      |> render("show.json", working_time: deleted_working_time)
+      |> render("show.json", workingtime: deleted_workingtime)
     end
   end
 end

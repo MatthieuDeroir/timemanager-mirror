@@ -20,18 +20,18 @@ defmodule TimeManagerAppWeb.WorkingTimeControllerTest do
   end
 
   describe "index" do
-    test "lists all working_time", %{conn: conn} do
-      conn = get(conn, ~p"/api/working_time")
+    test "lists all workingtime", %{conn: conn} do
+      conn = get(conn, ~p"/api/workingtime")
       assert json_response(conn, 200)["data"] == []
     end
   end
 
-  describe "create working_time" do
-    test "renders working_time when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/api/working_time", working_time: @create_attrs)
+  describe "create workingtime" do
+    test "renders workingtime when data is valid", %{conn: conn} do
+      conn = post(conn, ~p"/api/workingtime", workingtime: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, ~p"/api/working_time/#{id}")
+      conn = get(conn, ~p"/api/workingtime/#{id}")
 
       assert %{
                "id" => ^id,
@@ -41,19 +41,22 @@ defmodule TimeManagerAppWeb.WorkingTimeControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/api/working_time", working_time: @invalid_attrs)
+      conn = post(conn, ~p"/api/workingtime", workingtime: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
-  describe "update working_time" do
-    setup [:create_working_time]
+  describe "update workingtime" do
+    setup [:create_workingtime]
 
-    test "renders working_time when data is valid", %{conn: conn, working_time: %WorkingTime{id: id} = working_time} do
-      conn = put(conn, ~p"/api/working_time/#{working_time}", working_time: @update_attrs)
+    test "renders workingtime when data is valid", %{
+      conn: conn,
+      workingtime: %WorkingTime{id: id} = workingtime
+    } do
+      conn = put(conn, ~p"/api/workingtime/#{workingtime}", workingtime: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, ~p"/api/working_time/#{id}")
+      conn = get(conn, ~p"/api/workingtime/#{id}")
 
       assert %{
                "id" => ^id,
@@ -62,27 +65,27 @@ defmodule TimeManagerAppWeb.WorkingTimeControllerTest do
              } = json_response(conn, 200)["data"]
     end
 
-    test "renders errors when data is invalid", %{conn: conn, working_time: working_time} do
-      conn = put(conn, ~p"/api/working_time/#{working_time}", working_time: @invalid_attrs)
+    test "renders errors when data is invalid", %{conn: conn, workingtime: workingtime} do
+      conn = put(conn, ~p"/api/workingtime/#{workingtime}", workingtime: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
-  describe "delete working_time" do
-    setup [:create_working_time]
+  describe "delete workingtime" do
+    setup [:create_workingtime]
 
-    test "deletes chosen working_time", %{conn: conn, working_time: working_time} do
-      conn = delete(conn, ~p"/api/working_time/#{working_time}")
+    test "deletes chosen workingtime", %{conn: conn, workingtime: workingtime} do
+      conn = delete(conn, ~p"/api/workingtime/#{workingtime}")
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
-        get(conn, ~p"/api/working_time/#{working_time}")
+        get(conn, ~p"/api/workingtime/#{workingtime}")
       end
     end
   end
 
-  defp create_working_time(_) do
-    working_time = working_time_fixture()
-    %{working_time: working_time}
+  defp create_workingtime(_) do
+    workingtime = workingtime_fixture()
+    %{workingtime: workingtime}
   end
 end

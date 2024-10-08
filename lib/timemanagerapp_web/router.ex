@@ -15,11 +15,11 @@ defmodule TimeManagerAppWeb.Router do
     get "/clocks/:user_id/:id", ClockController, :show
 
     # WorkingTime Routes
-    get "/working_time/:user_id", WorkingTimeController, :index
-    get "/working_time/:user_id/:id", WorkingTimeController, :show
-    post "/working_time/:user_id", WorkingTimeController, :create
-    put "/working_time/:id", WorkingTimeController, :update
-    delete "/working_time/:id", WorkingTimeController, :delete
+    get "/workingtime/:user_id", WorkingTimeController, :index
+    get "/workingtime/:user_id/:id", WorkingTimeController, :show
+    post "/workingtime/:user_id", WorkingTimeController, :create
+    put "/workingtime/:id", WorkingTimeController, :update
+    delete "/workingtime/:id", WorkingTimeController, :delete
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
