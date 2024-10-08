@@ -5,6 +5,20 @@
   },
   "host": "localhost:4000",
   "definitions": {
+    "CreateUser": {
+      "description": "Schema for creating a user",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User",
+          "description": "User information"
+        }
+      },
+      "required": [
+        "user"
+      ],
+      "title": "CreateUser",
+      "type": "object"
+    },
     "User": {
       "description": "A user of the application",
       "properties": {
@@ -34,20 +48,6 @@
       "title": "User",
       "type": "object"
     },
-    "CreateUser": {
-      "description": "Schema for creating a user",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/User",
-          "description": "User information"
-        }
-      },
-      "required": [
-        "user"
-      ],
-      "title": "CreateUser",
-      "type": "object"
-    },
     "UpdateUser": {
       "description": "Schema for updating a user",
       "properties": {
@@ -61,9 +61,116 @@
       ],
       "title": "UpdateUser",
       "type": "object"
+    },
+    "CreateClock": {
+      "description": "Schema for creating a clock entry",
+      "properties": {
+        "clocks": {
+          "$ref": "#/definitions/Clock",
+          "description": "Clock entry information"
+        }
+      },
+      "required": [
+        "clocks"
+      ],
+      "title": "CreateClock",
+      "type": "object"
+    },
+    "Clock": {
+      "description": "A clock entry for a user",
+      "properties": {
+        "id": {
+          "description": "Clock ID",
+          "type": "integer"
+        },
+        "status": {
+          "description": "Clock status (e.g., 'in' or 'out')",
+          "type": "string"
+        },
+        "time": {
+          "description": "Timestamp of the clock",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "User ID associated with the clock",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "status",
+        "time",
+        "user_id",
+        "id"
+      ],
+      "title": "Clock",
+      "type": "object"
     }
   },
   "paths": {
+    "/api/clocks/{user_id}": {
+      "get": {
+        "description": "Retrieve all clock entries for a user",
+        "operationId": "TimeManagerAppWeb.ClockController.index",
+        "parameters": [
+          {
+            "description": "User ID",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Clock"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Clock"
+        ]
+      },
+      "post": {
+        "description": "Create a new clock entry for a user",
+        "operationId": "TimeManagerAppWeb.ClockController.create",
+        "parameters": [
+          {
+            "description": "User ID",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Clock entry to create",
+            "in": "body",
+            "name": "clock",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateClock"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Clock created",
+            "schema": {
+              "$ref": "#/definitions/Clock"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Clock"
+        ]
+      }
+    },
     "/api/users": {
       "get": {
         "description": "Retrieve one user based on the email and the username.",
