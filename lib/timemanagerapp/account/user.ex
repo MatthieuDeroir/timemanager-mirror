@@ -14,5 +14,8 @@ defmodule TimeManagerApp.Account.User do
     user
     |> cast(attrs, [:username, :email])
     |> validate_required([:username, :email])
+    |> validate_format(:email, ~r/^[\w.!#$%&'*+\/=?^`{|}~\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]{2,}$/,
+      message: "is not a valid email"
+    )
   end
 end
