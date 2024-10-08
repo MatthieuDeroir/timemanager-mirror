@@ -2,10 +2,11 @@ defmodule TimeManagerApp.Time.Clock do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :time, :status, :user_id, :inserted_at, :updated_at]}
   schema "clocks" do
-    field :status, :boolean, default: false
     field :time, :utc_datetime
-    field :user_id, :id
+    field :status, :boolean
+    belongs_to :user, TimeManagerApp.Account.User
 
     timestamps(type: :utc_datetime)
   end
@@ -16,5 +17,4 @@ defmodule TimeManagerApp.Time.Clock do
     |> cast(attrs, [:time, :status, :user_id])
     |> validate_required([:time, :status, :user_id])
   end
-
 end

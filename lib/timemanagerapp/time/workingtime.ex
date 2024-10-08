@@ -2,6 +2,7 @@ defmodule TimeManagerApp.Time.WorkingTime do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :start, :end, :user_id, :inserted_at, :updated_at]}
   schema "workingtime" do
     field :start, :utc_datetime
     field :end, :utc_datetime
@@ -15,6 +16,7 @@ defmodule TimeManagerApp.Time.WorkingTime do
     working_time
     |> cast(attrs, [:start, :end, :user_id])
     |> validate_required([:start, :end, :user_id])
+    # Custom validation for start/end time
     |> validate_time_order()
   end
 

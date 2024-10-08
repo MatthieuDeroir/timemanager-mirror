@@ -8,6 +8,7 @@ defmodule TimeManagerAppWeb.Router do
   scope "/api", TimeManagerAppWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
+    get "/users/", UserController, :get_all
 
     # Clock Routes
     get "/clocks/:user_id", ClockController, :index

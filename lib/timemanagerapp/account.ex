@@ -9,6 +9,19 @@ defmodule TimeManagerApp.Account do
   alias TimeManagerApp.Account.User
 
   @doc """
+  Returns the list of users.
+
+  ## Examples
+
+      iex> list_users()
+      [%User{}, ...]
+
+  """
+  def list_users do
+    Repo.all(User)
+  end
+
+  @doc """
   Gets a single user by email and username.
 
   Returns `nil` if no user is found.
@@ -99,5 +112,31 @@ defmodule TimeManagerApp.Account do
   """
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
+  end
+
+  @doc """
+  Returns the list of users filtered by email.
+
+  ## Examples
+
+      iex> list_users_by_email("test@example.com")
+      [%User{}, ...]
+
+  """
+  def list_users_by_email(email) do
+    Repo.all(from u in User, where: u.email == ^email)
+  end
+
+  @doc """
+  Returns the list of users filtered by username.
+
+  ## Examples
+
+      iex> list_users_by_username("testuser")
+      [%User{}, ...]
+
+  """
+  def list_users_by_username(username) do
+    Repo.all(from u in User, where: u.username == ^username)
   end
 end

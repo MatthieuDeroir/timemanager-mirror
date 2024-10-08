@@ -29,6 +29,17 @@ defmodule TimeManagerApp.Time do
     |> Repo.insert()
   end
 
+  @doc """
+  Returns the list of all clocks.
+  """
+  def list_all_clocks do
+    Repo.all(Clock)
+  end
+
+  def get_clock(user_id, id) do
+    Repo.get_by(Clock, id: id, user_id: user_id)
+  end
+
   # --- WorkingTime Functions ---
 
   @doc """
@@ -41,13 +52,23 @@ defmodule TimeManagerApp.Time do
     )
   end
 
-  def get_clock(user_id, id) do
-    Repo.get_by(Clock, id: id, user_id: user_id)
-  end
-
   @doc """
   Gets a single working time entry by ID.
   """
+  @doc """
+  Returns the list of all working times.
+  """
+  def list_all_workingtimes do
+    Repo.all(WorkingTime)
+  end
+
+  @doc """
+  Returns the list of all working times.
+  """
+  def list_all_workingtimes do
+    Repo.all(WorkingTime)
+  end
+
   def get_workingtime(id), do: Repo.get(WorkingTime, id)
 
   @doc """

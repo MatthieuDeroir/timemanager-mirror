@@ -1,9 +1,6 @@
 defmodule TimeManagerAppWeb.ClockController do
   use TimeManagerAppWeb, :controller
 
-  # Explicitly alias Routes
-  alias TimeManagerAppWeb.Router.Helpers, as: Routes
-
   alias TimeManagerApp.Time
   alias TimeManagerApp.Time.Clock
 
@@ -11,8 +8,7 @@ defmodule TimeManagerAppWeb.ClockController do
 
   def index(conn, %{"user_id" => user_id}) do
     clocks = Time.list_clocks_for_user(user_id)
-
-    render(conn, "index.json", clocks: clocks)
+    json(conn, %{clocks: clocks})
   end
 
   def create(conn, %{"user_id" => user_id, "clocks" => clock_params}) do
@@ -20,12 +16,12 @@ defmodule TimeManagerAppWeb.ClockController do
       {:ok, clock} ->
         conn
         |> put_status(:created)
-        |> render("show.json", clock: clock)
+        |> json(%{clock: clock})
 
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(TimeManagerAppWeb.ChangesetView, "error.json", changeset: changeset)
+        |> json(%{errors: changeset})
     end
   end
 
@@ -34,10 +30,10 @@ defmodule TimeManagerAppWeb.ClockController do
       nil ->
         conn
         |> put_status(:not_found)
-        |> render(TimeManagerAppWeb.ErrorView, "404.json", message: "Clock not found")
+        |> json(%{error: "Clock not found"})
 
       clock ->
-        render(conn, "show.json", clock: clock)
+        json(conn, %{clock: clock})
     end
   end
 end

@@ -11,6 +11,11 @@ defmodule TimeManagerAppWeb.UserController do
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())
 
+  def get_all(conn, _params) do
+    users = Account.list_users()
+    json(conn, users)
+  end
+
   # GET /api/users?email=XXX&username=YYY
   def index(conn, params) do
     users =
@@ -28,36 +33,39 @@ defmodule TimeManagerAppWeb.UserController do
           Account.list_users_by_email_and_username(email, username)
       end
 
-    render(conn, :index, users: users)
+    json(conn, users)
   end
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Account.create_user(user_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/users/#{user.id}")
-      |> render(:show, user: user)
+      |> json(user)
     end
   end
 
   def show(conn, %{"id" => id}) do
     case Account.get_user(id) do
       nil ->
-        send_resp(conn, :no_content, "")
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "User not found"})
 
       user ->
-        render(conn, :show, user: user)
+        json(conn, user)
     end
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     case Account.get_user(id) do
       nil ->
-        send_resp(conn, :no_content, "")
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "User not found"})
 
       user ->
         with {:ok, %User{} = updated_user} <- Account.update_user(user, user_params) do
-          render(conn, :show, user: updated_user)
+          json(conn, updated_user)
         end
     end
   end
@@ -65,7 +73,9 @@ defmodule TimeManagerAppWeb.UserController do
   def delete(conn, %{"id" => id}) do
     case Account.get_user(id) do
       nil ->
-        send_resp(conn, :no_content, "")
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "User not found"})
 
       user ->
         with {:ok, %User{}} <- Account.delete_user(user) do
