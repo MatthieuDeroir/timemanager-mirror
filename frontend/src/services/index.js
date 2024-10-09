@@ -1,6 +1,6 @@
-import clocks from './clocks_services';
-import users from './users_services';
-import workingtime from './workingtime_services';
+import clocks from './clockServices';
+import users from './userServices';
+import workingtime from './workingtimeServices';
 
 export const Services = {
     Clocks: clocks,
