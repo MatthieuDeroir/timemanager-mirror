@@ -10,5 +10,9 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  env: {
+    browser: true,  // Ensures 'window', 'document', etc. are recognized
+    node: true,     // Ensures 'process' is recognized
   }
 }
