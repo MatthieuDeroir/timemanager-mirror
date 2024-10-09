@@ -3,8 +3,13 @@ alias TimeManagerApp.Account.User
 alias TimeManagerApp.Time.Clock
 alias TimeManagerApp.Time.WorkingTime
 
+# Clear existing data
+# TODO: make controller to delete all data
+
 # Import Faker for generating random data
 {:ok, _} = Application.ensure_all_started(:faker)
+
+# TODO: improve data generation to meet time constraints
 
 # Create Users
 users =

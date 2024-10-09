@@ -21,6 +21,13 @@ The goal of this project is to create a platform-independent API for exchanging 
 
 ---
 
+## Populate the database
+
+To populate the database, you can use the following command:
+* mix run priv/repo/seeds.exs
+
+---
+
 ## Docs
 
  * Database schema: /docs/database_schema.png
