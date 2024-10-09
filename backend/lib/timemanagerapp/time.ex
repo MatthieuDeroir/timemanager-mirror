@@ -24,7 +24,7 @@ defmodule TimeManagerApp.Time do
   Returns the list of clocks for a specific user.
   """
   def list_clocks_for_user(user_id) do
-    Repo.all(from c in Clock, where: c.user_id == ^user_id)
+    Repo.all(from(c in Clock, where: c.user_id == ^user_id))
   end
 
   @doc """
@@ -43,12 +43,22 @@ defmodule TimeManagerApp.Time do
   # --- WorkingTime Functions ---
 
   @doc """
+  Fetches a specific working time by its ID and ensures that it belongs to the given user.
+
+  Returns `nil` if the working time is not found or does not belong to the user.
+  """
+  def get_workingtime(user_id, workingtime_id) do
+    Repo.get_by(WorkingTime, id: workingtime_id, user_id: user_id)
+  end
+
+  @doc """
   Returns the list of working times for a specific user within a date range.
   """
   def list_workingtime_for_user(user_id, start_datetime, end_datetime) do
     Repo.all(
-      from wt in WorkingTime,
+      from(wt in WorkingTime,
         where: wt.user_id == ^user_id and wt.start >= ^start_datetime and wt.end <= ^end_datetime
+      )
     )
   end
 
@@ -62,26 +72,34 @@ defmodule TimeManagerApp.Time do
   @doc """
   Returns the list of working times for a specific user.
   """
-  def list_workingtime_for_user(user_id) do
-    Repo.all(from wt in WorkingTime, where: wt.user_id == ^user_id)
-  end
 
-  @doc """
-  Returns the list of working times for a specific user within a date range.
-  """
-  def list_workingtime_for_user_and_time_range(user_id, start_datetime, end_datetime) do
+  # Fetch all working times for a user
+  def list_workingtime_for_user(user_id) do
     Repo.all(
-      from wt in WorkingTime,
-        where: wt.user_id == ^user_id and wt.start >= ^start_datetime and wt.end <= ^end_datetime
+      from(wt in WorkingTime,
+        where: wt.user_id == ^user_id
+      )
     )
   end
 
-  @doc """
-  Returns the list of working times within a date range.
-  """
-  def list_workingtime_for_time_range(start_datetime, end_datetime) do
+  # Fetch working times for a user starting from a specific datetime
+  def list_workingtime_for_user(user_id, start_datetime) do
     Repo.all(
-      from wt in WorkingTime, where: wt.start >= ^start_datetime and wt.end <= ^end_datetime
+      from(wt in WorkingTime,
+        where: wt.user_id == ^user_id and wt.start_time >= ^start_datetime
+      )
+    )
+  end
+
+  # Fetch working times for a user between a specific start and end datetime
+  def list_workingtime_for_user(user_id, start_datetime, end_datetime) do
+    Repo.all(
+      from(wt in WorkingTime,
+        where:
+          wt.user_id == ^user_id and
+            wt.start_time >= ^start_datetime and
+            wt.end_time <= ^end_datetime
+      )
     )
   end
 

@@ -3,13 +3,26 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
 
   alias TimeManagerApp.Time
 
-  action_fallback TimeManagerAppWeb.FallbackController
+  action_fallback(TimeManagerAppWeb.FallbackController)
 
   def index(conn, %{"user_id" => user_id} = params) do
     start_datetime = Map.get(params, "start")
     end_datetime = Map.get(params, "end")
 
-    workingtimes = Time.list_workingtime_for_user(user_id, start_datetime, end_datetime)
+    workingtimes =
+      case {start_datetime, end_datetime} do
+        {nil, nil} ->
+          Time.list_workingtime_for_user(user_id)
+
+        {start_datetime, nil} ->
+          Time.list_workingtime_for_user(user_id, start_datetime)
+
+        {nil, end_datetime} ->
+          Time.list_workingtime_for_user(user_id, nil, end_datetime)
+
+        {start_datetime, end_datetime} ->
+          Time.list_workingtime_for_user(user_id, start_datetime, end_datetime)
+      end
 
     if length(workingtimes) > 0 do
       json(conn, workingtimes)
@@ -20,8 +33,8 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
     end
   end
 
-  def show(conn, %{"user_id" => _user_id, "id" => id}) do
-    case Time.get_workingtime(id) do
+  def show(conn, %{"user_id" => user_id, "id" => id}) do
+    case Time.get_workingtime(user_id, id) do
       nil ->
         conn
         |> put_status(:not_found)
