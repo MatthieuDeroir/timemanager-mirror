@@ -1,0 +1,448 @@
+==> ex_json_schema
+Compiling 12 files (.ex)
+Generated ex_json_schema app
+==> phoenix_swagger
+Compiling 11 files (.ex)
+Generated phoenix_swagger app
+==> faker
+Compiling 111 files (.ex)
+Generated faker app
+==> timemanagerapp
+Compiling 29 files (.ex)
+Generated timemanagerapp app
+..
+
+  1) test workingtime delete_workingtime/1 deletes the workingtime (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:108
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     code: workingtime = workingtime_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp/time_test.exs:109: (test)
+
+
+
+  2) test clocks get_clock!/1 returns the clock with given id (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:18
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     code: clock = clock_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp/time_test.exs:19: (test)
+
+
+
+  3) test workingtime update_workingtime/2 with valid data updates the workingtime (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:91
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     code: workingtime = workingtime_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp/time_test.exs:92: (test)
+
+
+
+  4) test clocks list_clocks/0 returns all clocks (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:13
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     code: clock = clock_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp/time_test.exs:14: (test)
+
+
+
+  5) test clocks create_clock_for_user/1 with valid data creates a clock (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:23
+     match (=) failed
+     code:  assert {:ok, %Clock{} = clock} = Time.create_clock_for_user(valid_attrs)
+     left:  {:ok, %TimeManagerApp.Time.Clock{} = clock}
+     right: {:error,
+             #Ecto.Changeset<
+               action: :insert,
+               changes: %{},
+               errors: [
+                 time: {"can't be blank", [validation: :required]},
+                 status: {"can't be blank", [validation: :required]},
+                 user_id: {"is invalid", [type: :id, validation: :cast]}
+               ],
+               data: #TimeManagerApp.Time.Clock<>,
+               valid?: false,
+               ...
+             >}
+     stacktrace:
+       test/timemanagerapp/time_test.exs:26: (test)
+
+
+
+  6) test workingtime create_workingtime_for_user/1 with valid data creates a workingtime (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:79
+     match (=) failed
+     code:  assert {:ok, %WorkingTime{} = workingtime} = Time.create_workingtime_for_user(valid_attrs)
+     left:  {:ok, %TimeManagerApp.Time.WorkingTime{} = workingtime}
+     right: {:error,
+             #Ecto.Changeset<
+               action: :insert,
+               changes: %{},
+               errors: [
+                 start: {"can't be blank", [validation: :required]},
+                 end: {"can't be blank", [validation: :required]},
+                 user_id: {"is invalid", [type: :id, validation: :cast]}
+               ],
+               data: #TimeManagerApp.Time.WorkingTime<>,
+               valid?: false,
+               ...
+             >}
+     stacktrace:
+       test/timemanagerapp/time_test.exs:82: (test)
+
+
+
+  7) test clocks update_clock/2 with valid data updates the clock (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:35
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     code: clock = clock_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp/time_test.exs:36: (test)
+
+
+
+  8) test workingtime update_workingtime/2 with invalid data returns error changeset (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:102
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     code: workingtime = workingtime_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp/time_test.exs:103: (test)
+
+
+
+  9) test clocks delete_clock/1 deletes the clock (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:50
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     code: clock = clock_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp/time_test.exs:51: (test)
+
+.
+
+ 10) test clocks update_clock/2 with invalid data returns error changeset (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:44
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     code: clock = clock_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp/time_test.exs:45: (test)
+
+
+
+ 11) test workingtime list_workingtime/0 returns all workingtime (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:69
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     code: workingtime = workingtime_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp/time_test.exs:70: (test)
+
+
+
+ 12) test workingtime get_workingtime!/1 returns the workingtime with given id (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:74
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     code: workingtime = workingtime_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp/time_test.exs:75: (test)
+
+.
+
+ 13) test workingtime change_workingtime/1 returns a workingtime changeset (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:114
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     code: workingtime = workingtime_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp/time_test.exs:115: (test)
+
+
+
+ 14) test clocks change_clock/1 returns a clock changeset (TimeManagerApp.TimeTest)
+     test/timemanagerapp/time_test.exs:56
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     code: clock = clock_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp/time_test.exs:57: (test)
+
+
+
+ 15) test create clock renders clock when data is valid (TimeManagerAppWeb.ClockControllerTest)
+     test/timemanagerapp_web/controllers/clock_controller_test.exs:30
+     ** (RuntimeError) expected response with status 201, got: 404, with body:
+     "{\"errors\":{\"detail\":\"Not Found\"}}"
+     code: assert %{"id" => id} = json_response(conn, 201)["data"]
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/clock_controller_test.exs:32: (test)
+
+
+
+ 16) test index lists all clocks (TimeManagerAppWeb.ClockControllerTest)
+     test/timemanagerapp_web/controllers/clock_controller_test.exs:23
+     ** (RuntimeError) expected response with status 200, got: 404, with body:
+     "{\"errors\":{\"detail\":\"Not Found\"}}"
+     code: assert json_response(conn, 200)["data"] == []
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/clock_controller_test.exs:25: (test)
+
+
+
+ 17) test create clock renders errors when data is invalid (TimeManagerAppWeb.ClockControllerTest)
+     test/timemanagerapp_web/controllers/clock_controller_test.exs:43
+     ** (RuntimeError) expected response with status 422, got: 404, with body:
+     "{\"errors\":{\"detail\":\"Not Found\"}}"
+     code: assert json_response(conn, 422)["errors"] != %{}
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/clock_controller_test.exs:45: (test)
+
+
+
+ 18) test update clock renders errors when data is invalid (TimeManagerAppWeb.ClockControllerTest)
+     test/timemanagerapp_web/controllers/clock_controller_test.exs:65
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp_web/controllers/clock_controller_test.exs:85: TimeManagerAppWeb.ClockControllerTest.create_clock_for_user/1
+       TimeManagerAppWeb.ClockControllerTest.__ex_unit_describe_2/1
+
+
+
+ 19) test update clock renders clock when data is valid (TimeManagerAppWeb.ClockControllerTest)
+     test/timemanagerapp_web/controllers/clock_controller_test.exs:52
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp_web/controllers/clock_controller_test.exs:85: TimeManagerAppWeb.ClockControllerTest.create_clock_for_user/1
+       TimeManagerAppWeb.ClockControllerTest.__ex_unit_describe_2/1
+
+
+
+ 20) test delete clock deletes chosen clock (TimeManagerAppWeb.ClockControllerTest)
+     test/timemanagerapp_web/controllers/clock_controller_test.exs:74
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [time: {"can't be blank", [validation: :required]}, status: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.Clock<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:11: TimeManagerApp.TimeFixtures.clock_fixture/1
+       test/timemanagerapp_web/controllers/clock_controller_test.exs:85: TimeManagerAppWeb.ClockControllerTest.create_clock_for_user/1
+       TimeManagerAppWeb.ClockControllerTest.__ex_unit_describe_3/1
+
+
+
+ 21) test create workingtime renders workingtime when data is valid (TimeManagerAppWeb.WorkingTimeControllerTest)
+     test/timemanagerapp_web/controllers/working_time_controller_test.exs:30
+     ** (RuntimeError) expected response with status 201, got: 404, with body:
+     "{\"errors\":{\"detail\":\"Not Found\"}}"
+     code: assert %{"id" => id} = json_response(conn, 201)["data"]
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/working_time_controller_test.exs:32: (test)
+
+
+
+ 22) test index lists all workingtime (TimeManagerAppWeb.WorkingTimeControllerTest)
+     test/timemanagerapp_web/controllers/working_time_controller_test.exs:23
+     ** (RuntimeError) expected response with status 200, got: 404, with body:
+     "{\"errors\":{\"detail\":\"Not Found\"}}"
+     code: assert json_response(conn, 200)["data"] == []
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/working_time_controller_test.exs:25: (test)
+
+
+
+ 23) test create workingtime renders errors when data is invalid (TimeManagerAppWeb.WorkingTimeControllerTest)
+     test/timemanagerapp_web/controllers/working_time_controller_test.exs:43
+     ** (RuntimeError) expected response with status 422, got: 404, with body:
+     "{\"errors\":{\"detail\":\"Not Found\"}}"
+     code: assert json_response(conn, 422)["errors"] != %{}
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/working_time_controller_test.exs:45: (test)
+
+
+
+ 24) test update workingtime renders errors when data is invalid (TimeManagerAppWeb.WorkingTimeControllerTest)
+     test/timemanagerapp_web/controllers/working_time_controller_test.exs:68
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp_web/controllers/working_time_controller_test.exs:88: TimeManagerAppWeb.WorkingTimeControllerTest.create_workingtime_for_user/1
+       TimeManagerAppWeb.WorkingTimeControllerTest.__ex_unit_describe_2/1
+
+
+
+ 25) test update workingtime renders workingtime when data is valid (TimeManagerAppWeb.WorkingTimeControllerTest)
+     test/timemanagerapp_web/controllers/working_time_controller_test.exs:52
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp_web/controllers/working_time_controller_test.exs:88: TimeManagerAppWeb.WorkingTimeControllerTest.create_workingtime_for_user/1
+       TimeManagerAppWeb.WorkingTimeControllerTest.__ex_unit_describe_2/1
+
+
+
+ 26) test delete workingtime deletes chosen workingtime (TimeManagerAppWeb.WorkingTimeControllerTest)
+     test/timemanagerapp_web/controllers/working_time_controller_test.exs:77
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{}, errors: [start: {"can't be blank", [validation: :required]}, end: {"can't be blank", [validation: :required]}, user_id: {"is invalid", [type: :id, validation: :cast]}], data: #TimeManagerApp.Time.WorkingTime<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/time_fixtures.ex:26: TimeManagerApp.TimeFixtures.workingtime_fixture/1
+       test/timemanagerapp_web/controllers/working_time_controller_test.exs:88: TimeManagerAppWeb.WorkingTimeControllerTest.create_workingtime_for_user/1
+       TimeManagerAppWeb.WorkingTimeControllerTest.__ex_unit_describe_3/1
+
+
+
+ 27) test create user renders user when data is valid (TimeManagerAppWeb.UserControllerTest)
+     test/timemanagerapp_web/controllers/user_controller_test.exs:30
+     ** (RuntimeError) expected response with status 201, got: 422, with body:
+     "{\"errors\":{\"email\":[\"is not a valid email\"]}}"
+     code: assert %{"id" => id} = json_response(conn, 201)["data"]
+     stacktrace:
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:373: Phoenix.ConnTest.response/2
+       (phoenix 1.7.14) lib/phoenix/test/conn_test.ex:419: Phoenix.ConnTest.json_response/2
+       test/timemanagerapp_web/controllers/user_controller_test.exs:32: (test)
+
+
+
+ 28) test index lists all users (TimeManagerAppWeb.UserControllerTest)
+     test/timemanagerapp_web/controllers/user_controller_test.exs:23
+     ** (ArgumentError) the Access module supports only keyword lists (with atom keys), got: "data"
+     
+     If you want to search lists of tuples, use List.keyfind/3
+     code: assert json_response(conn, 200)["data"] == []
+     stacktrace:
+       (elixir 1.15.7) lib/access.ex:345: Access.get/3
+       test/timemanagerapp_web/controllers/user_controller_test.exs:25: (test)
+
+.
+
+ 29) test update user renders errors when data is invalid (TimeManagerAppWeb.UserControllerTest)
+     test/timemanagerapp_web/controllers/user_controller_test.exs:65
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp_web/controllers/user_controller_test.exs:85: TimeManagerAppWeb.UserControllerTest.create_user/1
+       TimeManagerAppWeb.UserControllerTest.__ex_unit_describe_2/1
+
+
+
+ 30) test update user renders user when data is valid (TimeManagerAppWeb.UserControllerTest)
+     test/timemanagerapp_web/controllers/user_controller_test.exs:52
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp_web/controllers/user_controller_test.exs:85: TimeManagerAppWeb.UserControllerTest.create_user/1
+       TimeManagerAppWeb.UserControllerTest.__ex_unit_describe_2/1
+
+
+
+ 31) test delete user deletes chosen user (TimeManagerAppWeb.UserControllerTest)
+     test/timemanagerapp_web/controllers/user_controller_test.exs:74
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp_web/controllers/user_controller_test.exs:85: TimeManagerAppWeb.UserControllerTest.create_user/1
+       TimeManagerAppWeb.UserControllerTest.__ex_unit_describe_3/1
+
+
+
+ 32) test users get_user!/1 returns the user with given id (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:18
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     code: user = user_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp/account_test.exs:19: (test)
+
+
+
+ 33) test users list_users/0 returns all users (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:13
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     code: user = user_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp/account_test.exs:14: (test)
+
+
+
+ 34) test users create_user/1 with valid data creates a user (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:23
+     match (=) failed
+     code:  assert {:ok, %User{} = user} = Account.create_user(valid_attrs)
+     left:  {:ok, %TimeManagerApp.Account.User{} = user}
+     right: {:error,
+             #Ecto.Changeset<
+               action: :insert,
+               changes: %{username: "some username", email: "some email"},
+               errors: [email: {"is not a valid email", [validation: :format]}],
+               data: #TimeManagerApp.Account.User<>,
+               valid?: false,
+               ...
+             >}
+     stacktrace:
+       test/timemanagerapp/account_test.exs:26: (test)
+
+
+
+ 35) test users update_user/2 with valid data updates the user (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:35
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     code: user = user_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp/account_test.exs:36: (test)
+
+
+
+ 36) test users delete_user/1 deletes the user (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:50
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     code: user = user_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp/account_test.exs:51: (test)
+
+.
+
+ 37) test users update_user/2 with invalid data returns error changeset (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:44
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     code: user = user_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp/account_test.exs:45: (test)
+
+
+
+ 38) test users change_user/1 returns a user changeset (TimeManagerApp.AccountTest)
+     test/timemanagerapp/account_test.exs:56
+     ** (MatchError) no match of right hand side value: {:error, #Ecto.Changeset<action: :insert, changes: %{username: "some username", email: "some email"}, errors: [email: {"is not a valid email", [validation: :format]}], data: #TimeManagerApp.Account.User<>, valid?: false, ...>}
+     code: user = user_fixture()
+     stacktrace:
+       (timemanagerapp 0.1.0) test/support/fixtures/account_fixtures.ex:11: TimeManagerApp.AccountFixtures.user_fixture/1
+       test/timemanagerapp/account_test.exs:57: (test)
+
+
+Finished in 0.1 seconds (0.08s async, 0.08s sync)
+44 tests, 38 failures
+
+Randomized with seed 908017
