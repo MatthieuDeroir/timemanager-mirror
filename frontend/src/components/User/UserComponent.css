@@ -36,9 +36,7 @@ input {
     justify-content: flex-end;
     text-align: right;
     padding-right: 1rem;
-    /* Adds space between label and input */
     margin-top: -0.5em;
-    /* Adds an offset to the top of the label */
 }
 
 .right-space {
@@ -104,6 +102,29 @@ input {
     border-radius: 50%;
 }
 
-.autocomplete {
-    container: '#autocomplete',
+.autocomplete-suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    color:black;
+}
+
+.autocomplete-suggestions li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.autocomplete-suggestions li:hover {
+    background-color: #f0f0f0;
+}
+
+.autocomplete-input{
+    color: black;
 }
