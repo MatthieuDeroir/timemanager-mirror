@@ -12,6 +12,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
+    "@fullcalendar/vue3": "^6.1.15",
     "@algolia/autocomplete-js": "^1.17.4",
     "create-vuetify": "^2.2.6",
     "dotenv": "^16.4.5",
