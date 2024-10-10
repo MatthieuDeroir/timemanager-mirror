@@ -12,9 +12,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@algolia/autocomplete-js": "^1.17.4",
+    "create-vuetify": "^2.2.6",
     "dotenv": "^16.4.5",
     "vue": "^3.4.29",
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.3.3",
+    "vuetify": "^3.7.2"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
