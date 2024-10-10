@@ -27,10 +27,38 @@ defmodule TimeManagerApp.Time do
     Repo.all(from(c in Clock, where: c.user_id == ^user_id))
   end
 
-  @doc """
-  Creates a clock associated with a specific user.
-  """
   def create_clock_for_user(user_id, attrs \\ %{}) do
+    result =
+      Repo.transaction(fn ->
+        # Create the clock
+        case do_create_clock_for_user(user_id, attrs) do
+          {:ok, clock} ->
+            # If clock.status is false (clocking out), handle working time
+            if clock.status == false do
+              case create_working_time_after_clock_out(user_id, clock) do
+                {:ok, _working_time} -> {:ok, clock}
+                {:error, reason} -> Repo.rollback(reason)
+              end
+            else
+              {:ok, clock}
+            end
+
+          {:error, changeset} ->
+            Repo.rollback(changeset)
+        end
+      end)
+
+    # Unwrap the result from the transaction
+    case result do
+      {:ok, {:ok, clock}} -> {:ok, clock}
+      {:error, reason} -> {:error, reason}
+      {:error, %Ecto.Changeset{} = changeset} -> {:error, changeset}
+      other -> other
+    end
+  end
+
+  # Helper function to create the clock
+  defp do_create_clock_for_user(user_id, attrs) do
     %Clock{}
     |> Clock.changeset(Map.put(attrs, "user_id", user_id))
     |> Repo.insert()
@@ -38,6 +66,35 @@ defmodule TimeManagerApp.Time do
 
   def get_clock(user_id, id) do
     Repo.get_by(Clock, id: id, user_id: user_id)
+  end
+
+  # Function to create a working time after clocking out
+  defp create_working_time_after_clock_out(user_id, clock_out) do
+    # Retrieve the last clock-in (status == true)
+    case get_last_clock_with_status_before_time(user_id, true, clock_out.time) do
+      nil ->
+        {:error, :no_matching_clock_in}
+
+      last_clock_in ->
+        working_time_params = %{
+          "start" => last_clock_in.time,
+          "end" => clock_out.time,
+          "user_id" => user_id
+        }
+
+        %WorkingTime{}
+        |> WorkingTime.changeset(working_time_params)
+        |> Repo.insert()
+    end
+  end
+
+  # Function to retrieve the last clock with a given status for a user before a specific time
+  def get_last_clock_with_status_before_time(user_id, status, time) do
+    Clock
+    |> where([c], c.user_id == ^user_id and c.status == ^status and c.time <= ^time)
+    |> order_by([c], desc: c.time)
+    |> limit(1)
+    |> Repo.one()
   end
 
   # --- WorkingTime Functions ---
@@ -49,6 +106,10 @@ defmodule TimeManagerApp.Time do
   """
   def get_workingtime(user_id, workingtime_id) do
     Repo.get_by(WorkingTime, id: workingtime_id, user_id: user_id)
+  end
+
+  def get_workingtime_by_id(id) do
+    Repo.get(WorkingTime, id)
   end
 
   @doc """
@@ -125,7 +186,9 @@ defmodule TimeManagerApp.Time do
   Deletes a working time entry.
   """
   def delete_workingtime(%WorkingTime{} = workingtime) do
-    Repo.delete(workingtime)
-    {:ok, workingtime}
+    case Repo.delete(workingtime) do
+      {:ok, deleted_workingtime} -> {:ok, deleted_workingtime}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 end
