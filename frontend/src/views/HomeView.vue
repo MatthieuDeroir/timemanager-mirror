@@ -1,9 +1,11 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue';
+import WorkingTimeVisualization from '../components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <WorkingTimeVisualization :userId="1" />
+    <WorkingTimeManager :userId="1" />
   </main>
 </template>
