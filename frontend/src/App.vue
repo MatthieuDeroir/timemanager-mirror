@@ -13,7 +13,7 @@ import UserComponent from './components/User/UserComponent.vue';
     </div>
   </header>
 
-  <UserComponent />
+  <UserComponent/>
 </template>
 
 <style scoped>
