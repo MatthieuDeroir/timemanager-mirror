@@ -8,34 +8,40 @@
       <p>Error: {{ error }}</p>
     </div>
 
-    <div v-if="user && !loading">
+    <div v-if="!loading">
       <div class="image-container">
-        <img :src="user.User_logo" alt="User Image" class="user-image" />
+        <img v-if="user.User_logo" :src="user.User_logo" alt="User Image" class="user-image" />
       </div>
       <div>
-        <input type="text" v-model="searchQuery" placeholder="Search by username" @input="searchUser" />
-        <div>
-          <h2>{{ user.name }}</h2>
-          <h3>{{ user.firstname }}</h3>
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="Search by username"
+          @input="handleSearchInput"
+          @blur="hideSuggestions"
+          class="autocomplete-input"
+          
+        />
+
+        <ul v-if="suggestions.length > 0" class="autocomplete-suggestions">
+          <li v-for="suggestion in suggestions" :key="suggestion.id" @mousedown.prevent="selectUser(suggestion)">
+            {{ suggestion.username }}
+          </li>
+        </ul>
+        
+        <div v-if="user && user.username">
+          <h2>{{ user.username }}</h2>
         </div>
       </div>
 
       <form @submit.prevent="submitForm">
         <div class="table-container">
-          <label for="firstname" class="left-space">First Name:</label>
-          <input type="text" id="firstname" v-model="user.firstname" class="right-space" />
-        </div>
-        <div class="table-container">
-          <label for="name" class="left-space">Last Name:</label>
-          <input type="text" id="name" v-model="user.name" class="right-space" />
+          <label for="name" class="left-space">User Name:</label>
+          <input type="text" id="user,ame" v-model="user.username" class="right-space" />
         </div>
         <div class="table-container">
           <label for="email" class="left-space">Email:</label>
           <input type="email" id="email" v-model="user.email" class="right-space" />
-        </div>
-        <div class="table-container">
-          <label for="age" class="left-space">Age:</label>
-          <input type="number" id="age" v-model="user.age" class="right-space" />
         </div>
         <div class="button-group">
           <button type="button" @click="createUser" class="Create-btn">Create User</button>
@@ -46,6 +52,7 @@
     </div>
   </div>
 </template>
+
 
 <style src="./UserComponent.css"></style>
 <script src="./UserComponent.js"></script>
