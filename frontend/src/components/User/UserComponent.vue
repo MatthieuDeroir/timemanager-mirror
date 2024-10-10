@@ -35,6 +35,10 @@
       </div>
 
       <form @submit.prevent="submitForm">
+        <!-- <div class="table-container">
+          <label for="id" class="left-space">User ID:</label>
+          <span class="left-space">{{ user.id }}</span>
+        </div> -->
         <div class="table-container">
           <label for="name" class="left-space">User Name:</label>
           <input type="text" id="username" v-model="user.username" class="right-space" />
