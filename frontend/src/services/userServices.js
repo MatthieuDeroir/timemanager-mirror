@@ -1,6 +1,6 @@
 // userService.js
 
-const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Fetch all users, or filter by email and/or username

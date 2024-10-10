@@ -1,6 +1,6 @@
 // workingTimeService.js
 
-const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * Fetch working times for a specific user, with optional date range filtering
@@ -10,8 +10,6 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
  * @returns {Promise<WorkingTimeDTO[]>}
  */
  async function getWorkingTimesByUserId(userId, start = null, end = null) {
-  console.log(`GET ${userId}`);
-
   const queryParams = new URLSearchParams();
   if (start) queryParams.append('start', start);
   if (end) queryParams.append('end', end);
@@ -27,7 +25,6 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
  * @returns {Promise<WorkingTimeDTO>}
  */
  async function getWorkingTimeById(userId, workingTimeId) {
-
   const response = await fetch(`${API_BASE_URL}workingtime/${userId}/${workingTimeId}`);
   return response.json();
 }
@@ -85,8 +82,6 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
     method: 'DELETE'
   });
 }
-
-
 
 export default {
   getWorkingTimesByUserId,
