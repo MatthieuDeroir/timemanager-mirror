@@ -23,7 +23,7 @@ defmodule TimeManagerAppWeb.ClockController do
       {:ok, clock} ->
         conn
         |> put_status(:created)
-        |> json(%{clock: clock})
+        |> json(clock)
 
       {:error, changeset} ->
         conn
