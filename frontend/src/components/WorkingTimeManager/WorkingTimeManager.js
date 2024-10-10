@@ -17,14 +17,7 @@ export default {
       workingTimes: [],
       loading: true,
       error: null,
-      startDate: null,
-      endDate: null,
-      newWorkingTime: {
-        start: '',
-        end: ''
-      },
-      isEditing: false,
-      editingTime: null
+      nextTempId: 0 // Pour identifier temporairement les nouvelles lignes
     }
   },
   methods: {
@@ -32,7 +25,7 @@ export default {
       try {
         this.loading = true
         this.error = null
-        this.workingTimes = await getWorkingTimesByUserId(this.userId, this.startDate, this.endDate)
+        this.workingTimes = await getWorkingTimesByUserId(this.userId)
       } catch (err) {
         this.error = err.message || 'An error occurred'
       } finally {
@@ -44,42 +37,67 @@ export default {
       const endDate = new Date(end)
       return ((endDate - startDate) / (1000 * 60 * 60)).toFixed(2)
     },
-    async createWorkingTime() {
+    addNewWorkingTime() {
+      this.workingTimes.push({
+        tempId: this.nextTempId++, // Temp ID pour la nouvelle ligne
+        start: '',
+        end: '',
+        isEditing: true
+      })
+    },
+    editWorkingTime(time) {
+      // Pré-remplir les champs de date en formatant correctement les dates pour l'input
+      time.start = this.formatDateForInput(time.start)
+      time.end = this.formatDateForInput(time.end)
+      time.isEditing = true
+    },
+    async saveWorkingTime(time) {
+      if (!this.isSameDay(time.start, time.end)) {
+        this.error = 'Start and End times must be on the same day.'
+        return
+      }
+
       try {
-        await createTime(this.newWorkingTime.start, this.newWorkingTime.end, this.userId)
-        this.getWorkingTimes() // Rafraîchir la liste des working times
-        this.resetForm()
+        if (time.id) {
+          // Si l'entrée existe déjà, on met à jour
+          await updateTime(time.id, { start: time.start, end: time.end })
+        } else {
+          // Si c'est une nouvelle entrée
+          const newTime = await createTime(time.start, time.end, this.userId)
+          // Remplacer le tempId par l'ID réel une fois créé
+          time.id = newTime.id
+        }
+        time.isEditing = false
+        this.error = null // Effacer l'erreur après une sauvegarde réussie
+        this.getWorkingTimes() // Rafraîchir la liste
       } catch (err) {
-        this.error = err.message || 'Failed to create working time'
+        this.error = err.message || 'Failed to save working time'
       }
     },
-    openEditModal(time) {
-      // Ouvre la modal de modification avec les données sélectionnées
-      this.newWorkingTime = { ...time }
-      this.isEditing = true
-      this.editingTime = time
-    },
-    async updateWorkingTime() {
-      try {
-        await updateTime(this.newWorkingTime.id, this.newWorkingTime)
-        this.getWorkingTimes() // Rafraîchir la liste après modification
-        this.resetForm()
-      } catch (err) {
-        this.error = err.message || 'Failed to update working time'
+    async deleteWorkingTime(idOrTempId) {
+      const time = this.workingTimes.find((t) => t.id === idOrTempId || t.tempId === idOrTempId)
+      if (time.id) {
+        // Si l'entrée existe dans la base, on la supprime
+        await deleteTime(time.id)
       }
+      // Supprimer l'entrée localement
+      this.workingTimes = this.workingTimes.filter(
+        (t) => t.id !== idOrTempId && t.tempId !== idOrTempId
+      )
     },
-    async deleteWorkingTime(id) {
-      try {
-        await deleteTime(id)
-        this.getWorkingTimes() // Rafraîchir la liste après suppression
-      } catch (err) {
-        this.error = err.message || 'Failed to delete working time'
-      }
+    isSameDay(start, end) {
+      const startDate = new Date(start)
+      const endDate = new Date(end)
+      // Comparer uniquement l'année, le mois et le jour
+      return (
+        startDate.getFullYear() === endDate.getFullYear() &&
+        startDate.getMonth() === endDate.getMonth() &&
+        startDate.getDate() === endDate.getDate()
+      )
     },
-    resetForm() {
-      this.newWorkingTime = { start: '', end: '' }
-      this.isEditing = false
-      this.editingTime = null
+    formatDateForInput(dateString) {
+      const date = new Date(dateString)
+      return date.toISOString().slice(0, 16) // Format "YYYY-MM-DDTHH:MM"
     }
   },
   mounted() {

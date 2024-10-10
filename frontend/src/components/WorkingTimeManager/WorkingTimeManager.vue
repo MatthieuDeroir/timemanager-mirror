@@ -4,7 +4,10 @@
         <h2>Management of the working times for User : {{ userId }}</h2>
 
         <div v-if="loading">Loading...</div>
-        <div v-if="error" class="error">Failed to load working times: {{ error }}</div>
+        <div v-if="error" class="error">{{ error }}</div>
+
+        <!-- Bouton pour ajouter une nouvelle ligne -->
+        <button @click="addNewWorkingTime">Add new working time</button>
 
         <!-- Hours worked table-->
         <table v-if="!loading && !error">
@@ -17,33 +20,37 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="time in workingTimes" :key="time.id">
-                    <td>{{ new Date(time.start).toLocaleString() }}</td>
-                    <td>{{ new Date(time.end).toLocaleString() }}</td>
+                <tr v-for="time in workingTimes" :key="time.id || time.tempId">
+                    <td>
+                        <input
+                            v-if="time.isEditing"
+                            type="datetime-local"
+                            v-model="time.start"
+                        />
+                        <span v-else>{{ new Date(time.start).toLocaleString() }}</span>
+                    </td>
+                    <td>
+                        <input
+                            v-if="time.isEditing"
+                            type="datetime-local"
+                            v-model="time.end"
+                        />
+                        <span v-else>{{ new Date(time.end).toLocaleString() }}</span>
+                    </td>
                     <td>{{ calculateHoursWorked(time.start, time.end) }} hours</td>
                     <td>
-                        <button @click="openEditModal(time)">Edit</button>
-                        <button @click="deleteWorkingTime(time.id)">Delete</button>
+                        <button v-if="time.isEditing" @click="saveWorkingTime(time)">Save</button>
+                        <button v-else @click="editWorkingTime(time)">Edit</button>
+                        <button @click="deleteWorkingTime(time.id || time.tempId)">Delete</button>
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <!-- Create and modify working time -->
-        <div class="working-time-form">
-            <h3>{{ isEditing ? 'Edit Working Time' : 'Create Working Time' }}</h3>
-            <label for="new-start">Start Time:</label>
-            <input type="datetime-local" v-model="newWorkingTime.start" id="new-start" />
-
-            <label for="new-end">End Time:</label>
-            <input type="datetime-local" v-model="newWorkingTime.end" id="new-end" />
-
-            <button @click="isEditing ? updateWorkingTime() : createWorkingTime()">
-                {{ isEditing ? 'Update' : 'Create' }}
-            </button>
-        </div>
     </div>
 </template>
+
+
+
 
 <script src="./WorkingTimeManager.js"></script>
 <style src="./WorkingTimeManager.css"></style>
