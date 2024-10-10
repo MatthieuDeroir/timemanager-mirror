@@ -46,6 +46,7 @@ export async function createWorkingTime(start, end, userId) {
       workingtime: {
         start,
         end,
+        userId
       }
     })
   });
@@ -81,3 +82,6 @@ export async function deleteWorkingTime(workingTimeId) {
     method: 'DELETE'
   });
 }
+
+
+console.log(await  getWorkingTimesByUserId(1));

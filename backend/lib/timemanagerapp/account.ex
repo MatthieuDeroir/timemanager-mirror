@@ -22,14 +22,19 @@ defmodule TimeManagerApp.Account do
   end
 
   @doc """
-  Gets a single user by email and username.
+  Returns the list of users filtered by email and username using partial matching.
 
-  Returns `nil` if no user is found.
+  ## Examples
+
+      iex> list_users_by_email_and_username("ma", "ma")
+      [%User{}, ...]
+
   """
   def list_users_by_email_and_username(email, username) do
     Repo.all(
-      from u in User,
-        where: u.email == ^email and u.username == ^username
+      from(u in User,
+        where: ilike(u.email, ^"%#{email}%") and ilike(u.username, ^"%#{username}%")
+      )
     )
   end
 
@@ -115,28 +120,28 @@ defmodule TimeManagerApp.Account do
   end
 
   @doc """
-  Returns the list of users filtered by email.
+  Returns the list of users filtered by email using partial matching.
 
   ## Examples
 
-      iex> list_users_by_email("test@example.com")
+      iex> list_users_by_email("ma")
       [%User{}, ...]
 
   """
   def list_users_by_email(email) do
-    Repo.all(from u in User, where: u.email == ^email)
+    Repo.all(from(u in User, where: ilike(u.email, ^"%#{email}%")))
   end
 
   @doc """
-  Returns the list of users filtered by username.
+  Returns the list of users filtered by username using partial matching.
 
   ## Examples
 
-      iex> list_users_by_username("testuser")
+      iex> list_users_by_username("ma")
       [%User{}, ...]
 
   """
   def list_users_by_username(username) do
-    Repo.all(from u in User, where: u.username == ^username)
+    Repo.all(from(u in User, where: ilike(u.username, ^"%#{username}%")))
   end
 end

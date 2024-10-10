@@ -28,7 +28,8 @@ export async function createClock(time, status, userId) {
     body: JSON.stringify({
       clocks: {
         time,
-        status
+        status,
+        userId
       }
     })
   });

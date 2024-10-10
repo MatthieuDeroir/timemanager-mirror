@@ -9,7 +9,7 @@ alias TimeManagerApp.Time.WorkingTime
 # Import Faker for generating random data
 {:ok, _} = Application.ensure_all_started(:faker)
 
-# TODO: improve data generation to meet time constraints
+# TODO: improve data generation to meet time constraints (a working time is made with a pair of status true and false clock, a working time must happen in a day | 1 user can have multiple working times accross multiple day)
 
 # Create Users
 users =
@@ -21,36 +21,44 @@ users =
     |> Repo.insert!()
   end
 
-# Create Clocks for Users
+# Create Working Times with Clocks for Users
 for user <- users do
-  %Clock{
-    time:
-      Faker.DateTime.between(~U[2022-01-01 00:00:00Z], ~U[2024-01-01 00:00:00Z])
-      # Inline the truncation
-      |> DateTime.truncate(:second),
-    status: Enum.random([true, false]),
-    user_id: user.id
-  }
-  |> Repo.insert!()
-end
+  # Generate multiple working times for the same user
+  for _ <- 1..:rand.uniform(5) do
+    # Generate start time and end time for the working day
+    start_time =
+      Faker.DateTime.between(~U[2023-01-01 08:00:00Z], ~U[2023-01-01 09:00:00Z])
+      |> DateTime.truncate(:second)
 
-# Create Working Time for Users
-for user <- users do
-  start_time =
-    Faker.DateTime.between(~U[2022-01-01 08:00:00Z], ~U[2023-01-01 17:00:00Z])
-    |> DateTime.truncate(:second)
+    # Ensure the end time happens on the same day, after the start time
+    # Within 8 hours
+    end_time =
+      Faker.DateTime.between(start_time, DateTime.add(start_time, 8 * 3600))
+      |> DateTime.truncate(:second)
 
-  # Generate a date 8 days forward
-  end_time =
-    Faker.DateTime.forward(8)
-    |> DateTime.truncate(:second)
+    # Insert clocks (start and end)
+    %Clock{
+      time: start_time,
+      status: true,
+      user_id: user.id
+    }
+    |> Repo.insert!()
 
-  %WorkingTime{
-    start: start_time,
-    end: end_time,
-    user_id: user.id
-  }
-  |> Repo.insert!()
+    %Clock{
+      time: end_time,
+      status: false,
+      user_id: user.id
+    }
+    |> Repo.insert!()
+
+    # Insert working time
+    %WorkingTime{
+      start: start_time,
+      end: end_time,
+      user_id: user.id
+    }
+    |> Repo.insert!()
+  end
 end
 
 IO.puts("Seeding completed successfully.")

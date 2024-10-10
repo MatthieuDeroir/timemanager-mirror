@@ -7,14 +7,14 @@ defmodule TimeManagerAppWeb.ClockController do
   alias TimeManagerAppWeb.FallbackController
   alias TimeManagerAppWeb.Swagger.ClockSwagger
 
-  action_fallback FallbackController
+  action_fallback(FallbackController)
 
   Module.eval_quoted(__MODULE__, ClockSwagger.paths())
 
   # GET /clocks/:user_id
   def index(conn, %{"user_id" => user_id}) do
     clocks = Time.list_clocks_for_user(user_id)
-    render(conn, "index.json", clocks: clocks)
+    json(conn, clocks)
   end
 
   # POST /clocks/:user_id
