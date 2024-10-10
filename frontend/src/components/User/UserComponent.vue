@@ -37,7 +37,7 @@
       <form @submit.prevent="submitForm">
         <div class="table-container">
           <label for="name" class="left-space">User Name:</label>
-          <input type="text" id="user,ame" v-model="user.username" class="right-space" />
+          <input type="text" id="username" v-model="user.username" class="right-space" />
         </div>
         <div class="table-container">
           <label for="email" class="left-space">Email:</label>
