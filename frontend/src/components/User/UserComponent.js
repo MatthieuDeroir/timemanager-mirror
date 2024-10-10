@@ -89,11 +89,18 @@ export default {
     },
 
 
-    async updateUser() {
+   async updateUser() {
       try {
+        if (!this.user.id) {
+          alert('User ID is required to update the user.');
+          return;
+        }
+
         const userData = {
-          username: this.user.username,
-          email: this.user.email,
+          user: {
+            email: this.user.email,
+            username: this.user.username,
+          },
         };
 
         const response = await fetch(`http://localhost:4000/api/users/${this.user.id}`, {
@@ -101,15 +108,23 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(userData),
+          body: JSON.stringify(userData), 
         });
 
         if (!response.ok) {
           throw new Error('Failed to update user');
         }
 
-        const data = await response.json();
+        const updatedUser = await response.json();
+
+        this.user = {
+          id: updatedUser.id,         
+          username: updatedUser.username,
+          email: updatedUser.email,
+        };
+
         alert('User updated successfully!');
+
       } catch (err) {
         console.error('Error updating user:', err);
         alert(`Error updating user: ${err.message}`);
@@ -117,6 +132,11 @@ export default {
     },
     async deleteUser() {
       try {
+        if (!this.user.id) {
+          alert('User ID is required to delete the user.');
+          return;
+        }
+
         const response = await fetch(`http://localhost:4000/api/users/${this.user.id}`, {
           method: 'DELETE',
         });
@@ -127,11 +147,12 @@ export default {
 
         alert('User deleted successfully!');
 
-        // Clear form after deletion
         this.user = {
+          id: null,
           username: '',
           email: '',
         };
+
       } catch (err) {
         console.error('Error deleting user:', err);
         alert(`Error deleting user: ${err.message}`);
