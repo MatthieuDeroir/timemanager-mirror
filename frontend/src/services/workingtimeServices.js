@@ -10,6 +10,8 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
  * @returns {Promise<WorkingTimeDTO[]>}
  */
 export async function getWorkingTimesByUserId(userId, start = null, end = null) {
+  console.log(`GET ${userId}`);
+
   const queryParams = new URLSearchParams();
   if (start) queryParams.append('start', start);
   if (end) queryParams.append('end', end);
@@ -25,6 +27,7 @@ export async function getWorkingTimesByUserId(userId, start = null, end = null) 
  * @returns {Promise<WorkingTimeDTO>}
  */
 export async function getWorkingTimeById(userId, workingTimeId) {
+
   const response = await fetch(`${API_BASE_URL}workingtime/${userId}/${workingTimeId}`);
   return response.json();
 }
@@ -83,5 +86,3 @@ export async function deleteWorkingTime(workingTimeId) {
   });
 }
 
-
-console.log(await  getWorkingTimesByUserId(1));

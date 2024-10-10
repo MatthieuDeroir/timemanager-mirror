@@ -10,8 +10,14 @@ import UserComponent from './components/User/UserComponent.vue';
   <!-- <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-
-
+    <div class="wrapper">
+      <!-- The router-view will render the component matched by the route -->
+      <router-view />
+    </div>
+  </header>
+</template>
+<style scoped>
+/* Your styles remain unchanged */
     <div class="wrapper">
       <nav>
         <!-- <RouterLink to="/">Home</RouterLink>

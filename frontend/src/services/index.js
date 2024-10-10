@@ -7,5 +7,3 @@ export const Services = {
     Users: users,
     WorkingTime: workingtime
 }
-
-
