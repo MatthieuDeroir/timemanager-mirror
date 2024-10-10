@@ -2,84 +2,140 @@ export default {
   data() {
     return {
       user: {
-        firstname: '', // Placeholder properties to avoid errors
-        name: '',
+        username: '',
         email: '',
-        age: null,
-        User_logo: null, // Optional for a user image
       },
       searchQuery: '',
-      suggestions: [], // Holds the autocomplete suggestions
-      loading: false, // To track loading state
-      error: null, // To store error message if the fetch fails
+      suggestions: [],
+      loading: false,
+      error: null,
     };
   },
   methods: {
-    // Handle user input for searching users
     async handleSearchInput() {
-      // Trigger autocomplete as soon as the user types the first letter
       if (this.searchQuery.length >= 1) {
         try {
-          // Make an API call to fetch users by username
           const response = await fetch(`http://localhost:4000/api/users?username=${this.searchQuery}`);
           if (!response.ok) {
             throw new Error('Failed to search user');
           }
           const data = await response.json();
-          this.suggestions = data; // Assign matching usernames to suggestions
+          this.suggestions = data
         } catch (err) {
           this.error = err.message;
         }
       } else {
-        // Clear suggestions if input is less than 1 character
         this.suggestions = [];
       }
     },
 
-    // User clicks on a suggestion to fill in the form
     async selectUser(suggestion) {
-      this.searchQuery = suggestion.username; // Set the search input to the selected username
-      this.suggestions = []; // Clear the suggestions list
+      this.searchQuery = suggestion.username;
+      this.suggestions = [];
 
       try {
-        // Fetch the full user details by ID
         const response = await fetch(`http://localhost:4000/api/users/${suggestion.id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch user');
         }
         const data = await response.json();
-        this.user = data; // Populate form fields with fetched user data
+        this.user = data; 
       } catch (err) {
         this.error = err.message;
       }
     },
 
-    // Hide autocomplete suggestions when input loses focus
     hideSuggestions() {
       setTimeout(() => {
-        this.suggestions = []; // Clear suggestions after a slight delay to allow selection
+        this.suggestions = [];
       }, 200);
     },
 
-    // Create, Update, Delete methods (as before)
-    createUser() {
-      alert(`Creating user with the following data:\n
-        First Name: ${this.user.firstname}\n
-        Last Name: ${this.user.name}\n
-        Email: ${this.user.email}\n
-        Age: ${this.user.age}`);
+    async createUser() {
+        try {
+            const userData = {
+            user: {
+                email: this.user.email,
+                username: this.user.username,
+            },
+            };
+
+            const response = await fetch('http://localhost:4000/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+            });
+
+            if (!response.ok) {
+            throw new Error('Failed to create user');
+            }
+
+            const createdUser = await response.json();
+
+            this.user = {
+            id: createdUser.id,     
+            username: createdUser.username,
+            email: createdUser.email,
+            };
+
+            alert('User created successfully! Now you can edit the user.');
+
+        } catch (err) {
+            console.error('Error creating user:', err);
+            alert(`Error creating user: ${err.message}`);
+        }
     },
-    updateUser() {
-      alert(`Updating user with the following data:\n
-        First Name: ${this.user.firstname}\n
-        Last Name: ${this.user.name}\n
-        Email: ${this.user.email}\n
-        Age: ${this.user.age}`);
+
+
+    async updateUser() {
+      try {
+        const userData = {
+          username: this.user.username,
+          email: this.user.email,
+        };
+
+        const response = await fetch(`http://localhost:4000/api/users/${this.user.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update user');
+        }
+
+        const data = await response.json();
+        alert('User updated successfully!');
+      } catch (err) {
+        console.error('Error updating user:', err);
+        alert(`Error updating user: ${err.message}`);
+      }
     },
-    deleteUser() {
-      alert(`Deleting user with the following data:\n
-        First Name: ${this.user.firstname}\n
-        Last Name: ${this.user.name}`);
+    async deleteUser() {
+      try {
+        const response = await fetch(`http://localhost:4000/api/users/${this.user.id}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to delete user');
+        }
+
+        alert('User deleted successfully!');
+
+        // Clear form after deletion
+        this.user = {
+          username: '',
+          email: '',
+        };
+      } catch (err) {
+        console.error('Error deleting user:', err);
+        alert(`Error deleting user: ${err.message}`);
+      }
     },
   },
 };
