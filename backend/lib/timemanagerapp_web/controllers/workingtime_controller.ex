@@ -60,26 +60,44 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
   end
 
   def update(conn, %{"id" => id, "workingtime" => workingtime_params}) do
-    workingtime = Time.get_workingtime(id)
-
-    case Time.update_workingtime(workingtime, workingtime_params) do
-      {:ok, updated_workingtime} ->
-        json(conn, updated_workingtime)
-
-      {:error, changeset} ->
+    case Time.get_workingtime_by_id(id) do
+      nil ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> json(%{errors: changeset})
+        |> put_status(:not_found)
+        |> json(%{error: "Working time not found"})
+
+      workingtime ->
+        case Time.update_workingtime(workingtime, workingtime_params) do
+          {:ok, updated_workingtime} ->
+            json(conn, updated_workingtime)
+
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> json(%{errors: changeset})
+        end
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    workingtime = Time.get_workingtime(id)
+    case Time.get_workingtime_by_id(id) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "Working time not found"})
 
-    with {:ok, deleted_workingtime} <- Time.delete_workingtime(workingtime) do
-      conn
-      |> put_status(:ok)
-      |> json(deleted_workingtime)
+      workingtime ->
+        case Time.delete_workingtime(workingtime) do
+          {:ok, deleted_workingtime} ->
+            conn
+            |> put_status(:ok)
+            |> json(deleted_workingtime)
+
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> json(%{errors: changeset})
+        end
     end
   end
 end
