@@ -9,7 +9,7 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
  * @param {string} [end] - Optional end date for filtering
  * @returns {Promise<WorkingTimeDTO[]>}
  */
-export async function getWorkingTimesByUserId(userId, start = null, end = null) {
+ async function getWorkingTimesByUserId(userId, start = null, end = null) {
   console.log(`GET ${userId}`);
 
   const queryParams = new URLSearchParams();
@@ -26,7 +26,7 @@ export async function getWorkingTimesByUserId(userId, start = null, end = null) 
  * @param {number} workingTimeId
  * @returns {Promise<WorkingTimeDTO>}
  */
-export async function getWorkingTimeById(userId, workingTimeId) {
+ async function getWorkingTimeById(userId, workingTimeId) {
 
   const response = await fetch(`${API_BASE_URL}workingtime/${userId}/${workingTimeId}`);
   return response.json();
@@ -39,7 +39,7 @@ export async function getWorkingTimeById(userId, workingTimeId) {
  * @param {number} userId
  * @returns {Promise<WorkingTimeDTO>}
  */
-export async function createWorkingTime(start, end, userId) {
+ async function createWorkingTime(start, end, userId) {
   const response = await fetch(`${API_BASE_URL}workingtime/${userId}`, {
     method: 'POST',
     headers: {
@@ -62,7 +62,7 @@ export async function createWorkingTime(start, end, userId) {
  * @param {Object} workingTimeParams - Fields to update
  * @returns {Promise<WorkingTimeDTO>}
  */
-export async function updateWorkingTime(workingTimeId, workingTimeParams) {
+ async function updateWorkingTime(workingTimeId, workingTimeParams) {
   const response = await fetch(`${API_BASE_URL}workingtime/${workingTimeId}`, {
     method: 'PUT',
     headers: {
@@ -80,9 +80,18 @@ export async function updateWorkingTime(workingTimeId, workingTimeParams) {
  * @param {number} workingTimeId
  * @returns {Promise<void>}
  */
-export async function deleteWorkingTime(workingTimeId) {
+ async function deleteWorkingTime(workingTimeId) {
   await fetch(`${API_BASE_URL}workingtime/${workingTimeId}`, {
     method: 'DELETE'
   });
 }
 
+
+
+export default {
+  getWorkingTimesByUserId,
+  getWorkingTimeById,
+  createWorkingTime,
+  updateWorkingTime,
+  deleteWorkingTime
+  };

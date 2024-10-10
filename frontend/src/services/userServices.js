@@ -8,7 +8,7 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
  * @param {string} [username] - Optional username to filter users
  * @returns {Promise<UserDTO[]>}
  */
-export async function getAllUsers(email = null, username = null) {
+ async function getAllUsers(email = null, username = null) {
   const queryParams = new URLSearchParams();
   if (email) queryParams.append('email', email);
   if (username) queryParams.append('username', username);
@@ -22,7 +22,7 @@ export async function getAllUsers(email = null, username = null) {
  * @param {number} userId
  * @returns {Promise<UserDTO>}
  */
-export async function getUserById(userId) {
+ async function getUserById(userId) {
   const response = await fetch(`${API_BASE_URL}users/${userId}`);
   return response.json();
 }
@@ -33,7 +33,7 @@ export async function getUserById(userId) {
  * @param {string} email
  * @returns {Promise<UserDTO>}
  */
-export async function createUser(username, email) {
+ async function createUser(username, email) {
   const response = await fetch(`${API_BASE_URL}users`, {
     method: 'POST',
     headers: {
@@ -55,7 +55,7 @@ export async function createUser(username, email) {
  * @param {Object} userParams - User fields to update
  * @returns {Promise<UserDTO>}
  */
-export async function updateUser(userId, userParams) {
+ async function updateUser(userId, userParams) {
   const response = await fetch(`${API_BASE_URL}users/${userId}`, {
     method: 'PUT',
     headers: {
@@ -73,8 +73,16 @@ export async function updateUser(userId, userParams) {
  * @param {number} userId
  * @returns {Promise<void>}
  */
-export async function deleteUser(userId) {
+ async function deleteUser(userId) {
   await fetch(`${API_BASE_URL}users/${userId}`, {
     method: 'DELETE'
   });
 }
+
+export default {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser
+};

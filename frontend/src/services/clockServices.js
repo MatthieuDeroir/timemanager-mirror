@@ -7,7 +7,7 @@ const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
  * @param {number} userId
  * @returns {Promise<ClockDTO[]>}
  */
-export async function getClocksByUserId(userId) {
+ async function getClocksByUserId(userId) {
   const response = await fetch(`${API_BASE_URL}clocks/${userId}`);
   return response.json();
 }
@@ -19,7 +19,7 @@ export async function getClocksByUserId(userId) {
  * @param {number} userId
  * @returns {Promise<ClockDTO>}
  */
-export async function createClock(time, status, userId) {
+ async function createClock(time, status, userId) {
   const response = await fetch(`${API_BASE_URL}clocks/${userId}`, {
     method: 'POST',
     headers: {
@@ -36,3 +36,8 @@ export async function createClock(time, status, userId) {
   return response.json();
 }
 
+
+export default {
+  getClocksByUserId,
+  createClock
+};

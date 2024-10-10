@@ -7,30 +7,21 @@ import UserComponent from './components/User/UserComponent.vue';
 </script>
 
 <template>
-  <!-- <header>
+   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
       <!-- The router-view will render the component matched by the route -->
       <router-view />
+      <Calendar />
+  <UserComponent/>
+
     </div>
   </header>
 </template>
 <style scoped>
 /* Your styles remain unchanged */
-    <div class="wrapper">
-      <nav>
-        <!-- <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink> -->
-      </nav>
-    </div>
-  </header> -->
-  <p>fff</p>
-  <Calendar />
-  <!-- <RouterView /> -->
-</template>
 
-<style scoped>
 /* header {
   line-height: 1.5;
   max-height: 100vh;
@@ -93,10 +84,4 @@ nav a:first-of-type {
   }
 } */
 
-  </header>
-
-  <UserComponent/>
-</template>
-
-<style scoped>
 </style>

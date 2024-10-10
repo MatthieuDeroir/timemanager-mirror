@@ -1,6 +1,6 @@
 // ChartManager.js
 
-import { Services } from '../../services/';
+import Services from '../../services/';
 import dayjs from 'dayjs';
 
 /**
