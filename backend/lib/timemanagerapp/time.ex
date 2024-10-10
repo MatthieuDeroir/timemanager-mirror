@@ -108,6 +108,10 @@ defmodule TimeManagerApp.Time do
     Repo.get_by(WorkingTime, id: workingtime_id, user_id: user_id)
   end
 
+  def get_workingtime_by_id(id) do
+    Repo.get(WorkingTime, id)
+  end
+
   @doc """
   Returns the list of working times for a specific user within a date range.
   """
@@ -182,7 +186,9 @@ defmodule TimeManagerApp.Time do
   Deletes a working time entry.
   """
   def delete_workingtime(%WorkingTime{} = workingtime) do
-    Repo.delete(workingtime)
-    {:ok, workingtime}
+    case Repo.delete(workingtime) do
+      {:ok, deleted_workingtime} -> {:ok, deleted_workingtime}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 end
