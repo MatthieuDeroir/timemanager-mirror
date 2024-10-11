@@ -27,7 +27,6 @@ input {
     align-items: center;
     width: 100%;
     margin-bottom: 1rem;
-    /* Optional: Adds space between form fields */
 }
 
 .left-space {
@@ -127,5 +126,32 @@ input {
 }
 
 .autocomplete-input{
-    color: black;
+    color: #ccc;
+    background-color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+}
+
+.username-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.clear-btn {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    align-self: flex-end;
+}
+
+.clear-btn:hover {
+    text-decoration: underline;
 }

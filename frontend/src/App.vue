@@ -14,8 +14,7 @@ import UserComponent from './components/User/UserComponent.vue';
       <!-- The router-view will render the component matched by the route -->
       <router-view />
       <Calendar />
-  <UserComponent/>
-
+      <UserComponent/>
     </div>
   </header>
 </template>
