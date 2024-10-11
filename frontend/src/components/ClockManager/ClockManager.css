@@ -1,0 +1,38 @@
+
+.clock-manager-container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.banner{
+    background-color: var(--color-banner);
+}
+
+.clock-manager-header{
+    display: flex;
+    flex-direction: row;    
+    justify-content: space-between;
+    align-items: center;
+}
+.clock-status{
+    display: flex;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.red{
+    background-color: red;
+}
+.green{
+    background-color: green;
+}
+
+.row-clock{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
