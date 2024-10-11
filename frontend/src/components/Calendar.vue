@@ -3,6 +3,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import Services from '@/services'
+
 
 export default {
   name: 'CalendarCompo',
@@ -15,6 +17,7 @@ export default {
         plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin],
         initialView: 'dayGridMonth',
         dateClick: this.handleDateClick,
+        eventClick: this.handleEventClick,
         selectable: true,
         events: [
           { title: 'event 1', start: '2024-10-01 12:30:00', end: '2024-10-01 13:30:00'},
@@ -31,8 +34,25 @@ export default {
       alert('Coordinates: ' + arg.jsEvent.pageX + ',' + arg.jsEvent.pageY);
       alert('Current view: ' + arg.view.type);
     },
-    handleEventClick: function(){
+    handleEventClick: function(arg){
+      const event = arg.event;
+      alert('Event title: ' + event.title);
+      alert('Event start time: ' + event.start);
+      alert('Event end time: ' + event.start);
 
+    },
+    watch: {
+      async getEvent(id){
+        try {
+          if (!id) return
+          let events = Services.WorkingTime.getWorkingTimesByUserId(id)
+          console.log(events);
+          
+          
+        } catch (error) {
+          console.error(error)
+        }
+      }
     }
   }
 }
