@@ -1,0 +1,28 @@
+.main-grid{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(9, 8rem);
+  grid-column-gap: 20px;
+  grid-row-gap: 2px;
+  margin: 10px;
+}
+
+.UserComponent-grid {
+  grid-area: 1 / 1 / 4 / 2;
+}
+
+.WorkingTimeManager-grid {
+  grid-area: 1 / 2 / 4 / 7;
+}
+
+.Calendar-grid {
+  grid-area: 4 / 1 / 7 / 6;
+}
+
+.ClockManager-grid {
+  grid-area: 4 / 6 / 7 / 7;
+}
+
+.WorkingTimeVisualization-grid {
+  grid-area: 7 / 1 / 10 / 7;
+}
