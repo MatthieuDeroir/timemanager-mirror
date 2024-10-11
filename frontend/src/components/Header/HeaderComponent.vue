@@ -1,6 +1,9 @@
 <template>
     <header class="header">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> abd120f (feat: :sparkles: Login page fonction is up)
         <h1>GOTHAM Time Manger</h1>
         <image href="../icons/Batman.png" alt="Gotham Logo"></image>
         <div>
@@ -24,6 +27,7 @@
                 </v-list>
             </v-menu>
         </div>
+<<<<<<< HEAD
 =======
         <h1>My Simple Header</h1>
         <nav>
@@ -34,6 +38,8 @@
             </ul>
         </nav>
 >>>>>>> 2658bc3 (feat: :tada: Header generated)
+=======
+>>>>>>> abd120f (feat: :sparkles: Login page fonction is up)
     </header>
 </template>
 
