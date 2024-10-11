@@ -9,7 +9,7 @@
             <div v-else>
                 <div>
                     <li v-for="(item,index) in items" :key="index">
-                        {{ item.status }}  {{ item.user_id }}
+                        {{ item.status }}  {{ item.user_id }} {{ item.time }}
                     </li>
                 </div>
             </div>  
