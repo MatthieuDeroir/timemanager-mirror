@@ -10,6 +10,11 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/card',
+      name: 'card',
+      component: () => import('../components/CardComponent/CardComponent.vue')
+    },
+    {
       path: '/chartManager/:userid',
       name: 'ChartManager',
       component: () => import('../components/ChartManager/ChartManager.vue')
