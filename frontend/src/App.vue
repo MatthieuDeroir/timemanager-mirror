@@ -10,6 +10,7 @@ const isAuthenticated = ref(false);
 function handleLoginSuccess() {
   isAuthenticated.value = true;
 }
+import HeaderComponent from './components/Header/HeaderComponent.vue';
 </script>
 
 <template>
@@ -27,9 +28,18 @@ function handleLoginSuccess() {
         <Calendar />
         <UserComponent />
       </div>
+   <header>
+    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
+    <HeaderComponent />
+    <div class="wrapper">
+      <!-- The router-view will render the component matched by the route -->
+      <router-view />
+      <Calendar />
+      <UserComponent/>
     </div>
   </div>
 </template>
+
 
 
 <style scoped>

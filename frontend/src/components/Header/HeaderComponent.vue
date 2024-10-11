@@ -1,5 +1,6 @@
 <template>
     <header class="header">
+<<<<<<< HEAD
         <h1>GOTHAM Time Manger</h1>
         <image href="../icons/Batman.png" alt="Gotham Logo"></image>
         <div>
@@ -23,6 +24,16 @@
                 </v-list>
             </v-menu>
         </div>
+=======
+        <h1>My Simple Header</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+>>>>>>> 2658bc3 (feat: :tada: Header generated)
     </header>
 </template>
 
