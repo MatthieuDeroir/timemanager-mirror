@@ -181,6 +181,7 @@ export default {
         alert(`Error deleting user: ${err.message}`);
       }
     },
+
     clearUser() {
       this.user = {
         id: null,
@@ -189,6 +190,11 @@ export default {
       };
       this.searchQuery = '';
       this.suggestions = [];
+
+      localStorage.removeItem('user');
+      console.log(localStorage.getItem('user'));
+      //A netoyer
+
     },
   },
 };
