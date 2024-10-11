@@ -1,26 +1,65 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import Calendar from './components/Calendar.vue'
-import HelloWorld from './components/HelloWorld.vue'
-import UserComponent from './components/User/UserComponent.vue';
+import { ref } from 'vue';
 import HeaderComponent from './components/Header/HeaderComponent.vue';
+import Calendar from './components/Calendar.vue';
+import UserComponent from './components/User/UserComponent.vue';
+import LoginPage from './components/LoginPage/LoginPage.vue';
+
+const isAuthenticated = ref(false); 
+
+function handleLoginSuccess() {
+  isAuthenticated.value = true;
+}
 </script>
 
 <template>
-   <header>
-    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-    <HeaderComponent />
-    <div class="wrapper">
-      <!-- The router-view will render the component matched by the route -->
-      <router-view />
-      <Calendar />
-      <UserComponent/>
+  <div>
+    <div v-if="!isAuthenticated">
+      <LoginPage @login-success="handleLoginSuccess" />
     </div>
-  </header>
+
+    <div v-else>
+      <header>
+        <HeaderComponent />
+      </header>
+      <div class="wrapper">
+        <router-view />
+        <Calendar />
+        <UserComponent />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-/* Your styles remain unchanged */
+
+:root {
+  height: 100%;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.wrapper {
+  margin-top: 6rem; 
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 /* header {
   line-height: 1.5;
