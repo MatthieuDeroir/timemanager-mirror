@@ -29,8 +29,11 @@
           </li>
         </ul>
         
-        <div v-if="user && user.username">
+        <div v-if="user && user.username" class="username-display">
           <h2>{{ user.username }}</h2>
+          <div>
+            <button type="button" @click="clearUser" class="clear-btn">Clear user</button>
+          </div>
         </div>
       </div>
 
