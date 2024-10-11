@@ -12,6 +12,12 @@ export default {
       error: null,
     };
   },
+  created() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+    }
+  },
   methods: {
     async handleSearchInput() {
       if (this.searchQuery.length >= 1) {
@@ -21,7 +27,7 @@ export default {
             throw new Error('Failed to search user');
           }
           const data = await response.json();
-          this.suggestions = data
+          this.suggestions = data;
         } catch (err) {
           this.error = err.message;
         }
@@ -40,7 +46,12 @@ export default {
           throw new Error('Failed to fetch user');
         }
         const data = await response.json();
-        this.user = data; 
+        this.user = data;
+
+        localStorage.setItem('user', JSON.stringify(this.user));
+        console.log(localStorage.getItem('user'));
+        //A netoyer
+
       } catch (err) {
         this.error = err.message;
       }
@@ -53,44 +64,46 @@ export default {
     },
 
     async createUser() {
-        try {
-            const userData = {
-            user: {
-                email: this.user.email,
-                username: this.user.username,
-            },
-            };
+      try {
+        const userData = {
+          user: {
+            email: this.user.email,
+            username: this.user.username,
+          },
+        };
 
-            const response = await fetch('http://localhost:4000/api/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-            });
+        const response = await fetch('http://localhost:4000/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
 
-            if (!response.ok) {
-            throw new Error('Failed to create user');
-            }
-
-            const createdUser = await response.json();
-
-            this.user = {
-            id: createdUser.id,     
-            username: createdUser.username,
-            email: createdUser.email,
-            };
-
-            alert('User created successfully! Now you can edit the user.');
-
-        } catch (err) {
-            console.error('Error creating user:', err);
-            alert(`Error creating user: ${err.message}`);
+        if (!response.ok) {
+          throw new Error('Failed to create user');
         }
+
+        const createdUser = await response.json();
+
+        this.user = {
+          id: createdUser.id,
+          username: createdUser.username,
+          email: createdUser.email,
+        };
+
+        localStorage.setItem('user', JSON.stringify(this.user));
+        console.log(localStorage.getItem('user'));
+        //A netoyer
+
+        alert('User created successfully! Now you can edit the user.');
+      } catch (err) {
+        console.error('Error creating user:', err);
+        alert(`Error creating user: ${err.message}`);
+      }
     },
 
-
-   async updateUser() {
+    async updateUser() {
       try {
         if (!this.user.id) {
           alert('User ID is required to update the user.');
@@ -109,7 +122,7 @@ export default {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(userData), 
+          body: JSON.stringify(userData),
         });
 
         if (!response.ok) {
@@ -119,18 +132,22 @@ export default {
         const updatedUser = await response.json();
 
         this.user = {
-          id: updatedUser.id,         
+          id: updatedUser.id,
           username: updatedUser.username,
           email: updatedUser.email,
         };
 
-        alert('User updated successfully!');
+        localStorage.setItem('user', JSON.stringify(this.user));
+        console.log(localStorage.getItem('user'));
+        //A netoyer
 
+        alert('User updated successfully!');
       } catch (err) {
         console.error('Error updating user:', err);
         alert(`Error updating user: ${err.message}`);
       }
     },
+
     async deleteUser() {
       try {
         if (!this.user.id) {
@@ -154,11 +171,16 @@ export default {
           email: '',
         };
 
+        localStorage.removeItem('user');
+        console.log(localStorage.getItem('user'));
+        //A netoyer
+
       } catch (err) {
         console.error('Error deleting user:', err);
         alert(`Error deleting user: ${err.message}`);
       }
     },
+
     clearUser() {
       this.user = {
         id: null,
@@ -167,6 +189,11 @@ export default {
       };
       this.searchQuery = '';
       this.suggestions = [];
+
+      localStorage.removeItem('user');
+      console.log(localStorage.getItem('user'));
+      //A netoyer
+
     },
   },
 };
