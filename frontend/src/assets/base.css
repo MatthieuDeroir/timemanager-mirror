@@ -33,6 +33,7 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --color-banner:rgba(147, 210, 255, 0.85);
   --section-gap: 160px;
 }
 
