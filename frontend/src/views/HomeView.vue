@@ -26,33 +26,20 @@ function handleLoginSuccess() {
 
 <template>
   <div>
-    <!-- <div v-if="!isAuthenticated">
+    <div v-if="!isAuthenticated">
       <LoginPage @login-success="handleLoginSuccess" />
     </div>
 
-    <div v-else> -->
-    <div>
+    <div v-else>
       <header>
         <HeaderComponent />
       </header>
       <main>
-        <div class="main-grid">
-          <div class="UserComponent-grid">
-            <UserComponent/>
-          </div>
-          <div class="WorkingTimeManager-grid">
-            <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes" />
-          </div>
-          <div class="Calendar-grid">
-            <Calendar />
-          </div>
-          <div class="ClockManager-grid">
-            <ClockManager />
-          </div>
-          <div class="WorkingTimeVisualization-grid">
-            <WorkingTimeVisualization :userId="1" :workingTimes="workingTimes" />
-          </div>
-        </div>
+        <UserComponent/>
+        <WorkingTimeVisualization :userId="1" :workingTimes="workingTimes" />
+        <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes" />
+        <Calendar />
+        <ClockManager />
       </main>
     </div>
   </div>
