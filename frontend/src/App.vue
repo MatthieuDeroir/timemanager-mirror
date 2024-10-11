@@ -1,21 +1,21 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Calendar from './components/Calendar.vue'
-import HelloWorld from './components/HelloWorld.vue'
-import UserComponent from './components/User/UserComponent.vue';
-
+import UserComponent from './components/User/UserComponent.vue'
 </script>
 
 <template>
-   <header>
+  <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
       <!-- The router-view will render the component matched by the route -->
       <router-view />
       <Calendar />
-  <UserComponent/>
-
+      <UserComponent />
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+      </nav>
     </div>
   </header>
 </template>
@@ -83,5 +83,4 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 } */
-
 </style>

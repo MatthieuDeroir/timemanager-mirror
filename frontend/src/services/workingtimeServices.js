@@ -1,6 +1,6 @@
 // workingTimeService.js
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 /**
  * Fetch working times for a specific user, with optional date range filtering
@@ -9,13 +9,12 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {string} [end] - Optional end date for filtering
  * @returns {Promise<WorkingTimeDTO[]>}
  */
- async function getWorkingTimesByUserId(userId, start = null, end = null) {
-  const queryParams = new URLSearchParams();
-  if (start) queryParams.append('start', start);
-  if (end) queryParams.append('end', end);
-
-  const response = await fetch(`${API_BASE_URL}workingtime/${userId}?${queryParams.toString()}`);
-  return response.json();
+export async function getWorkingTimesByUserId(userId, start = null, end = null) {
+  const queryParams = new URLSearchParams()
+  if (start) queryParams.append('start', start)
+  if (end) queryParams.append('end', end)
+  const response = await fetch(`${API_BASE_URL}workingtime/${userId}?${queryParams.toString()}`)
+  return response.json()
 }
 
 /**
@@ -24,9 +23,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {number} workingTimeId
  * @returns {Promise<WorkingTimeDTO>}
  */
- async function getWorkingTimeById(userId, workingTimeId) {
-  const response = await fetch(`${API_BASE_URL}workingtime/${userId}/${workingTimeId}`);
-  return response.json();
+export async function getWorkingTimeById(userId, workingTimeId) {
+  const response = await fetch(`${API_BASE_URL}workingtime/${userId}/${workingTimeId}`)
+  return response.json()
 }
 
 /**
@@ -36,21 +35,20 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {number} userId
  * @returns {Promise<WorkingTimeDTO>}
  */
- async function createWorkingTime(start, end, userId) {
+export async function createWorkingTime(start, end, userId) {
   const response = await fetch(`${API_BASE_URL}workingtime/${userId}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       workingtime: {
         start,
-        end,
-        userId
+        end
       }
     })
-  });
-  return response.json();
+  })
+  return response.json()
 }
 
 /**
@@ -59,17 +57,17 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {Object} workingTimeParams - Fields to update
  * @returns {Promise<WorkingTimeDTO>}
  */
- async function updateWorkingTime(workingTimeId, workingTimeParams) {
+export async function updateWorkingTime(workingTimeId, workingTimeParams) {
   const response = await fetch(`${API_BASE_URL}workingtime/${workingTimeId}`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       workingtime: workingTimeParams
     })
-  });
-  return response.json();
+  })
+  return response.json()
 }
 
 /**
@@ -77,10 +75,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {number} workingTimeId
  * @returns {Promise<void>}
  */
- async function deleteWorkingTime(workingTimeId) {
+export async function deleteWorkingTime(workingTimeId) {
   await fetch(`${API_BASE_URL}workingtime/${workingTimeId}`, {
     method: 'DELETE'
-  });
+  })
 }
 
 export default {
@@ -89,4 +87,4 @@ export default {
   createWorkingTime,
   updateWorkingTime,
   deleteWorkingTime
-  };
+}
