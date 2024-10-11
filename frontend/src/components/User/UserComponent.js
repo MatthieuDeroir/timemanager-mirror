@@ -2,6 +2,7 @@ export default {
   data() {
     return {
       user: {
+        id: null,
         username: '',
         email: '',
       },
@@ -157,6 +158,15 @@ export default {
         console.error('Error deleting user:', err);
         alert(`Error deleting user: ${err.message}`);
       }
+    },
+    clearUser() {
+      this.user = {
+        id: null,
+        username: '',
+        email: '',
+      };
+      this.searchQuery = '';
+      this.suggestions = [];
     },
   },
 };
