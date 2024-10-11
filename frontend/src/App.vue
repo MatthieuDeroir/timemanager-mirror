@@ -1,12 +1,15 @@
 <script setup>
-import { ref } from 'vue';
-import HomeView from './views/HomeView.vue';
-import LoginPage from './components/LoginPage/LoginPage.vue';
+import { RouterView } from 'vue-router'
 
 </script>
 
 <template>
-
+   <header>
+      <!-- The router-view will render the component matched by the route -->
+      <router-view />
+      <Calendar />
+      <UserComponent/>
+  </header>
 </template>
 
 
