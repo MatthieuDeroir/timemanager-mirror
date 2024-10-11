@@ -103,7 +103,6 @@ jobs:
   deploy-to-render:
     name: Deploy to Render
     needs: docker-build-and-push
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Backend Deploy on Render
