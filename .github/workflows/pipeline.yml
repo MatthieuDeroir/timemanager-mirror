@@ -41,7 +41,7 @@ jobs:
         with:
           context: ./backend
           push: false
-          tags: ghcr.io/epitechmscpropromo2026/t-poo-700-nan_5/backend:latest
+          tags: ghcr.io/MatthieuDeroir/timemanager-mirror/backend:latest
 
   build-frontend:
     name: Build and Test Frontend
@@ -70,7 +70,7 @@ jobs:
         with:
           context: ./frontend
           push: false
-          tags: ghcr.io/epitechmscpropromo2026/t-poo-700-nan_5/frontend:latest
+          tags: ghcr.io/MatthieuDeroir/timemanager-mirror/frontend:latest
 
   docker-build-and-push:
     name: Build and Push Docker Images
@@ -91,14 +91,14 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ghcr.io/epitechmscpropromo2026/t-poo-700-nan_5/backend:latest
+          tags: ghcr.io/MatthieuDeroir/timemanager-mirror/backend:latest
 
       - name: Push Frontend Image
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
           push: true
-          tags: ghcr.io/epitechmscpropromo2026/t-poo-700-nan_5/frontend:latest
+          tags: ghcr.io/MatthieuDeroir/timemanager-mirror/frontend:latest
 
   deploy-to-render:
     name: Deploy to Render
