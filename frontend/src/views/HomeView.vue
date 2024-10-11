@@ -21,6 +21,5 @@ const updateWorkingTimes = (updatedTimes) => {
     <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes" />
     <Calendar />
     <ClockManager />
-    <UserComponent/>
   </main>
 </template>
