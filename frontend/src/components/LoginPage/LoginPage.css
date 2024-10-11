@@ -1,0 +1,54 @@
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #727181;
+}
+
+.login-container {
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.logo {
+    width: 100px;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-family: "Protest Strike", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    font-family: "Protest Strike", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.image-button:hover {
+    background-color: #555;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+}
