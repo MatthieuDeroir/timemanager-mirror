@@ -5,8 +5,9 @@ export default {
     return {
       items: [],
       loading: true,
-      latestClockStatus: null,
-      error: null
+      currentClockStatus: null,
+      error: null,
+      date: null
     }
   },
   mounted() {
@@ -25,10 +26,10 @@ export default {
               date.getDate() === dateNow.getDate()
             )
           })
-          this.items.sort((latest, item) => new Date(latest.time) - new Date(item.time))
+          this.items.sort((current, item) => new Date(current.time) - new Date(item.time))
           if (this.items.length > 0) {
-            console.log(this.getLastClock())
-            this.latestClockStatus = this.getLastClock();
+            this.date = this.getDate()
+            this.currentClockStatus = this.getLastClock()
           } else {
             this.loading = false
             this.error = 'No clocks found for today'
@@ -46,18 +47,31 @@ export default {
     },
 
     getLastClock() {
-      return this.items[this.items.length -1].status
+      return this.items[this.items.length - 1].status
     },
 
     async handleCreateClock() {
       var mock = await Services.Clocks.createClock(
         new Date().toISOString(),
-        !this.latestClockStatus,
+        !this.currentClockStatus,
         1
       )
       this.items.push(mock)
       this.error = null
-      this.latestClockStatus = !this.latestClockStatus
+      this.currentClockStatus = !this.currentClockStatus
+    },
+
+    getDate() {
+      const rowDate = new Date(this.items[0].time);
+      return rowDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      })
+    },
+    getTime(item) {
+      const rowDate = new Date(item.time);
+      return rowDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     }
   }
 }
