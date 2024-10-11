@@ -5,7 +5,7 @@
 =======
 >>>>>>> abd120f (feat: :sparkles: Login page fonction is up)
         <h1>GOTHAM Time Manger</h1>
-        <image href="../icons/Batman.png" alt="Gotham Logo"></image>
+        <image href="../../assets/Batman.png" alt="Gotham Logo"></image>
         <div>
            <v-menu open-on-hover>
                 <template v-slot:activator="{ props }">
