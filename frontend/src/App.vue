@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 
 </script>
 
@@ -7,7 +7,8 @@ import { RouterLink, RouterView } from 'vue-router'
    <header>
       <!-- The router-view will render the component matched by the route -->
       <router-view />
-      
+      <Calendar />
+      <UserComponent/>
   </header>
 </template>
 
