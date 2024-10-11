@@ -3,7 +3,6 @@ export default {
     return {
       user: {
         id: null,
-        id: null,
         username: '',
         email: '',
       },
