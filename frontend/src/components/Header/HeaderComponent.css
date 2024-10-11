@@ -1,9 +1,10 @@
 .header {
-    background-color: #333;
+    background-color: #308CC2;    
     color: white;
     padding: 1rem;
     text-align: center;
-}
+    display: flex;
+    justify-content: space-around;}
 
 .header nav ul {
     list-style-type: none;
