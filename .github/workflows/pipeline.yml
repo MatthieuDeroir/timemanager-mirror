@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["feat/backend/devops›"]
+    branches: ["main"]
   pull_request:
-    branches: ["feat/backend/devops›"]
+    branches: ["main"]
     types: [opened, synchronize, reopened]
 
 permissions:
