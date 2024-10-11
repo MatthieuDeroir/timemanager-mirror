@@ -1,4 +1,14 @@
 <script setup>
+import TheWelcome from '../components/TheWelcome.vue'
+import HeaderComponent from './components/Header/HeaderComponent.vue';
+import Calendar from './components/Calendar.vue';
+import UserComponent from './components/User/UserComponent.vue';
+
+  const isAuthenticated = ref(false); 
+
+  function handleLoginSuccess() {
+    isAuthenticated.value = true;
+  }
 import { ref } from 'vue';
 import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue';
 import WorkingTimeVisualization from '../components/WorkingTimeVisualization/WorkingTimeVisualization.vue';
@@ -25,6 +35,22 @@ function handleLoginSuccess() {
 </script>
 
 <template>
+     <div v-if="!isAuthenticated">
+      <LoginPage @login-success="handleLoginSuccess" />
+    </div>
+
+    <div v-else>
+      <header>
+        <HeaderComponent />
+      </header>
+      <main>
+        <div class="wrapper">
+          <router-view />
+          <Calendar />
+          <UserComponent />
+        </div>  
+      </main>
+    </div>
   <div>
     <div v-if="!isAuthenticated">
       <LoginPage @login-success="handleLoginSuccess" />

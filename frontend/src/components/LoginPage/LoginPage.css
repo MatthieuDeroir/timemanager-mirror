@@ -46,9 +46,7 @@ input {
 }
 
 .image-button:hover {
-    background-color: #555;
     border-radius: 4px;
     cursor: pointer;
-    margin-left: 2.5rem;
-    margin-right: 2.5rem;
+    transform: scale(1.5);
 }
