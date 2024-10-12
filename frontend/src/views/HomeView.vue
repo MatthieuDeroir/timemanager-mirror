@@ -7,6 +7,7 @@ import ClockManager from '../components/ClockManager/ClockManager.vue'
 import UserComponent from '../components/User/UserComponent.vue';
 import HeaderComponent from '../components/Header/HeaderComponent.vue';
 import LoginPage from '../components/LoginPage/LoginPage.vue';
+import CardComponent from '../components/CardComponent/CardComponent';
 // Réactif pour stocker les données des working times
 const workingTimes = ref([]);
 
@@ -38,7 +39,9 @@ function handleLoginSuccess() {
       <main>
         <div class="main-grid">
           <div class="UserComponent-grid">
-            <UserComponent/>
+            <CardComponent title="User Comp">
+              <UserComponent/>
+            </CardComponent>
           </div>
           <div class="WorkingTimeManager-grid">
             <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes" />
