@@ -4,15 +4,15 @@
       <div class="card-header">
         <div class="card-logo">logo</div>
         <div class="card-titles">
-          <div class="card-title">Title</div>
-          <div class="card-subtitle">subtitle</div>
+          <div class="card-title">{{ title }}</div>
+          <div class="card-subtitle">{{ subtitle }}</div>
         </div>
       </div>
     </div>
     <div class="card-body">
-      <slot> </slot>
+      <slot></slot>
     </div>
   </div>
 </template>
-<style src="./CardComponent.css" />
-<script src="./CardComponent.js" />
+<style src="./CardComponent.css"/>
+<script src="./CardComponent.js"/>
