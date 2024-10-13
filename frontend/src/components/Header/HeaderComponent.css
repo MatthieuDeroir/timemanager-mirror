@@ -1,10 +1,17 @@
 .header {
-    background-color: #308CC2;    
+    background-color: rgba(78, 117, 155, 0.45);
+    backdrop-filter: blur(10px);
     color: white;
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
     display: flex;
-    justify-content: space-around;}
+    justify-content: space-between;
+    position: fixed;
+    overflow: hidden;
+    z-index: 10;
+    width: 100%;
+    opacity: inherit;
+}
 
 .header nav ul {
     list-style-type: none;
@@ -23,4 +30,9 @@
 
 .header nav ul li a:hover {
     text-decoration: underline;
+}
+
+.navbar-logo {
+    width: 50px;
+    height: auto;
 }
