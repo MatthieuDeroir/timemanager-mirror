@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/card',
       name: 'card',
-      component: () => import('../components/CardComponent/CardComponent.vue')
+      component: () => import('../components/Card/Card.vue')
     },
     {
       path: '/chartManager/:userid',

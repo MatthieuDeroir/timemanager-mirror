@@ -61,5 +61,5 @@
 </template>
 
 
-<style src="./UserComponent.css"></style>
-<script src="./UserComponent.js"></script>
+<style src="./UserSearch.css"></style>
+<script src="./UserSearch.js"></script>

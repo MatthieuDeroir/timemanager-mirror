@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <h1>GOTHAM Time Manager</h1>
-    <img src="./Batman.png" alt="Gotham Logo" class="navbar-logo">
+    <img src="../../assets/global/batman.png" alt="Gotham Logo" class="navbar-logo">
     <div>
       <v-menu open-on-hover>
         <template v-slot:activator="{ props }">
@@ -25,5 +25,5 @@
   </header>
 </template>
 
-<script src="./HeaderComponent.js"></script>
-<style src="./HeaderComponent.css"></style>
+<script src="./Header.js"></script>
+<style src="./Header.css"></style>

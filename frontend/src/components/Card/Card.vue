@@ -3,7 +3,7 @@
     <div class="card-header-container">
       <div class="card-header">
         <div class="card-logo" :style="{ 'background': logoColor }">
-          <img src="../../assets/logo/icons8-image-pulsar-line/icons8-image-48.png" alt="logo">
+          <img src="../../assets/icons/icons8-image-pulsar-line/icons8-image-48.png" alt="logo">
         </div>
         <div class="card-titles">
           <div class="card-title">{{ title }}</div>
@@ -16,5 +16,5 @@
     </div>
   </div>
 </template>
-<style src="./CardComponent.css"/>
-<script src="./CardComponent.js"/>
+<style src="./Card.css"/>
+<script src="./Card.js"/>

@@ -3,12 +3,15 @@ import {ref} from 'vue';
 import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue';
 import WorkingTimeVisualization from '../components/WorkingTimeVisualization/WorkingTimeVisualization.vue';
 import ClockManager from '../components/ClockManager/ClockManager.vue';
-import UserComponent from '../components/User/UserComponent.vue';
-import CardComponent from '../components/CardComponent/CardComponent.vue';
-// Réactif pour stocker les données des working times
+import UserComponent from '../components/UserSearch/UserSearch.vue';
+import CardComponent from '../components/Card/Card.vue';
+// Used to store the working times
 const workingTimes = ref([]);
 
-// Fonction appelée lorsque l'événement est émis
+/**
+ * Method used to update the working times
+ * @param updatedTimes
+ */
 const updateWorkingTimes = (updatedTimes) => {
   workingTimes.value = updatedTimes;
 };
