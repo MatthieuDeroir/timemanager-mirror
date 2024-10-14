@@ -1,3 +1,4 @@
+
 export default {
   props: {
     title: {
@@ -10,7 +11,7 @@ export default {
     },
     logo: {
       type: String,
-      default: 'https://via.placeholder.com/150'
+      default: "../../assets/logo/icons8-image-pulsar-line/icons8-image-48.png"
     },
     height: {
       type: String,
@@ -19,16 +20,20 @@ export default {
     width: {
       type: String,
       default: 'short'
+    },
+    logoColor: {
+      type: String,
+      default: ''
     }
   },
   setup(props) {
-    // You can access props directly inside the setup function
     return {
       title: props.title,
       subtitle: props.subtitle,
       logo: props.logo,
       height: props.height,
-      width: props.width
+      width: props.width,
+      logoColor: props.logoColor
     }
   }
 };

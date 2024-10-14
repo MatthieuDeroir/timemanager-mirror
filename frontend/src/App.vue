@@ -8,6 +8,7 @@ import HeaderComponent from "@/components/Header/HeaderComponent.vue";
     <HeaderComponent/>
   </header>
   <main class="main-content">
+    <div class="background blue"></div>
     <router-view/>
   </main>
 </template>
