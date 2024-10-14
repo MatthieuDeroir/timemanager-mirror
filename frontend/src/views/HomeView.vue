@@ -1,56 +1,77 @@
 <script setup>
-import {ref} from 'vue';
-import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue';
-import WorkingTimeVisualization from '../components/WorkingTimeVisualization/WorkingTimeVisualization.vue';
-import ClockManager from '../components/ClockManager/ClockManager.vue';
-import UserComponent from '../components/UserSearch/UserSearch.vue';
-import CardComponent from '../components/Card/Card.vue';
-// Used to store the working times
-const workingTimes = ref([]);
+import { ref } from 'vue'
+import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue'
+import WorkingTimeVisualization from '../components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
+import ClockManager from '../components/ClockManager/ClockManager.vue'
+import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
+import CardComponent from '../components/Card/Card.vue' // Récupérer l'ID utilisateur depuis les props
+
+// Récupérer l'ID utilisateur depuis les props
+const props = defineProps({
+  userId: {
+    type: Number,
+    required: true // Assurez-vous que userId est toujours fourni
+  }
+})
+
+// Stocker les temps de travail
+const workingTimes = ref([])
 
 /**
- * Method used to update the working times
+ * Méthode utilisée pour mettre à jour les temps de travail
  * @param updatedTimes
  */
 const updateWorkingTimes = (updatedTimes) => {
-  workingTimes.value = updatedTimes;
-};
-
-// Authentication state
-const isAuthenticated = ref(false);
-
-// Function to handle successful login
-function handleLoginSuccess() {
-  isAuthenticated.value = true;
+  workingTimes.value = updatedTimes
 }
+
+// // Charger les données lors du montage initial du composant
+// onMounted(() => {
+//   fetchData(props.userId);  // Charger les données pour l'ID utilisateur initial
+// });
+
+// // Surveiller les changements de userId via les props
+// watch(() => props.userId, (newUserId) => {
+//   fetchData(newUserId);  // Recharger les données lorsque userId change
+// });
+//
+// // Surveiller les changements de route pour mettre à jour userId
+// onBeforeRouteUpdate((to, from, next) => {
+//   const newUserId = Number(to.params.userId); // Assurez-vous que userId est un nombre
+//   if (newUserId !== props.userId) {
+//     fetchData(newUserId);  // Recharger les données si l'ID change
+//   }
+//   next();
+// });
 </script>
 
 <template>
   <v-container>
     <v-row>
       <v-col cols="12" md="3">
-        <CardComponent title="User Info" subtitle="Find user">
-          <UserComponent/>
+        <CardComponent subtitle="Find user" title="User Info">
+          <UserDisplay :userId="userId" />
         </CardComponent>
       </v-col>
+
       <v-col cols="12" md="9">
-        <CardComponent title="Working Time Visualization" subtitle="Working time">
-          <WorkingTimeVisualization :userId="1" :workingTimes="workingTimes"/>
+        <CardComponent subtitle="Working time" title="Working Time Visualization">
+          <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </CardComponent>
       </v-col>
+
       <v-col cols="12" md="3">
-        <CardComponent title="Clock Manager" subtitle="Clock">
-          <ClockManager/>
+        <CardComponent subtitle="Clock" title="Clock Manager">
+          <ClockManager />
         </CardComponent>
       </v-col>
+
       <v-col cols="12" md="9">
-        <CardComponent title="Working Time Manager" subtitle="Manager">
-          <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes"/>
+        <CardComponent subtitle="Manager" title="Working Time Manager">
+          <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </CardComponent>
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-
-<style src="./HomeView.css" scoped></style>
+<style scoped src="./HomeView.css"></style>

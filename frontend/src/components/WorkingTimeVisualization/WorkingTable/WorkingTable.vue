@@ -1,7 +1,6 @@
 <!-- WorkingTimeTable.vue -->
 <template>
     <div>
-      <h3>Tableau des heures de travail</h3>
       <table>
         <thead>
           <tr>

@@ -1,0 +1,44 @@
+/* Styles de base pour le composant */
+.user-component {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.user-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.autocomplete-input {
+    width: 100%;
+    padding: 8px;
+}
+.autocomplete-suggestions {
+    background-color: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+}
+.autocomplete-suggestions li {
+    padding: 8px;
+    cursor: pointer;
+}
+.autocomplete-suggestions li:hover {
+    background-color: #f0f0f0;
+}
+.username-display h2 {
+    margin: 0;
+}
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.clear-btn,
+.Create-btn,
+.Update-btn,
+.Delete-btn {
+    padding: 10px;
+    cursor: pointer;
+}

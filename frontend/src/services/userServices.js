@@ -1,6 +1,6 @@
 // userService.js
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 /**
  * Fetch all users, or filter by email and/or username
@@ -8,13 +8,13 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {string} [username] - Optional username to filter users
  * @returns {Promise<UserDTO[]>}
  */
- async function getAllUsers(email = null, username = null) {
-  const queryParams = new URLSearchParams();
-  if (email) queryParams.append('email', email);
-  if (username) queryParams.append('username', username);
+export async function getAllUsers(email = null, username = null) {
+  const queryParams = new URLSearchParams()
+  if (email) queryParams.append('email', email)
+  if (username) queryParams.append('username', username)
 
-  const response = await fetch(`${API_BASE_URL}users?${queryParams.toString()}`);
-  return response.json();
+  const response = await fetch(`${API_BASE_URL}users?${queryParams.toString()}`)
+  return response.json()
 }
 
 /**
@@ -22,9 +22,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {number} userId
  * @returns {Promise<UserDTO>}
  */
- async function getUserById(userId) {
-  const response = await fetch(`${API_BASE_URL}users/${userId}`);
-  return response.json();
+export async function getUserById(userId) {
+  const response = await fetch(`${API_BASE_URL}users/${userId}`)
+  return response.json()
 }
 
 /**
@@ -33,11 +33,11 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {string} email
  * @returns {Promise<UserDTO>}
  */
- async function createUser(username, email) {
+async function createUser(username, email) {
   const response = await fetch(`${API_BASE_URL}users`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       user: {
@@ -45,8 +45,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
         email
       }
     })
-  });
-  return response.json();
+  })
+  return response.json()
 }
 
 /**
@@ -55,17 +55,17 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {Object} userParams - User fields to update
  * @returns {Promise<UserDTO>}
  */
- async function updateUser(userId, userParams) {
+async function updateUser(userId, userParams) {
   const response = await fetch(`${API_BASE_URL}users/${userId}`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       user: userParams
     })
-  });
-  return response.json();
+  })
+  return response.json()
 }
 
 /**
@@ -73,10 +73,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @param {number} userId
  * @returns {Promise<void>}
  */
- async function deleteUser(userId) {
+async function deleteUser(userId) {
   await fetch(`${API_BASE_URL}users/${userId}`, {
     method: 'DELETE'
-  });
+  })
 }
 
 export default {
@@ -85,4 +85,4 @@ export default {
   createUser,
   updateUser,
   deleteUser
-};
+}
