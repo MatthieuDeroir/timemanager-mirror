@@ -17,9 +17,8 @@
     </v-menu>
 
     <div class="selected-colour-info" v-if="selectedColor">
-      <p>{{ selectedColor.name }}</p>
+      <ColourDisplayer :color="selectedColor" />
     </div>
-    <ColourDisplayer v-if="selectedColor" :color="selectedColor"/>
   </div>
 </template>
 
@@ -33,6 +32,7 @@ const emit = defineEmits(['colorSelected']);
 const selectColor = (color) => {
   selectedColor.value = color; 
   localStorage.setItem('selectedColor', JSON.stringify(color)); 
+  alert(`Selected color: ${color.name}`);
   emit('colorSelected', color); 
 };
 </script>

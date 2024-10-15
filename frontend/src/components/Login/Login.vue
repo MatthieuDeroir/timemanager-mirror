@@ -25,5 +25,26 @@
   </div>
 </template>
 
-<script src="./Login.js"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { handleLogin } from './Login.js'; // Adjust the path as necessary
+import { defineEmits } from 'vue';
+
+// Emit event for successful login
+const emit = defineEmits(['loginSuccess']);
+
+// Reactive variables for email and password
+const email = ref('');
+const password = ref('');
+
+// Function to handle the form submission
+const handleSubmit = () => {
+  if (handleLogin(email.value, password.value)) {
+    emit('loginSuccess'); // Emit the event if login is successful
+  } else {
+    alert('Login failed. Please check your credentials.'); // Handle failed login
+  }
+};
+</script>
+
 <style src="./Login.css"></style>
