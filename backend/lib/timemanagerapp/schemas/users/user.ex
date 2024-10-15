@@ -37,11 +37,11 @@ defmodule TimeManagerApp.Users.User do
     field(:email, :string)
     field(:password_hash, :string)
 
-    belongs_to(:role, TimeManagerApp.Account.Role)
-    belongs_to(:team, TimeManagerApp.Account.Team)
+    belongs_to(:role, TimeManagerApp.Roles.Role)
+    belongs_to(:team, TimeManagerApp.Teams.Team)
 
-    has_many(:clocks, TimeManagerApp.Time.Clock)
-    has_many(:working_times, TimeManagerApp.Time.WorkingTime)
+    has_many(:clocks, TimeManagerApp.Clocks.Clock)
+    has_many(:working_times, TimeManagerApp.WorkingTimes.WorkingTime)
 
     timestamps(type: :utc_datetime)
   end
@@ -67,21 +67,9 @@ defmodule TimeManagerApp.Users.User do
       :team_id
     ])
     |> validate_required([
-      :firstname,
-      :lastname,
-      :address,
-      :phone,
-      :birthdate,
-      :gender,
-      :salary,
-      :position,
-      :start_date,
-      :end_date,
       :username,
       :email,
-      :password_hash,
-      :role_id,
-      :team_id
+      :password_hash
     ])
     |> validate_format(:email, ~r/^[\w.!#$%&'*+\/=?^`{|}~\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]{2,}$/,
       message: "is not a valid email"
