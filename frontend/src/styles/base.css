@@ -5,6 +5,15 @@
   --color-cardHeader-background:rgba(248, 248, 252, .85);
   --color-cardHeader-background-hover:rgba(120, 120, 128, 0.08);
   --color-card-background:white;
+  --color-text-base:black;
+  /* --inverted-color-card-background:rgba(0, 0, 0, .75); */
+
+    --login-color-text-base: #333;
+    --login-border-focus-color: #fff;
+    --login-background-color: rgba(255, 255, 255, 0.8);
+    --loign-input-border-color: rgba(255, 255, 255, 0.5);
+    --loign-input-focus-color: rgba(255, 255, 255, 0.6);
+    --login-input-placeholder-color: rgba(170, 170, 170);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +24,14 @@
     --color-cardHeader-background:rgba(56, 56, 61, .6);
     --color-cardHeader-background-hover:rgba(116, 116, 128, 0.2);
     --color-card-background:rgba(0, 0, 0, .75);
+    --inverted-color-card-background: rgba(255, 255, 255, 0.8);
+
+    --login-color-text-base:#333;
+    --login-border-focus-color: #fff;
+    --login-background-color: rgba(255, 255, 255, 0.8);
+    --loign-input-border-color: rgba(255, 255, 255, 0.5);
+    --loign-input-focus-color: rgba(255, 255, 255, 0.6);
+    --login-input-placeholder-color: rgba(170, 170, 170);
   }
 }
 
@@ -39,3 +56,4 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
