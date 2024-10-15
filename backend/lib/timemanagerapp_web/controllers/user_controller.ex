@@ -6,7 +6,7 @@ defmodule TimeManagerAppWeb.UserController do
   alias TimeManagerApp.Account.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
 
-  action_fallback TimeManagerAppWeb.FallbackController
+  action_fallback(TimeManagerAppWeb.FallbackController)
 
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())

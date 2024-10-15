@@ -1,32 +1,50 @@
 defmodule TimeManagerAppWeb.UserControllerTest do
   use TimeManagerAppWeb.ConnCase
 
-  import TimeManagerApp.AccountFixtures
+  import TimeManagerApp.UsersFixtures
 
-  alias TimeManagerApp.Account.User
+  alias TimeManagerApp.Users.User
 
   @create_attrs %{
-    email: "some@email.com",
+    address: "some address",
+    birthdate: ~D[2024-10-13],
+    email: "some email",
+    end_date: ~D[2024-10-13],
+    firstname: "some firstname",
+    gender: "some gender",
+    lastname: "some lastname",
+    password_hash: "some password_hash",
+    phone: "some phone",
+    position: "some position",
+    salary: 120.5,
+    start_date: ~D[2024-10-13],
     username: "some username"
   }
   @update_attrs %{
-    email: "someUpdated@email.com",
+    address: "some updated address",
+    birthdate: ~D[2024-10-14],
+    email: "some updated email",
+    end_date: ~D[2024-10-14],
+    firstname: "some updated firstname",
+    gender: "some updated gender",
+    lastname: "some updated lastname",
+    password_hash: "some updated password_hash",
+    phone: "some updated phone",
+    position: "some updated position",
+    salary: 456.7,
+    start_date: ~D[2024-10-14],
     username: "some updated username"
   }
-  @invalid_attrs %{email: nil, username: nil}
+  @invalid_attrs %{address: nil, birthdate: nil, email: nil, end_date: nil, firstname: nil, gender: nil, lastname: nil, password_hash: nil, phone: nil, position: nil, salary: nil, start_date: nil, username: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
   describe "index" do
-    # test "lists all users", %{conn: conn} do
-    #   conn = get(conn, ~p"/api/users")
-    #   assert json_response(conn, 200)["data"] == []
-    # end
-    test "list_users_by_email_and_password",%{conn: conn} do
-        conn = get(conn, ~p"/api/users")
-        assert json_response(conn, 200)["data"] == []
+    test "lists all users", %{conn: conn} do
+      conn = get(conn, ~p"/api/users")
+      assert json_response(conn, 200)["data"] == []
     end
   end
 
@@ -39,7 +57,18 @@ defmodule TimeManagerAppWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
+               "address" => "some address",
+               "birthdate" => "2024-10-13",
                "email" => "some email",
+               "end_date" => "2024-10-13",
+               "firstname" => "some firstname",
+               "gender" => "some gender",
+               "lastname" => "some lastname",
+               "password_hash" => "some password_hash",
+               "phone" => "some phone",
+               "position" => "some position",
+               "salary" => 120.5,
+               "start_date" => "2024-10-13",
                "username" => "some username"
              } = json_response(conn, 200)["data"]
     end
@@ -61,7 +90,18 @@ defmodule TimeManagerAppWeb.UserControllerTest do
 
       assert %{
                "id" => ^id,
-               "email" => "someUpdated@email.com",
+               "address" => "some updated address",
+               "birthdate" => "2024-10-14",
+               "email" => "some updated email",
+               "end_date" => "2024-10-14",
+               "firstname" => "some updated firstname",
+               "gender" => "some updated gender",
+               "lastname" => "some updated lastname",
+               "password_hash" => "some updated password_hash",
+               "phone" => "some updated phone",
+               "position" => "some updated position",
+               "salary" => 456.7,
+               "start_date" => "2024-10-14",
                "username" => "some updated username"
              } = json_response(conn, 200)["data"]
     end

@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :timemanagerapp, TimeManagerApp.Repo,
-  username: "timemanagerapp_db_user",
-  password: "GC99yK2VYzgdMzdYgjYZFhCwBuznIVsL",
-  hostname: "dpg-cs4e9ct2ng1s739isue0-a.oregon-postgres.render.com",
-  database: "timemanagerapp",
+  username: System.get_env("DEV_USERNAME"),
+  password: System.get_env("DEV_PASSWORD"),
+  hostname: System.get_env("DEV_HOSTNAME"),
+  database: System.get_env("DEV_DATABASE"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
@@ -24,7 +24,7 @@ config :timemanagerapp, TimeManagerAppWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "P00ZiqgeImuQVnC7tOyBOj5Yriw7IE1j4fhyIIz3DHf9SgaNmk/JlLjQnI/ezPr6",
+  secret_key_base: SECRET_KEY_BASE,
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:timemanagerapp, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:timemanagerapp, ~w(--watch)]}
