@@ -1,0 +1,109 @@
+.selected-colour-info{
+    display: flex;
+    justify-content: space-around;
+    
+}
+.circle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--FirstColour);
+    overflow: hidden;
+}
+
+.circle::before,
+.circle::after {
+    content: '';
+    position: absolute;
+}
+
+.circle::before {
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    background-color: var(--SecondColour);
+}
+
+.circle::after {
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 50%;
+    background-color: var(--ThirdColour);
+}
+
+.blue {
+    --FirstColour: #5ba0ff;
+    --SecondColour: #1a8eff;
+    --ThirdColour: #2d7eeb;
+}
+
+.yellow {
+    --FirstColour: #e6a536;
+    --SecondColour: #e6bd1c;
+    --ThirdColour: #e18f02;
+}
+
+.purple {
+    --FirstColour: #8461c7;
+    --SecondColour: #4b2aa9;
+    --ThirdColour: #5d35b7;
+}
+
+.orange {
+    --FirstColour: #fb7539;
+    --SecondColour: #e47414;
+    --ThirdColour: #d16300;
+}
+
+.green {
+    --FirstColour: #429a42;
+    --SecondColour: #48b942;
+    --ThirdColour: #139c1c;
+}
+
+.red {
+    --FirstColour: #e43732;
+    --SecondColour: #c32929;
+    --ThirdColour: #db5a5a;
+}
+
+@media (prefers-color-scheme: dark) {
+    .blue {
+        --FirstColour: #00355f;
+        --SecondColour: #002f6c;
+        --ThirdColour: #02006c;
+    }
+
+    .yellow {
+        --FirstColour: #482a00;
+        --SecondColour: #ae5f00;
+        --ThirdColour: #854300;
+    }
+
+    .purple {
+        --FirstColour: #1f0943;
+        --SecondColour: #351574;
+        --ThirdColour: #210056;
+    }
+
+    .orange {
+        --FirstColour: #711d00;
+        --SecondColour: #9d2e00;
+        --ThirdColour: #742c03;
+    }
+
+    .green {
+        --FirstColour: #032700;
+        --SecondColour: #0b3300;
+        --ThirdColour: #0d2a00;
+    }
+
+    .red {
+        --FirstColour: #360200;
+        --SecondColour: #6e1515;
+        --ThirdColour: #5c0303;
+    }
+}

@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import UserSearch from "../../components/user/UserSearch/UserSearch.vue";
-import ColorPicker from "./ColorPicker/ColorPicker.vue";
+import ColorPicker from "./ColourPicker/ColourPicker.vue";
 import { ref } from 'vue';
 
 const items = [
