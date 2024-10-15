@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue'
+import WorkingTimeManager from '@components/WorkingTimeManager/WorkingTimeManager.vue'
 import WorkingTimeVisualization from '@components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
 import ClockManager from '@components/ClockManager/ClockManager.vue'
 import Card from '@components/Card/Card.vue'
@@ -61,8 +61,7 @@ function getDate() {
       </v-col>
 
       <v-col cols="12" md="3">
-        <Card :logo="clockIcon" :subtitle="getDate()" subtitle="Clock" title="Clock Manager"
-          >>
+        <Card :logo="clockIcon" :subtitle="getDate()" subtitle="Clock" title="Clock Manager">
           <ClockManager :userId="userId" />
         </Card>
       </v-col>

@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AdminView from '@views/AdminView.vue'
+import AdminView from '@views/Admin/AdminView.vue'
+import ManagerView from '@views/Manager/ManagerView.vue'
+import WorkerView from '@views/Worker/WorkerView.vue'
+import NotFound from '@views/NotFound/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,14 +15,19 @@ const router = createRouter({
       key: (route) => route.params.userId
     },
     {
-      path: '/card',
-      name: 'card',
-      component: () => import('@components/Card/Card.vue')
+      path: '/manager',
+      name: 'Manager',
+      component: ManagerView
     },
     {
-      path: '/chartManager/:userid',
-      name: 'ChartManager',
-      component: () => import('../components/ChartManager/ChartManager.vue')
+      path: '/worker',
+      name: 'Worker',
+      component: WorkerView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound
     }
   ]
 })
