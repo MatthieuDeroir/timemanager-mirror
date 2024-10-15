@@ -35,6 +35,8 @@ defmodule TimeManagerApp.MixProject do
       {:cors_plug, "~> 3.0.3"},
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
+      # Inclure uniquement en dev et test
+      {:dotenv, "~> 3.0", only: [:dev, :test]},
       {:phoenix_swagger, "~> 0.8"},
       {:ex_json_schema, "~> 0.5"},
       {:ecto_sql, "~> 3.10"},

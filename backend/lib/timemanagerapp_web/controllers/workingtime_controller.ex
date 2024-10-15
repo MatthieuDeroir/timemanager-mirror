@@ -1,7 +1,7 @@
 defmodule TimeManagerAppWeb.WorkingTimeController do
   use TimeManagerAppWeb, :controller
 
-  alias TimeManagerApp.Time
+  alias TimeManagerApp.WorkingTimes
 
   action_fallback(TimeManagerAppWeb.FallbackController)
 
@@ -12,16 +12,16 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
     workingtimes =
       case {start_datetime, end_datetime} do
         {nil, nil} ->
-          Time.list_workingtime_for_user(user_id)
+          WorkingTimes.list_workingtime_for_user(user_id)
 
         {start_datetime, nil} ->
-          Time.list_workingtime_for_user(user_id, start_datetime)
+          WorkingTimes.list_workingtime_for_user(user_id, start_datetime)
 
         {nil, end_datetime} ->
-          Time.list_workingtime_for_user(user_id, nil, end_datetime)
+          WorkingTimes.list_workingtime_for_user(user_id, nil, end_datetime)
 
         {start_datetime, end_datetime} ->
-          Time.list_workingtime_for_user(user_id, start_datetime, end_datetime)
+          WorkingTimes.list_workingtime_for_user(user_id, start_datetime, end_datetime)
       end
 
     if length(workingtimes) > 0 do
@@ -34,7 +34,7 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
   end
 
   def show(conn, %{"user_id" => user_id, "id" => id}) do
-    case Time.get_workingtime(user_id, id) do
+    case WorkingTimes.get_workingtime(user_id, id) do
       nil ->
         conn
         |> put_status(:not_found)
@@ -46,7 +46,7 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
   end
 
   def create(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
-    case Time.create_workingtime_for_user(user_id, workingtime_params) do
+    case WorkingTimes.create_workingtime_for_user(user_id, workingtime_params) do
       {:ok, workingtime} ->
         conn
         |> put_status(:created)
@@ -60,14 +60,14 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
   end
 
   def update(conn, %{"id" => id, "workingtime" => workingtime_params}) do
-    case Time.get_workingtime_by_id(id) do
+    case WorkingTimes.get_workingtime_by_id(id) do
       nil ->
         conn
         |> put_status(:not_found)
         |> json(%{error: "Working time not found"})
 
       workingtime ->
-        case Time.update_workingtime(workingtime, workingtime_params) do
+        case WorkingTimes.update_workingtime(workingtime, workingtime_params) do
           {:ok, updated_workingtime} ->
             json(conn, updated_workingtime)
 
@@ -80,14 +80,14 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case Time.get_workingtime_by_id(id) do
+    case WorkingTimes.get_workingtime_by_id(id) do
       nil ->
         conn
         |> put_status(:not_found)
         |> json(%{error: "Working time not found"})
 
       workingtime ->
-        case Time.delete_workingtime(workingtime) do
+        case WorkingTimes.delete_workingtime(workingtime) do
           {:ok, deleted_workingtime} ->
             conn
             |> put_status(:ok)

@@ -144,4 +144,19 @@ defmodule TimeManagerApp.Users do
   def list_users_by_username(username) do
     Repo.all(from(u in User, where: ilike(u.username, ^"%#{username}%")))
   end
+
+  @doc """
+  returns the team id of a user
+  """
+  def get_users_team(user_id) do
+    Repo.get(User, user_id).team_id
+  end
+
+  @doc """
+  Return the list of users that are part of a specific team
+  """
+
+  def list_users_by_team_id(team_id) do
+    Repo.all(from(u in User, where: u.team_id == ^team_id))
+  end
 end
