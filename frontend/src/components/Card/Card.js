@@ -10,8 +10,7 @@ export default {
       default: '------'
     },
     logo: {
-      type: String,
-      default: "../../assets/logo/icons8-image-pulsar-line/icons8-image-48.png"
+      type: String
     },
     height: {
       type: String,

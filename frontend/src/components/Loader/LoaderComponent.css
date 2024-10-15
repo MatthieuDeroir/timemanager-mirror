@@ -1,0 +1,38 @@
+    
+    @-webkit-keyframes v-syncStretchDelay
+    {
+        33%
+        {
+            -webkit-transform: translateY(10px);
+                    transform: translateY(10px);
+        }
+        66%
+        {
+            -webkit-transform: translateY(-10px);
+                    transform: translateY(-10px);
+        }
+        100%
+        {
+            -webkit-transform: translateY(0);
+                    transform: translateY(0);
+        }
+    }
+    
+    @keyframes v-syncStretchDelay
+    {
+        33%
+        {
+            -webkit-transform: translateY(10px);
+                    transform: translateY(10px);
+        }
+        66%
+        {
+            -webkit-transform: translateY(-10px);
+                    transform: translateY(-10px);
+        }
+        100%
+        {
+            -webkit-transform: translateY(0);
+                    transform: translateY(0);
+        }
+    }

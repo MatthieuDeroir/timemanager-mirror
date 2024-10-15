@@ -3,7 +3,7 @@ import {
   createWorkingTime as createTime,
   updateWorkingTime as updateTime,
   deleteWorkingTime as deleteTime
-} from '../../services/workingtimeServices'
+} from '@services/workingtimeServices'
 
 export default {
   props: {

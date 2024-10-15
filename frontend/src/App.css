@@ -85,9 +85,8 @@
 
     .background.red:after {
         background: linear-gradient(64deg, #360200, #6e1515 46%, #5c0303);
-    } {
+    } 
     .background {
         background-image: url(assets/global/wallpaper_dark.svg);
     }
-}
 }

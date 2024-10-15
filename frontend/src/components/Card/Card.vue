@@ -1,9 +1,9 @@
 <template>
-  <div class="card large medium">
+  <div class="card">
     <div class="card-header-container">
       <div class="card-header">
         <div class="card-logo" :style="{ 'background': logoColor }">
-          <img src="../../assets/icons/icons8-image-pulsar-line/icons8-image-48.png" alt="logo">
+          <img :src="logo" alt="logo" class="icon">
         </div>
         <div class="card-titles">
           <div class="card-title">{{ title }}</div>

@@ -8,7 +8,7 @@
     justify-content: space-between;
     position: fixed;
     overflow: hidden;
-    z-index: 10;
+    z-index: 1000;
     width: 100%;
     opacity: inherit;
 }

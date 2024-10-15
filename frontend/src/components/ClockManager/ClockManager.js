@@ -1,6 +1,16 @@
-import Services from '@/services'
+import Services from '@services';
+import LoaderComponent from '@components/Loader/LoaderComponent.vue';
 
 export default {
+  props:{
+    userId:{
+      type: [String,Number],
+      required: true
+    }
+  },
+  components: {
+    LoaderComponent
+  },
   data() {
     return {
       items: [],
@@ -16,7 +26,7 @@ export default {
   methods: {
     async getData() {
       try {
-        Services.Clocks.getClocksByUserId(1).then((data) => {
+        Services.Clocks.getClocksByUserId(this.userId).then((data) => {
           this.items = data.filter((item) => {
             const date = new Date(item.time)
             const dateNow = new Date()
@@ -30,16 +40,9 @@ export default {
           if (this.items.length > 0) {
             this.date = this.getDate()
             this.currentClockStatus = this.getLastClock()
-          } else {
-            this.loading = false
-            this.error = 'No clocks found for today'
           }
           this.loading = false
         })
-        if (this == null) {
-          this.loading = false
-          this.error = 'No clocks found'
-        }
       } catch (err) {
         this.error = err.message
         this.loading = false

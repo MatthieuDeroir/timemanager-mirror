@@ -2,8 +2,7 @@
 .clock-manager-container{
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 0 0 10px 10px;
 }
 
 .banner{
@@ -32,9 +31,37 @@
     background-color: green;
 }
 
+.row-clock-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .row-clock{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    align-items: start;
+    width: 120px;
+    margin: 10px;
+}
+.arrow-icon{
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+.row-clock-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+.clock-type{
+    color: var(--color-labelSecondary);
+}
+.clock-time{
+    color: var(--color-labelPrimary);
+    font-weight: 600;
+    font-size: 16px;
 }

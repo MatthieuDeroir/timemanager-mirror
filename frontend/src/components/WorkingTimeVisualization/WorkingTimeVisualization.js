@@ -1,4 +1,4 @@
-import { getWorkingTimesByUserId } from '../../services/workingtimeServices'
+import { getWorkingTimesByUserId } from '@/services/workingtimeServices'
 
 export default {
   props: {
