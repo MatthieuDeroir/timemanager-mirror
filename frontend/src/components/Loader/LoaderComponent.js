@@ -6,7 +6,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'white'
+      default: 'var(--color-labelPrimary)'
     },
     size: {
       type: String,

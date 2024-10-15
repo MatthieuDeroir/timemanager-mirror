@@ -1,21 +1,7 @@
-.working-times {
-  margin: 20px;
+.chart {
+    min-height: 400px
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-
-.date-filter {
-  margin-bottom: 20px;
-}
-
-.error {
-  color: red;
+.date-range-picker {
+    margin-bottom: 20px;
 }

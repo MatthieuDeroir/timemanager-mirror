@@ -7,6 +7,7 @@ import LoginPage from "@/components/Login/Login.vue";
 const isAuthenticated = ref(false);
 const selectedColorClass = ref('blue');
 
+// Function to handle successful login
 function handleLoginSuccess() {
   isAuthenticated.value = true;
 }
