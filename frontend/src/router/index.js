@@ -7,7 +7,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      // component: HomeView
+      component: HomeView
+    },
+    {
+      path: '/card',
+      name: 'card',
+      component: () => import('../components/CardComponent/CardComponent.vue')
     },
     {
       path: '/chartManager/:userid',

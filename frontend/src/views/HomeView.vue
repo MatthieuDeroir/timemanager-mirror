@@ -1,22 +1,10 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-import HeaderComponent from './components/Header/HeaderComponent.vue';
-import Calendar from './components/Calendar.vue';
-import UserComponent from './components/User/UserComponent.vue';
-
-  const isAuthenticated = ref(false); 
-
-  function handleLoginSuccess() {
-    isAuthenticated.value = true;
-  }
-import { ref } from 'vue';
+import {ref} from 'vue';
 import WorkingTimeManager from '@/components/WorkingTimeManager/WorkingTimeManager.vue';
 import WorkingTimeVisualization from '../components/WorkingTimeVisualization/WorkingTimeVisualization.vue';
-import Calendar from '../components/Calendar.vue'
-import ClockManager from '../components/ClockManager/ClockManager.vue'
+import ClockManager from '../components/ClockManager/ClockManager.vue';
 import UserComponent from '../components/User/UserComponent.vue';
-import HeaderComponent from '../components/Header/HeaderComponent.vue';
-import LoginPage from '../components/LoginPage/LoginPage.vue';
+import CardComponent from '../components/CardComponent/CardComponent.vue';
 // Réactif pour stocker les données des working times
 const workingTimes = ref([]);
 
@@ -26,7 +14,7 @@ const updateWorkingTimes = (updatedTimes) => {
 };
 
 // Authentication state
-const isAuthenticated = ref(false); 
+const isAuthenticated = ref(false);
 
 // Function to handle successful login
 function handleLoginSuccess() {
@@ -35,40 +23,31 @@ function handleLoginSuccess() {
 </script>
 
 <template>
-     <div v-if="!isAuthenticated">
-      <LoginPage @login-success="handleLoginSuccess" />
-    </div>
-
-    <div v-else>
-      <header>
-        <HeaderComponent />
-      </header>
-      <main>
-        <div class="wrapper">
-          <router-view />
-          <Calendar />
-          <UserComponent />
-        </div>  
-      </main>
-    </div>
-  <div>
-    <div v-if="!isAuthenticated">
-      <LoginPage @login-success="handleLoginSuccess" />
-    </div>
-
-    <div v-else>
-      <header>
-        <HeaderComponent />
-      </header>
-      <main>
-        <UserComponent/>
-        <WorkingTimeVisualization :userId="1" :workingTimes="workingTimes" />
-        <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes" />
-        <Calendar />
-        <ClockManager />
-      </main>
-    </div>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="3">
+        <CardComponent title="User Info" subtitle="Find user">
+          <UserComponent/>
+        </CardComponent>
+      </v-col>
+      <v-col cols="12" md="9">
+        <CardComponent title="Working Time Visualization" subtitle="Working time">
+          <WorkingTimeVisualization :userId="1" :workingTimes="workingTimes"/>
+        </CardComponent>
+      </v-col>
+      <v-col cols="12" md="3">
+        <CardComponent title="Clock Manager" subtitle="Clock">
+          <ClockManager/>
+        </CardComponent>
+      </v-col>
+      <v-col cols="12" md="9">
+        <CardComponent title="Working Time Manager" subtitle="Manager">
+          <WorkingTimeManager :userId="1" @workingTimesUpdated="updateWorkingTimes"/>
+        </CardComponent>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+
 
 <style src="./HomeView.css" scoped></style>
