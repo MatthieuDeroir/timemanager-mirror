@@ -2,11 +2,11 @@ defmodule TimeManagerAppWeb.UserController do
   use TimeManagerAppWeb, :controller
   use PhoenixSwagger
 
-  alias TimeManagerApp.Account
-  alias TimeManagerApp.Account.User
+  alias TimeManagerApp.Users
+  alias TimeManagerApp.Users.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
 
-  action_fallback TimeManagerAppWeb.FallbackController
+  action_fallback(TimeManagerAppWeb.FallbackController)
 
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())

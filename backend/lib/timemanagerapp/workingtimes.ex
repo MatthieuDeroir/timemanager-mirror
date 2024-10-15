@@ -1,6 +1,6 @@
 # lib/time_manager_app/time.ex
 
-defmodule TimeManagerApp.Time do
+defmodule TimeManagerApp.WorkingTimes do
   @moduledoc """
   The Time context.
   """
@@ -8,65 +8,7 @@ defmodule TimeManagerApp.Time do
   import Ecto.Query, warn: false
   alias TimeManagerApp.Repo
 
-  alias TimeManagerApp.Time.Clock
-  alias TimeManagerApp.Time.WorkingTime
-
-  # --- Clocks Functions ---
-
-  @doc """
-  Returns the list of all clocks.
-  """
-  def list_all_clocks do
-    Repo.all(Clock)
-  end
-
-  @doc """
-  Returns the list of clocks for a specific user.
-  """
-  def list_clocks_for_user(user_id) do
-    Repo.all(from(c in Clock, where: c.user_id == ^user_id))
-  end
-
-  def create_clock_for_user(user_id, attrs \\ %{}) do
-    result =
-      Repo.transaction(fn ->
-        # Create the clock
-        case do_create_clock_for_user(user_id, attrs) do
-          {:ok, clock} ->
-            # If clock.status is false (clocking out), handle working time
-            if clock.status == false do
-              case create_working_time_after_clock_out(user_id, clock) do
-                {:ok, _working_time} -> {:ok, clock}
-                {:error, reason} -> Repo.rollback(reason)
-              end
-            else
-              {:ok, clock}
-            end
-
-          {:error, changeset} ->
-            Repo.rollback(changeset)
-        end
-      end)
-
-    # Unwrap the result from the transaction
-    case result do
-      {:ok, {:ok, clock}} -> {:ok, clock}
-      {:error, reason} -> {:error, reason}
-      {:error, %Ecto.Changeset{} = changeset} -> {:error, changeset}
-      other -> other
-    end
-  end
-
-  # Helper function to create the clock
-  defp do_create_clock_for_user(user_id, attrs) do
-    %Clock{}
-    |> Clock.changeset(Map.put(attrs, "user_id", user_id))
-    |> Repo.insert()
-  end
-
-  def get_clock(user_id, id) do
-    Repo.get_by(Clock, id: id, user_id: user_id)
-  end
+  alias TimeManagerApp.WorkingTimes.WorkingTime
 
   # Function to create a working time after clocking out
   defp create_working_time_after_clock_out(user_id, clock_out) do
