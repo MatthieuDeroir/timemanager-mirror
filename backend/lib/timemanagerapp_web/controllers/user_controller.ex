@@ -2,11 +2,11 @@ defmodule TimeManagerAppWeb.UserController do
   use TimeManagerAppWeb, :controller
   use PhoenixSwagger
 
-  alias TimeManagerApp.Account
-  alias TimeManagerApp.Account.User
+  alias TimeManagerApp.Users
+  alias TimeManagerApp.Users.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
 
-  action_fallback TimeManagerAppWeb.FallbackController
+  action_fallback(TimeManagerAppWeb.FallbackController)
 
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())
@@ -16,23 +16,23 @@ defmodule TimeManagerAppWeb.UserController do
     users =
       case {Map.get(params, "email"), Map.get(params, "username")} do
         {nil, nil} ->
-          Account.list_users()
+          Users.list_users()
 
         {email, nil} ->
-          Account.list_users_by_email(email)
+          Users.list_users_by_email(email)
 
         {nil, username} ->
-          Account.list_users_by_username(username)
+          Users.list_users_by_username(username)
 
         {email, username} ->
-          Account.list_users_by_email_and_username(email, username)
+          Users.list_users_by_email_and_username(email, username)
       end
 
     json(conn, users)
   end
 
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Account.create_user(user_params) do
+    with {:ok, %User{} = user} <- Users.create_user(user_params) do
       conn
       |> put_status(:created)
       |> json(user)
@@ -40,7 +40,7 @@ defmodule TimeManagerAppWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    case Account.get_user(id) do
+    case Users.get_user(id) do
       nil ->
         conn
         |> put_status(:not_found)
@@ -52,31 +52,39 @@ defmodule TimeManagerAppWeb.UserController do
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
-    case Account.get_user(id) do
+    case Users.get_user(id) do
       nil ->
         conn
         |> put_status(:not_found)
         |> json(%{error: "User not found"})
 
       user ->
-        with {:ok, %User{} = updated_user} <- Account.update_user(user, user_params) do
+        with {:ok, %User{} = updated_user} <- Users.update_user(user, user_params) do
           json(conn, updated_user)
         end
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    case Account.get_user(id) do
+    case Users.get_user(id) do
       nil ->
         conn
         |> put_status(:not_found)
         |> json(%{error: "User not found"})
 
       user ->
-        with {:ok, %User{}} <- Account.delete_user(user) do
+        with {:ok, %User{}} <- Users.delete_user(user) do
           send_resp(conn, :no_content, "")
         end
     end
+  end
+
+  @doc """
+  Returns a list of users that share the same team_id.
+  """
+  def index_team(conn, %{"team_id" => team_id}) do
+    users = Users.list_users_by_team_id(team_id)
+    json(conn, users)
   end
 
   # Swagger schema for User

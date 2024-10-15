@@ -2,8 +2,8 @@ defmodule TimeManagerAppWeb.ClockController do
   use TimeManagerAppWeb, :controller
   use PhoenixSwagger
 
-  alias TimeManagerApp.Time
-  alias TimeManagerApp.Time.Clock
+  alias TimeManagerApp.Clocks
+  alias TimeManagerApp.Clocks.Clock
   alias TimeManagerAppWeb.FallbackController
   alias TimeManagerAppWeb.Swagger.ClockSwagger
 
@@ -13,13 +13,13 @@ defmodule TimeManagerAppWeb.ClockController do
 
   # GET /clocks/:user_id
   def index(conn, %{"user_id" => user_id}) do
-    clocks = Time.list_clocks_for_user(user_id)
+    clocks = Clocks.list_clocks_for_user(user_id)
     json(conn, clocks)
   end
 
   # POST /clocks/:user_id
   def create(conn, %{"user_id" => user_id, "clocks" => clock_params}) do
-    case Time.create_clock_for_user(user_id, clock_params) do
+    case Clocks.create_clock_for_user(user_id, clock_params) do
       {:ok, clock} ->
         conn
         |> put_status(:created)
@@ -33,7 +33,7 @@ defmodule TimeManagerAppWeb.ClockController do
   end
 
   def show(conn, %{"user_id" => user_id, "id" => id}) do
-    case Time.get_clock(user_id, id) do
+    case Clocks.get_clock(user_id, id) do
       nil ->
         conn
         |> put_status(:not_found)

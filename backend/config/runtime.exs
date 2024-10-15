@@ -32,8 +32,13 @@ if config_env() == :prod do
 
   config :timemanagerapp, TimeManagerApp.Repo,
     # ssl: true,
+    ssl_opts: [
+      verify: :verify_none
+    ],
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    # Enable SSL
+    ssl: true,
     socket_options: maybe_ipv6
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
@@ -63,7 +68,10 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
       port: port
     ],
-    secret_key_base: secret_key_base
+    # Ensure this line is present,
+    server: true,
+    secret_key_base: secret_key_base,
+    cache_static_manifest: "priv/static/cache_manifest.json"
 
   # ## SSL Support
   #

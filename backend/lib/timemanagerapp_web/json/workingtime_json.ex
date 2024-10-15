@@ -1,5 +1,5 @@
 defmodule TimeManagerAppWeb.WorkingTimeJSON do
-  alias TimeManagerApp.Time.WorkingTime
+  alias TimeManagerApp.WorkingTimes.WorkingTime
 
   @doc """
   Renders a list of workingtime.
