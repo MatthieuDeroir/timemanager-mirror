@@ -6,7 +6,6 @@
   <div v-else>
     <v-row>
       <v-col cols="6">
-        <label for="startDate">Start Date (Choose a Monday):</label>
         <input
           id="startDate"
           v-model="startDate"
@@ -16,7 +15,6 @@
         />
       </v-col>
       <v-col cols="6">
-        <label for="endDate">End Date (Auto-calculated):</label>
         <input id="endDate" v-model="endDate" disabled type="date" />
       </v-col>
     </v-row>
