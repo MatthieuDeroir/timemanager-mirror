@@ -8,14 +8,28 @@
   --color-text-base:black;
   /* --inverted-color-card-background:rgba(0, 0, 0, .75); */
 
-    --login-color-text-base: #333;
-    --login-border-focus-color: #fff;
-    --login-background-color: rgba(255, 255, 255, 0.8);
-    --loign-input-border-color: rgba(255, 255, 255, 0.5);
-    --loign-input-focus-color: rgba(255, 255, 255, 0.6);
-    --login-input-placeholder-color: rgba(170, 170, 170);
-  --color-button-primary:hsl(204, 100%, 50%);
-  --color-button-danger:hsl(358, 100%, 59.4%);
+  --login-color-text-base: #333;
+  --login-border-focus-color: #fff;
+  --login-background-color: rgba(255, 255, 255, 0.8);
+  --loign-input-border-color: rgba(255, 255, 255, 0.5);
+  --loign-input-focus-color: rgba(255, 255, 255, 0.6);
+  --login-input-placeholder-color: rgba(170, 170, 170);
+  --color-button-primary:#0099ff;
+  --color-button-danger:var(--color-systemRed);
+  
+  --color-orange: #ff9500;
+  --color-yellow: #e5cc00;
+  --color-green: #03a10e;
+  --color-blue: #0071e3;
+  --color-purple: #af52de;
+  --color-red:hsl(0, 100%, 44.5%);
+
+  --linear-blue:linear-gradient(64deg, #5ba0ff, #1a8eff 46%, #2d7eeb);
+  --linear-purple: linear-gradient(64deg, #8461c7, #4b2aa9 47%, #5d35b7);
+  --linear-red: linear-gradient(64deg, #e43732, #c32929 45%, #db5a5a);
+  --linear-green: linear-gradient(64deg, #429a42, #48b942 44%, #139c1c);
+  --linear-yellow: linear-gradient(64deg, #e6a536, #e6bd1c 45%, #e18f02);
+  --linear-orange: linear-gradient(64deg, #fb7539, #e47414 44%, #d16300);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,8 +73,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-<<<<<<< HEAD
-=======
 .btn-primary{
   font-size: 17px;
   padding: 0 16px;
@@ -76,4 +88,3 @@ body {
   border-radius: 1000px;
   color: white;
 }
->>>>>>> f2ca489 (fix: :bug: fix visual bugs)

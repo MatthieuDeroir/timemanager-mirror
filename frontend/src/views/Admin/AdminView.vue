@@ -19,10 +19,12 @@ const props = defineProps({
 
 const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
+const userGender = ref('User Information')
 
 const handleSelectedUser = (user) =>{
-  userTitle.value = user.username
+  userTitle.value = `${user.firstname} ${user.lastname}`
   userSubtitle.value = user.email
+  userGender.value = `(${user.gender})`
 }
 
 
@@ -58,25 +60,25 @@ function getDate() {
   <v-container>
     <v-row>
       <v-col cols="12" md="4">
-        <Card :logo="userIcon" :subtitle="userSubtitle" :title="userTitle" >
+        <Card :logo="userIcon" :subtitle="userSubtitle" :title="userTitle" :otherInfo="userGender" color='blue' >
           <UserDisplay :userId="userId" @selecteduser="handleSelectedUser" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="sliceIcon" subtitle="Working time" title="Working Time Visualization">
+        <Card :logo="sliceIcon" subtitle="Working time" title="Working Time Visualization" color='green' >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="4" style="min-height: 330px;">
-        <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager">
+        <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager" color='yellow' >
           <ClockManager :userId="userId" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" subtitle="Manager" title="Working Time Manager">
+        <Card :logo="workIcon" subtitle="Manager" title="Working Time Manager" color='red' >
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>

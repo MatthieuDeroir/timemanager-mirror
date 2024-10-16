@@ -1,0 +1,32 @@
+.user-tile{
+    min-height: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.title{
+    font-size: 17px;
+    width: 100%;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--color-labelSecondary) ;
+}
+.category{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    width: 80%;
+}
+
+.infos{
+    display: flex;
+    flex-direction: row;
+}
+.label{
+    display: flex;
+    color: var(--color-labelSecondary);
+    width: 78px;
+}

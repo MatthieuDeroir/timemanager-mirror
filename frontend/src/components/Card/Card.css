@@ -48,7 +48,7 @@
     align-items: center;
 }
 
-.card-header:hover {
+.card-header:hover, .action-button:hover {
     background-color: var(--color-cardHeader-background-hover);
 }
 
@@ -56,20 +56,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
     width: 45px;
     height: 45px;
+    padding: 28px;
     margin-right: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .card-titles {
     display: flex;
     flex-direction: column;
 }
-
+.card-title-container{
+    display: flex;
+    flex-direction: row;
+}
 .card-title {
     font-size: 21px;
+}
+.other-info{
+    display: flex;
+    align-items: center;
+    color: var(--color-labelSecondary);
+    font-size: 14px;
 }
 
 .card-subtitle {
@@ -77,7 +86,6 @@
     opacity: 0.8;
     color: var(--color-labelSecondary);
 }
-
 .card-body {
     display: flex;
     flex-direction: column;
@@ -89,8 +97,6 @@
     background-color: var(--color-card-background);
 }
 
-@media (prefers-color-scheme: dark) {
-    .icon {
-        filter: invert(0.9);
-    }
+.icon {
+    filter: invert(1);
 }
