@@ -72,13 +72,13 @@ function getDate() {
       </v-col>
 
       <v-col cols="12" md="4" style="min-height: 330px;">
-        <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager" color='yellow' >
+        <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager" color='red' >
           <ClockManager :userId="userId" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" subtitle="Manager" title="Working Time Manager" color='red' >
+        <Card :logo="workIcon" subtitle="Manager" title="Working Time Manager" color='yellow' >
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>
