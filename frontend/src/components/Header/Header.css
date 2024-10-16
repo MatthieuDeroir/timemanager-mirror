@@ -1,36 +1,26 @@
 .header {
-    background-color: var(--color-background-header);
-    backdrop-filter: blur(14px);
-    color: var(--color-labelPrimary);
-    padding: 0.5rem;
-    text-align: center;
     display: flex;
+    flex-direction: row;
+    z-index: 1000;
     justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
     position: fixed;
     overflow: hidden;
-    z-index: 1000;
     width: 100%;
-    opacity: inherit;
+    height: 50px;
+    background-color: var(--color-background-header);
+    backdrop-filter: blur(14px);
 }
 
-.header nav ul {
-    list-style-type: none;
-    padding: 0;
+.user-preferences{
+    padding: 8px;
+    border-radius: 100%;
+    cursor: pointer;
 }
 
-.header nav ul li {
-    display: inline;
-    margin: 0 1rem;
-}
 
-.header nav ul li a {
-    text-decoration: none;
-}
-
-.header nav ul li a:hover {
-    text-decoration: underline;
-}
 
 .navbar-logo {
-    width: 5%;
+    width: 40px;
 }
