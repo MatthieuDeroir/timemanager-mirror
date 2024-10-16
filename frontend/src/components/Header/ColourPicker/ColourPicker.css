@@ -1,0 +1,32 @@
+@import url(../../../styles/base.css);
+
+.list-items {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: -10px;
+    border: none;
+    background: none;
+}
+
+.item{
+    padding: 0;
+    border: none;
+    background: none;
+
+}
+
+.circle-colour {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    transition: box-shadow 0.3s ease, border-width 0.3s ease;
+    margin: 10px;
+}
+
+.circle-colour:hover {
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.2);
+    border-width: 4px;
+    border-radius: 50%;
+
+}

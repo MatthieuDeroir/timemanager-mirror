@@ -1,16 +1,31 @@
 <script setup>
-import { ref } from 'vue'; // Import ref to create a reactive reference
+import { ref, onMounted } from 'vue';
 import { RouterView } from 'vue-router';
 import HeaderComponent from "@/components/Header/Header.vue";
 import LoginPage from "@/components/Login/Login.vue";
 
-// Authentication state
 const isAuthenticated = ref(false);
+const selectedColorClass = ref('blue');
 
-// Function to handle successful login
 function handleLoginSuccess() {
   isAuthenticated.value = true;
 }
+
+function loadSelectedColor() {
+  const storedColor = localStorage.getItem('selectedColor');
+  if (storedColor) {
+    const color = JSON.parse(storedColor);
+    selectedColorClass.value = color.name.toLowerCase();
+  }
+}
+
+onMounted(loadSelectedColor);
+
+function updateColorClass(color) {
+  selectedColorClass.value = color.name.toLowerCase();
+}
+
+
 </script>
 
 <template>
@@ -18,10 +33,10 @@ function handleLoginSuccess() {
     <LoginPage v-if="!isAuthenticated" @loginSuccess="handleLoginSuccess"/>
     <div v-else>
       <header>
-        <HeaderComponent/>
+        <HeaderComponent @colorSelected="updateColorClass" />
       </header>
       <main class="main-content">
-        <div class="background blue"></div>
+        <div class="background" :class="[selectedColorClass]"></div>
         <router-view/>
       </main>
     </div>
