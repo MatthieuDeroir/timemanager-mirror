@@ -1,13 +1,12 @@
 <template>
   <header class="header">
     <img alt="Gotham Logo" class="navbar-logo" src="@/assets/global/batman.png"/>
-    <h1>GOTHAM Time Manager</h1>
     <UserSearch @user-selected="handleUserSelected"/>
     
     <div>
-      <v-menu open-on-hover>
+      <v-menu open-on-click>
         <template v-slot:activator="{ props }">
-          <v-btn color="primary" v-bind="props"> Duckler McQuack</v-btn>
+          <div class="user-preferences" :style="{'background':'var(--linear-'+ getColor() +')'}" v-bind="props"> MD</div>
         </template>
         <v-list>
           <v-list-item>
@@ -41,10 +40,20 @@ const selectedUserId = ref<number | null>(null);
 const handleUserSelected = (userId: number) => {
   selectedUserId.value = userId;
 };
-
 const passEmitingColor = (color) => {
   emit('colorSelected', color); 
 };
+
+function getColor(){
+  const selectedColorClass = ref('blue');
+  const storedColor = localStorage.getItem('selectedColor');
+  if(storedColor){
+    const color = JSON.parse(storedColor);
+    selectedColorClass.value = color.name.toLowerCase();
+  }
+  return selectedColorClass.value
+}
+
 </script>
 
 <style scoped src="./Header.css"></style>
