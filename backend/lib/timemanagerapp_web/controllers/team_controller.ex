@@ -1,10 +1,14 @@
 defmodule TimeManagerAppWeb.TeamController do
   use TimeManagerAppWeb, :controller
+  use PhoenixSwagger
 
   alias TimeManagerApp.Teams
   alias TimeManagerApp.Teams.Team
+  alias TimeManagerAppWeb.Swagger.TeamSwagger
 
   action_fallback(TimeManagerAppWeb.FallbackController)
+
+  Module.eval_quoted(__MODULE__, TeamSwagger.paths())
 
   def index(conn, _params) do
     teams = Teams.list_teams()

@@ -1,9 +1,13 @@
 defmodule TimeManagerAppWeb.WorkingTimeController do
   use TimeManagerAppWeb, :controller
+  use PhoenixSwagger
 
   alias TimeManagerApp.WorkingTimes
+  alias TimeManagerAppWeb.Swagger.WorkingTimeSwagger
 
   action_fallback(TimeManagerAppWeb.FallbackController)
+
+  Module.eval_quoted(__MODULE__, WorkingTimeSwagger.paths())
 
   def index(conn, %{"user_id" => user_id} = params) do
     start_datetime = Map.get(params, "start")

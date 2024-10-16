@@ -1,10 +1,14 @@
 defmodule TimeManagerAppWeb.RoleController do
   use TimeManagerAppWeb, :controller
+  use PhoenixSwagger
 
   alias TimeManagerApp.Roles
   alias TimeManagerApp.Roles.Role
+  alias TimeManagerAppWeb.Swagger.RoleSwagger
 
   action_fallback(TimeManagerAppWeb.FallbackController)
+
+  Module.eval_quoted(__MODULE__, RoleSwagger.paths())
 
   def index(conn, _params) do
     roles = Roles.list_roles()
