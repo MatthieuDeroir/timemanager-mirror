@@ -1,16 +1,10 @@
 <template>
     <div class="clock-manager-container">
         <div v-if="error">{{ this.error }}</div>
-        <div v-else-if="loading">
+        <div v-else-if="loading" class="center">
             <LoaderComponent />
         </div>
         <div v-else>
-            <div class="banner">
-                <div class="clock-manager-header">
-                    <h3>Work status</h3>
-                    <div class="clock-status" :class="currentClockStatus ? 'green' : 'red'"></div>
-                </div>
-            </div>
             <div class="row-clock-container">
                 <div v-for="(item) in items">
                     <div v-if="item.status" class="row-clock">
@@ -29,8 +23,11 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <button @click="handleCreateClock">Clock</button>
+            <div v-if="items.length == 0" class="center">
+                No Check-in yet
+            </div>
+            <div class="center">
+                <button class="btn-primary" @click="handleCreateClock">Clock</button>
             </div>
         </div>
     </div>

@@ -17,6 +17,15 @@ const props = defineProps({
   }
 })
 
+const userTitle = ref('User Info')
+const userSubtitle = ref('User Information')
+
+const handleSelectedUser = (user) =>{
+  userTitle.value = user.username
+  userSubtitle.value = user.email
+}
+
+
 // Used to store the working times
 const workingTimes = ref([])
 
@@ -28,13 +37,13 @@ const updateWorkingTimes = (updatedTimes) => {
   workingTimes.value = updatedTimes
 }
 
-// Authentication state
-const isAuthenticated = ref(false)
+// // Authentication state
+// const isAuthenticated = ref(false)
 
-// Function to handle successful login
-function handleLoginSuccess() {
-  isAuthenticated.value = true
-}
+// // Function to handle successful login
+// function handleLoginSuccess() {
+//   isAuthenticated.value = true
+// }
 
 function getDate() {
   return new Date().toLocaleDateString('en-GB', {
@@ -48,25 +57,25 @@ function getDate() {
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="3">
-        <Card :logo="userIcon" subtitle="User Information" title="User Info">
-          <UserDisplay :userId="userId" />
+      <v-col cols="12" md="4">
+        <Card :logo="userIcon" :subtitle="userSubtitle" :title="userTitle" >
+          <UserDisplay :userId="userId" @selecteduser="handleSelectedUser" />
         </Card>
       </v-col>
 
-      <v-col cols="12" md="9">
+      <v-col cols="12" md="8">
         <Card :logo="sliceIcon" subtitle="Working time" title="Working Time Visualization">
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </Card>
       </v-col>
 
-      <v-col cols="12" md="3">
-        <Card :logo="clockIcon" :subtitle="getDate()" subtitle="Clock" title="Clock Manager">
+      <v-col cols="12" md="4" style="min-height: 330px;">
+        <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager">
           <ClockManager :userId="userId" />
         </Card>
       </v-col>
 
-      <v-col cols="12" md="9">
+      <v-col cols="12" md="8">
         <Card :logo="workIcon" subtitle="Manager" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
