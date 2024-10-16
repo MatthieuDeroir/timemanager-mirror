@@ -5,7 +5,7 @@ import HeaderComponent from "@/components/Header/Header.vue";
 import LoginPage from "@/components/Login/Login.vue";
 
 const isAuthenticated = ref(false);
-const selectedColorClass = ref('blue'); // Default color class
+const selectedColorClass = ref('blue');
 
 function handleLoginSuccess() {
   isAuthenticated.value = true;
@@ -15,15 +15,14 @@ function loadSelectedColor() {
   const storedColor = localStorage.getItem('selectedColor');
   if (storedColor) {
     const color = JSON.parse(storedColor);
-    selectedColorClass.value = color.name.toLowerCase(); // Set the color class
+    selectedColorClass.value = color.name.toLowerCase();
   }
 }
 
 onMounted(loadSelectedColor);
 
-function updateColorClass(newColor) {
-  console.log("New Color Class:", newColor.name.toLowerCase());
-  selectedColorClass.value = newColor.name.toLowerCase();
+function updateColorClass(color) {
+  selectedColorClass.value = color.name.toLowerCase();
 }
 
 
@@ -34,7 +33,7 @@ function updateColorClass(newColor) {
     <LoginPage v-if="!isAuthenticated" @loginSuccess="handleLoginSuccess"/>
     <div v-else>
       <header>
-        <HeaderComponent @color-selected="updateColorClass" />
+        <HeaderComponent @colorSelected="updateColorClass" />
       </header>
       <main class="main-content">
         <div class="background" :class="[selectedColorClass]"></div>

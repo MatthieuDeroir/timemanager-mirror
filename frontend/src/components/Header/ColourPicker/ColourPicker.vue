@@ -23,18 +23,29 @@
 </template>
 
 <script lang="ts" setup>
-import { colors, selectedColor, selectColor } from './ColourPicker.js';
 import ColourDisplayer from './ColourDisplayer/ColourDisplayer.vue';
-import { defineEmits } from 'vue';
+import { defineEmits, ref } from 'vue';
+
+const selectedColor = ref(null);
 
 const emit = defineEmits(['colorSelected']);
+
+const colors = ref([
+  { name: 'Blue' },
+  { name: 'Yellow' },
+  { name: 'Purple' },
+  { name: 'Orange' },
+  { name: 'Green' },
+  { name: 'Red' }
+]);
 
 const selectColor = (color) => {
   selectedColor.value = color; 
   localStorage.setItem('selectedColor', JSON.stringify(color)); 
-  alert(`Selected color: ${color.name}`);
   emit('colorSelected', color); 
 };
+
+
 </script>
 
 <style scoped src="./ColourPicker.css"></style>

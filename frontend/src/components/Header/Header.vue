@@ -10,10 +10,9 @@
           <v-btn color="primary" v-bind="props"> Duckler McQuack</v-btn>
         </template>
         <v-list>
-          <!-- Add color picker to the dropdown menu -->
           <v-list-item>
             <v-list-item-title>
-              <ColorPicker />
+              <ColorPicker @colorSelected="passEmitingColor" />
             </v-list-item-title>
           </v-list-item>
           <v-list-item v-for="(item, index) in items" :key="index">
@@ -35,10 +34,16 @@ const items = [
   { title: 'Log out' },
 ];
 
+const emit = defineEmits(['colorSelected']);
+
 const selectedUserId = ref<number | null>(null);
 
 const handleUserSelected = (userId: number) => {
   selectedUserId.value = userId;
+};
+
+const passEmitingColor = (color) => {
+  emit('colorSelected', color); 
 };
 </script>
 
