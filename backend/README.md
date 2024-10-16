@@ -33,6 +33,7 @@ To populate the database, you can use the following command:
  * Database schema: /docs/database_schema.png
  * Collection Postman: /docs/TimeManager.postman_collection
  * Swagger: https://localhost:4000/api/swagger
+ * Generate swagger : mix phx.swagger.generate
 
  ---
  

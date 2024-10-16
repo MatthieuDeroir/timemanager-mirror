@@ -1,10 +1,48 @@
 {
-  "info": {
-    "version": "1.0",
-    "title": "TimeManagerApp API - T-POO-700-NAN_5"
-  },
-  "host": "localhost:4000",
   "definitions": {
+    "Clock": {
+      "description": "A clock record for a user",
+      "properties": {
+        "id": {
+          "description": "Clock ID",
+          "type": "integer"
+        },
+        "status": {
+          "description": "Status of the clock",
+          "type": "boolean"
+        },
+        "time": {
+          "description": "Time the clock was recorded",
+          "type": "string"
+        },
+        "user_id": {
+          "description": "User ID associated with the clock",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "status",
+        "time",
+        "user_id",
+        "id"
+      ],
+      "title": "Clock",
+      "type": "object"
+    },
+    "CreateClock": {
+      "description": "Schema for creating a clock",
+      "properties": {
+        "clock": {
+          "$ref": "#/definitions/Clock",
+          "description": "Clock information"
+        }
+      },
+      "required": [
+        "clock"
+      ],
+      "title": "CreateClock",
+      "type": "object"
+    },
     "CreateUser": {
       "description": "Schema for creating a user",
       "properties": {
@@ -17,6 +55,20 @@
         "user"
       ],
       "title": "CreateUser",
+      "type": "object"
+    },
+    "UpdateUser": {
+      "description": "Schema for updating a user",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User",
+          "description": "User information"
+        }
+      },
+      "required": [
+        "user"
+      ],
+      "title": "UpdateUser",
       "type": "object"
     },
     "User": {
@@ -47,69 +99,17 @@
       ],
       "title": "User",
       "type": "object"
-    },
-    "UpdateUser": {
-      "description": "Schema for updating a user",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/User",
-          "description": "User information"
-        }
-      },
-      "required": [
-        "user"
-      ],
-      "title": "UpdateUser",
-      "type": "object"
-    },
-    "CreateClock": {
-      "description": "Schema for creating a clock entry",
-      "properties": {
-        "clocks": {
-          "$ref": "#/definitions/Clock",
-          "description": "Clock entry information"
-        }
-      },
-      "required": [
-        "clocks"
-      ],
-      "title": "CreateClock",
-      "type": "object"
-    },
-    "Clock": {
-      "description": "A clock entry for a user",
-      "properties": {
-        "id": {
-          "description": "Clock ID",
-          "type": "integer"
-        },
-        "status": {
-          "description": "Clock status (e.g., 'in' or 'out')",
-          "type": "string"
-        },
-        "time": {
-          "description": "Timestamp of the clock",
-          "type": "string"
-        },
-        "user_id": {
-          "description": "User ID associated with the clock",
-          "type": "integer"
-        }
-      },
-      "required": [
-        "status",
-        "time",
-        "user_id",
-        "id"
-      ],
-      "title": "Clock",
-      "type": "object"
     }
+  },
+  "host": "localhost:4000",
+  "info": {
+    "title": "TimeManagerApp API - T-POO-700-NAN_5",
+    "version": "1.0"
   },
   "paths": {
     "/api/clocks/{user_id}": {
       "get": {
-        "description": "Retrieve all clock entries for a user",
+        "description": "Retrieve a list of clocks for a user.",
         "operationId": "TimeManagerAppWeb.ClockController.index",
         "parameters": [
           {
@@ -124,10 +124,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "items": {
-                "$ref": "#/definitions/Clock"
-              },
-              "type": "array"
+              "$ref": "#/definitions/Clock"
             }
           }
         },
@@ -137,7 +134,7 @@
         ]
       },
       "post": {
-        "description": "Create a new clock entry for a user",
+        "description": "Create a new clock for a user.",
         "operationId": "TimeManagerAppWeb.ClockController.create",
         "parameters": [
           {
@@ -148,7 +145,7 @@
             "type": "integer"
           },
           {
-            "description": "Clock entry to create",
+            "description": "The clock information to create",
             "in": "body",
             "name": "clock",
             "required": true,
@@ -168,6 +165,375 @@
         "summary": "",
         "tags": [
           "Clock"
+        ]
+      }
+    },
+    "/api/clocks/{user_id}/{id}": {
+      "get": {
+        "description": "Retrieve a clock by ID for a user.",
+        "operationId": "TimeManagerAppWeb.ClockController.show",
+        "parameters": [
+          {
+            "description": "User ID",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Clock ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Clock found",
+            "schema": {
+              "$ref": "#/definitions/Clock"
+            }
+          },
+          "404": {
+            "description": "Clock not found"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Clock"
+        ]
+      }
+    },
+    "/api/roles": {
+      "get": {
+        "description": "Retrieve a list of roles.",
+        "operationId": "TimeManagerAppWeb.RoleController.index",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Role"
+        ]
+      },
+      "post": {
+        "description": "Create a new role.",
+        "operationId": "TimeManagerAppWeb.RoleController.create",
+        "parameters": [
+          {
+            "description": "The role information to create",
+            "in": "body",
+            "name": "role",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRole"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Role created",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/api/roles/{id}": {
+      "delete": {
+        "description": "Delete a role.",
+        "operationId": "TimeManagerAppWeb.RoleController.delete",
+        "parameters": [
+          {
+            "description": "Role ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Role deleted"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Role"
+        ]
+      },
+      "get": {
+        "description": "Retrieve a role by ID.",
+        "operationId": "TimeManagerAppWeb.RoleController.show",
+        "parameters": [
+          {
+            "description": "Role ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role found",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          },
+          "404": {
+            "description": "Role not found"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Role"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing role.",
+        "operationId": "TimeManagerAppWeb.RoleController.update",
+        "parameters": [
+          {
+            "description": "Role ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The role information to update",
+            "in": "body",
+            "name": "role",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRole"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role updated",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Role"
+        ]
+      },
+      "put": {
+        "description": "Update an existing role.",
+        "operationId": "TimeManagerAppWeb.RoleController.update",
+        "parameters": [
+          {
+            "description": "Role ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The role information to update",
+            "in": "body",
+            "name": "role",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateRole"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role updated",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/api/teams": {
+      "get": {
+        "description": "Retrieve a list of teams.",
+        "operationId": "TimeManagerAppWeb.TeamController.index",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Team"
+        ]
+      },
+      "post": {
+        "description": "Create a new team.",
+        "operationId": "TimeManagerAppWeb.TeamController.create",
+        "parameters": [
+          {
+            "description": "The team information to create",
+            "in": "body",
+            "name": "team",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTeam"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Team created",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Team"
+        ]
+      }
+    },
+    "/api/teams/{id}": {
+      "delete": {
+        "description": "Delete a team.",
+        "operationId": "TimeManagerAppWeb.TeamController.delete",
+        "parameters": [
+          {
+            "description": "Team ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Team deleted"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Team"
+        ]
+      },
+      "get": {
+        "description": "Retrieve a team by ID.",
+        "operationId": "TimeManagerAppWeb.TeamController.show",
+        "parameters": [
+          {
+            "description": "Team ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team found",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          },
+          "404": {
+            "description": "Team not found"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Team"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing team.",
+        "operationId": "TimeManagerAppWeb.TeamController.update",
+        "parameters": [
+          {
+            "description": "Team ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The team information to update",
+            "in": "body",
+            "name": "team",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTeam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team updated",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Team"
+        ]
+      },
+      "put": {
+        "description": "Update an existing team.",
+        "operationId": "TimeManagerAppWeb.TeamController.update",
+        "parameters": [
+          {
+            "description": "Team ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The team information to update",
+            "in": "body",
+            "name": "team",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateTeam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team updated",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Team"
         ]
       }
     },
@@ -349,6 +715,155 @@
         "summary": "",
         "tags": [
           "User"
+        ]
+      }
+    },
+    "/api/workingtime/{id}": {
+      "delete": {
+        "description": "Delete a working time.",
+        "operationId": "TimeManagerAppWeb.WorkingTimeController.delete",
+        "parameters": [
+          {
+            "description": "Working time ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Working time deleted"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "WorkingTime"
+        ]
+      },
+      "put": {
+        "description": "Update an existing working time.",
+        "operationId": "TimeManagerAppWeb.WorkingTimeController.update",
+        "parameters": [
+          {
+            "description": "Working time ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The working time information to update",
+            "in": "body",
+            "name": "workingtime",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateWorkingTime"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Working time updated",
+            "schema": {
+              "$ref": "#/definitions/WorkingTime"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "WorkingTime"
+        ]
+      }
+    },
+    "/api/workingtime/{user_id}": {
+      "get": {
+        "description": "Retrieve all working times for a user.",
+        "operationId": "TimeManagerAppWeb.WorkingTimeController.index",
+        "parameters": [
+          {
+            "description": "User ID",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/WorkingTime"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "WorkingTime"
+        ]
+      },
+      "post": {
+        "description": "Create a new working time.",
+        "operationId": "TimeManagerAppWeb.WorkingTimeController.create",
+        "parameters": [
+          {
+            "description": "The working time information to create",
+            "in": "body",
+            "name": "workingtime",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateWorkingTime"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Working time created",
+            "schema": {
+              "$ref": "#/definitions/WorkingTime"
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "WorkingTime"
+        ]
+      }
+    },
+    "/api/workingtime/{user_id}/{id}": {
+      "get": {
+        "description": "Retrieve a working time by ID.",
+        "operationId": "TimeManagerAppWeb.WorkingTimeController.show",
+        "parameters": [
+          {
+            "description": "User ID",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Working time ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Working time found",
+            "schema": {
+              "$ref": "#/definitions/WorkingTime"
+            }
+          },
+          "404": {
+            "description": "Working time not found"
+          }
+        },
+        "summary": "",
+        "tags": [
+          "WorkingTime"
         ]
       }
     }
