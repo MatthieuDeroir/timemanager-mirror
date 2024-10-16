@@ -2,7 +2,8 @@ defmodule TimeManagerAppWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :timemanagerapp
 
   # Config to allow CORS requests from the frontend
-  plug(CORSPlug, origin: ["*"])
+  # Add the CORS plug
+  plug(CORSPlug, origin: ["http://localhost:5173"])
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
