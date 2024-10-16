@@ -28,21 +28,15 @@ defmodule TimeManagerAppWeb.WorkingTimeController do
           WorkingTimes.list_workingtime_for_user(user_id, start_datetime, end_datetime)
       end
 
-    if length(workingtimes) > 0 do
-      json(conn, workingtimes)
-    else
-      conn
-      |> put_status(:not_found)
-      |> json(%{error: "No working times found"})
-    end
+    # This will return an empty array if there are no working times.
+    json(conn, workingtimes)
   end
 
   def show(conn, %{"user_id" => user_id, "id" => id}) do
     case WorkingTimes.get_workingtime(user_id, id) do
       nil ->
-        conn
-        |> put_status(:not_found)
-        |> json(%{error: "Working time not found"})
+        # Return an empty JSON object
+        json(conn, [])
 
       workingtime ->
         json(conn, workingtime)

@@ -35,9 +35,7 @@ defmodule TimeManagerAppWeb.ClockController do
   def show(conn, %{"user_id" => user_id, "id" => id}) do
     case Clocks.get_clock(user_id, id) do
       nil ->
-        conn
-        |> put_status(:not_found)
-        |> json(%{error: "Clock not found"})
+        json(conn, [])
 
       clock ->
         json(conn, %{clock: clock})

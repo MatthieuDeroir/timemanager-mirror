@@ -89,21 +89,33 @@ defmodule TimeManagerApp.WorkingTimes do
   def list_workingtime_for_user(user_id, start_datetime) do
     Repo.all(
       from(wt in WorkingTime,
-        where: wt.user_id == ^user_id and wt.start_time >= ^start_datetime
+        where: wt.user_id == ^user_id and wt.start >= ^start_datetime
       )
     )
   end
 
   # Fetch working times for a user between a specific start and end datetime
-  def list_workingtime_for_user(user_id, start_datetime, end_datetime) do
-    Repo.all(
+  def list_workingtime_for_user(user_id, start_datetime \\ nil, end_datetime \\ nil) do
+    query =
       from(wt in WorkingTime,
-        where:
-          wt.user_id == ^user_id and
-            wt.start_time >= ^start_datetime and
-            wt.end_time <= ^end_datetime
+        where: wt.user_id == ^user_id
       )
-    )
+
+    query =
+      if start_datetime do
+        from(wt in query, where: wt.start >= ^start_datetime)
+      else
+        query
+      end
+
+    query =
+      if end_datetime do
+        from(wt in query, where: wt.end <= ^end_datetime)
+      else
+        query
+      end
+
+    Repo.all(query)
   end
 
   @doc """
