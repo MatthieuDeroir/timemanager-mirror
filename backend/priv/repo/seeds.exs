@@ -1,64 +1,224 @@
+# priv/repo/seeds.exs
+
 alias TimeManagerApp.Repo
-alias TimeManagerApp.Account.User
-alias TimeManagerApp.Time.Clock
-alias TimeManagerApp.Time.WorkingTime
+alias TimeManagerApp.Roles.Role
+alias TimeManagerApp.Teams.Team
+alias TimeManagerApp.Users.User
+alias TimeManagerApp.Clocks.Clock
+alias TimeManagerApp.WorkingTimes.WorkingTime
 
-# Clear existing data
-# TODO: make controller to delete all data
+# Define a module for seeding
+defmodule TimeManagerApp.Seeds do
+  # Clear existing data
+  def run do
+    Repo.delete_all(WorkingTime)
+    Repo.delete_all(Clock)
+    Repo.delete_all(User)
+    Repo.delete_all(Role)
+    Repo.delete_all(Team)
 
-# Import Faker for generating random data
-{:ok, _} = Application.ensure_all_started(:faker)
+    # Create roles
+    roles = [
+      %{"name" => "employee"},
+      %{"name" => "manager"},
+      %{"name" => "admin"}
+    ]
 
-# TODO: improve data generation to meet time constraints (a working time is made with a pair of status true and false clock, a working time must happen in a day | 1 user can have multiple working times accross multiple day)
+    # Insert roles
+    Enum.each(roles, fn role ->
+      %Role{}
+      |> Role.changeset(role)
+      |> Repo.insert!()
+    end)
 
-# Create Users
-users =
-  for _ <- 1..50 do
-    %User{
-      username: Faker.Internet.user_name(),
-      email: Faker.Internet.email()
-    }
-    |> Repo.insert!()
+    # Create teams
+    teams = [
+      %{"name" => "comptability"},
+      %{"name" => "security"},
+      %{"name" => "it"}
+    ]
+
+    # Insert teams
+    Enum.each(teams, fn team ->
+      %Team{}
+      |> Team.changeset(team)
+      |> Repo.insert!()
+    end)
+
+    # Get the inserted roles and teams
+    employee_role = Repo.get_by(Role, name: "employee")
+    manager_role = Repo.get_by(Role, name: "manager")
+    admin_role = Repo.get_by(Role, name: "admin")
+
+    comptability_team = Repo.get_by(Team, name: "comptability")
+    security_team = Repo.get_by(Team, name: "security")
+    it_team = Repo.get_by(Team, name: "it")
+
+    # Create users with usernames
+    users = [
+      %User{
+        firstname: "Alice",
+        lastname: "Johnson",
+        username: "alice.johnson",
+        email: "alice@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: comptability_team.id
+      },
+      %User{
+        firstname: "Bob",
+        lastname: "Smith",
+        username: "bob.smith",
+        email: "bob@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: comptability_team.id
+      },
+      %User{
+        firstname: "Charlie",
+        lastname: "Brown",
+        username: "charlie.brown",
+        email: "charlie@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: comptability_team.id
+      },
+      %User{
+        firstname: "Diana",
+        lastname: "Prince",
+        username: "diana.prince",
+        email: "diana@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: comptability_team.id
+      },
+      %User{
+        firstname: "Eve",
+        lastname: "Adams",
+        username: "eve.adams",
+        email: "eve@example.com",
+        password_hash: "password",
+        role_id: manager_role.id,
+        team_id: comptability_team.id
+      },
+      %User{
+        firstname: "Frank",
+        lastname: "Miller",
+        username: "frank.miller",
+        email: "frank@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: security_team.id
+      },
+      %User{
+        firstname: "Grace",
+        lastname: "Harris",
+        username: "grace.harris",
+        email: "grace@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: security_team.id
+      },
+      %User{
+        firstname: "Henry",
+        lastname: "Lee",
+        username: "henry.lee",
+        email: "henry@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: security_team.id
+      },
+      %User{
+        firstname: "Isabella",
+        lastname: "Taylor",
+        username: "isabella.taylor",
+        email: "isabella@example.com",
+        password_hash: "password",
+        role_id: employee_role.id,
+        team_id: security_team.id
+      },
+      %User{
+        firstname: "Jack",
+        lastname: "Wilson",
+        username: "jack.wilson",
+        email: "jack@example.com",
+        password_hash: "password",
+        role_id: manager_role.id,
+        team_id: security_team.id
+      },
+      %User{
+        firstname: "Liam",
+        lastname: "Garcia",
+        username: "liam.garcia",
+        email: "liam@example.com",
+        password_hash: "password",
+        role_id: admin_role.id,
+        team_id: it_team.id
+      }
+    ]
+
+    # Insert users
+    Enum.each(users, fn user ->
+      Repo.insert!(user)
+    end)
+
+    # Create working times for the last 7 days for each employee
+    for user <- Repo.all(User) do
+      for day <- 0..6 do
+        date = Date.utc_today() |> Date.add(-day)
+
+        working_times = [
+          %WorkingTime{
+            # 08:00
+            start: create_datetime(date, 8, 0),
+            # 12:00
+            end: create_datetime(date, 12, 0),
+            user_id: user.id,
+            # Set a default type value
+            type: "regular"
+          },
+          %WorkingTime{
+            # 14:00
+            start: create_datetime(date, 14, 0),
+            # 18:00
+            end: create_datetime(date, 18, 0),
+            user_id: user.id,
+            # Set a default type value
+            type: "regular"
+          }
+        ]
+
+        # Insert working times individually
+        Enum.each(working_times, fn working_time ->
+          Repo.insert!(working_time)
+        end)
+      end
+    end
+
+    IO.puts("Seeding completed successfully!")
   end
 
-# Create Working Times with Clocks for Users
-for user <- users do
-  # Generate multiple working times for the same user
-  for _ <- 1..:rand.uniform(5) do
-    # Generate start time and end time for the working day
-    start_time =
-      Faker.DateTime.between(~U[2023-01-01 08:00:00Z], ~U[2023-01-01 09:00:00Z])
-      |> DateTime.truncate(:second)
+  # Helper function to create DateTime in UTC
+  defp create_datetime(date, hour, minute) do
+    case Time.new(hour, minute, 0) do
+      {:ok, time} ->
+        date_time = NaiveDateTime.new(date, time)
 
-    # Ensure the end time happens on the same day, after the start time
-    # Within 8 hours
-    end_time =
-      Faker.DateTime.between(start_time, DateTime.add(start_time, 8 * 3600))
-      |> DateTime.truncate(:second)
+        case date_time do
+          {:ok, naive_dt} ->
+            DateTime.from_naive!(naive_dt, "Etc/UTC")
 
-    # Insert clocks (start and end)
-    %Clock{
-      time: start_time,
-      status: true,
-      user_id: user.id
-    }
-    |> Repo.insert!()
+          {:error, reason} ->
+            IO.puts("Failed to create NaiveDateTime: #{reason}")
+            nil
+        end
 
-    %Clock{
-      time: end_time,
-      status: false,
-      user_id: user.id
-    }
-    |> Repo.insert!()
-
-    # Insert working time
-    %WorkingTime{
-      start: start_time,
-      end: end_time,
-      user_id: user.id
-    }
-    |> Repo.insert!()
+      {:error, reason} ->
+        IO.puts("Failed to create Time: #{reason}")
+        nil
+    end
   end
 end
 
-IO.puts("Seeding completed successfully.")
+# Run the seeder
+TimeManagerApp.Seeds.run()
