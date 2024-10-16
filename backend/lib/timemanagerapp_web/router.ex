@@ -27,6 +27,9 @@ defmodule TimeManagerAppWeb.Router do
 
     # Team Routes
     resources("/teams", TeamController, except: [:new, :edit])
+
+    # Logs Routes
+    resources("/logs", LogController, only: [:index, :show])
   end
 
   scope "/api/swagger" do

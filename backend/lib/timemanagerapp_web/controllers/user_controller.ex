@@ -5,6 +5,7 @@ defmodule TimeManagerAppWeb.UserController do
   alias TimeManagerApp.Users
   alias TimeManagerApp.Users.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
+  alias TimeManagerApp.Logs
 
   action_fallback(TimeManagerAppWeb.FallbackController)
 
