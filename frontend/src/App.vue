@@ -30,8 +30,8 @@ function updateColorClass(color) {
 
 <template>
   <div>
-    <LoginPage v-if="!isAuthenticated" @loginSuccess="handleLoginSuccess"/>
-    <div v-else>
+    <!-- <LoginPage v-if="!isAuthenticated" @loginSuccess="handleLoginSuccess"/> -->
+    <!-- <div v-else> -->
       <header>
         <HeaderComponent @colorSelected="updateColorClass" />
       </header>
@@ -39,7 +39,7 @@ function updateColorClass(color) {
         <div class="background" :class="[selectedColorClass]"></div>
         <router-view/>
       </main>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
