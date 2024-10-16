@@ -1,10 +1,9 @@
 <template>
-    <div class="clock-manager-container">
-        <div v-if="error">{{ this.error }}</div>
-        <div v-else-if="loading" class="center">
-            <LoaderComponent />
-        </div>
-        <div v-else>
+    <div v-if="loading" >
+        <LoaderComponent />
+    </div>
+    <div v-else>
+        <div class="clock-manager-container">
             <div class="row-clock-container">
                 <div v-for="(item) in items">
                     <div v-if="item.status" class="row-clock">
