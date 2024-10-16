@@ -1,4 +1,4 @@
-
+import { toRefs } from "vue";
 export default {
   props: {
     title: {
@@ -26,13 +26,6 @@ export default {
     }
   },
   setup(props) {
-    return {
-      title: props.title,
-      subtitle: props.subtitle,
-      logo: props.logo,
-      height: props.height,
-      width: props.width,
-      logoColor: props.logoColor
-    }
+    return toRefs(props);
   }
 };

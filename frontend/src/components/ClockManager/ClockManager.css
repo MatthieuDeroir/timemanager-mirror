@@ -5,31 +5,6 @@
     border-radius: 0 0 10px 10px;
 }
 
-.banner{
-    background-color: var(--color-banner);
-    padding: 20px;
-    
-    border-radius: 10px 10px 0 0;
-}
-
-.clock-manager-header{
-    display: flex;
-    flex-direction: row;    
-    justify-content: space-between;
-    align-items: center;
-}
-.clock-status{
-    display: flex;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-}
-.red{
-    background-color: red;
-}
-.green{
-    background-color: green;
-}
 
 .row-clock-container{
     display: flex;
@@ -64,4 +39,11 @@
     color: var(--color-labelPrimary);
     font-weight: 600;
     font-size: 16px;
+}
+.center{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+    font-size: 17px;
 }
