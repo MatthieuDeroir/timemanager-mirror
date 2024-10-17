@@ -17,13 +17,13 @@ import { useUserStore } from '@store/User/UserStore'
 
 const emit = defineEmits(['user-selected'])
 const router = useRouter()
-const store = useUserStore()
+const userStore = useUserStore()
 
 const fetchUsers = async () => {
-  await store.loadAllUsers()
+  await userStore.loadAllUsers()
 }
 
-const userList = computed(() => store.users)
+const userList = computed(() => userStore.users)
 
 onMounted(async () => {
   await fetchUsers()
