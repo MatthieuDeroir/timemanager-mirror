@@ -1,0 +1,22 @@
+#DayliChart{
+    width: auto;
+    height:200px;
+    position: relative;
+}
+
+#DayliChart canvas{
+    position: absolute;
+    top: 0;
+    /* left: 0; */
+    bottom: 0;
+    /* right: 0; */
+    
+}
+
+/* #DayliChart{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+} */
