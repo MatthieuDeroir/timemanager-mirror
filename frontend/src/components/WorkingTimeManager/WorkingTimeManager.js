@@ -1,9 +1,9 @@
 import {
-  getWorkingTimesByUserId,
   createWorkingTime as createTime,
-  updateWorkingTime as updateTime,
-  deleteWorkingTime as deleteTime
-} from '@services/workingtimeServices'
+  deleteWorkingTime as deleteTime,
+  getWorkingTimesByUserId,
+  updateWorkingTime as updateTime
+} from '@/api/workingtimeServices'
 
 export default {
   props: {

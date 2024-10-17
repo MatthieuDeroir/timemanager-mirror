@@ -1,7 +1,7 @@
 // ChartManager.js
 
-import Services from '../../services/';
-import dayjs from 'dayjs';
+import Services from '../../api/'
+import dayjs from 'dayjs'
 
 /**
  * Fetch and prepare chart data for the given userId.
@@ -10,14 +10,14 @@ import dayjs from 'dayjs';
  */
 export async function fetchAndPrepareChartData(userId) {
   try {
-    const data = await Services.WorkingTime.getWorkingTimesByUserId(userId);
+    const data = await Services.WorkingTime.getWorkingTimesByUserId(userId)
 
     // Prepare chart data
-    const chartData = prepareChartData(data);
-    return chartData;
+    const chartData = prepareChartData(data)
+    return chartData
   } catch (error) {
-    console.error('Error fetching or preparing chart data:', error);
-    throw error;
+    console.error('Error fetching or preparing chart data:', error)
+    throw error
   }
 }
 
@@ -29,10 +29,10 @@ export async function fetchAndPrepareChartData(userId) {
 function prepareChartData(data) {
   // Format dates and calculate durations
   data.forEach((item) => {
-    item.start = dayjs(item.start).format('YYYY-MM-DD hh:mm:ss');
-    item.end = dayjs(item.end).format('YYYY-MM-DD hh:mm:ss');
-    item.duration = dayjs(item.end).diff(dayjs(item.start), 'hour', true);
-  });
+    item.start = dayjs(item.start).format('YYYY-MM-DD hh:mm:ss')
+    item.end = dayjs(item.end).format('YYYY-MM-DD hh:mm:ss')
+    item.duration = dayjs(item.end).diff(dayjs(item.start), 'hour', true)
+  })
 
   // Prepare data for Bar Chart
   const barChartData = {
@@ -41,10 +41,10 @@ function prepareChartData(data) {
       {
         label: 'Working Hours',
         backgroundColor: '#42b983',
-        data: data.map((item) => item.duration),
-      },
-    ],
-  };
+        data: data.map((item) => item.duration)
+      }
+    ]
+  }
 
   // Prepare data for Line Chart
   const lineChartData = {
@@ -54,30 +54,30 @@ function prepareChartData(data) {
         label: 'Cumulative Hours',
         borderColor: '#ff6384',
         data: cumulativeSum(data.map((item) => item.duration)),
-        fill: false,
-      },
-    ],
-  };
+        fill: false
+      }
+    ]
+  }
 
   // Prepare data for Pie Chart
-  const totalDuration = data.reduce((sum, item) => sum + item.duration, 0);
-  const remainingHours = Math.max(0, 40 - totalDuration); // Assuming a 40-hour workweek
+  const totalDuration = data.reduce((sum, item) => sum + item.duration, 0)
+  const remainingHours = Math.max(0, 40 - totalDuration) // Assuming a 40-hour workweek
 
   const pieChartData = {
     labels: ['Worked Hours', 'Remaining Hours'],
     datasets: [
       {
         backgroundColor: ['#ff6384', '#36a2eb'],
-        data: [totalDuration, remainingHours],
-      },
-    ],
-  };
+        data: [totalDuration, remainingHours]
+      }
+    ]
+  }
 
   return {
     barChartData,
     lineChartData,
-    pieChartData,
-  };
+    pieChartData
+  }
 }
 
 /**
@@ -86,10 +86,10 @@ function prepareChartData(data) {
  * @returns {number[]}
  */
 function cumulativeSum(arr) {
-  const result = [];
+  const result = []
   arr.reduce((sum, value, index) => {
-    result[index] = sum + value;
-    return result[index];
-  }, 0);
-  return result;
+    result[index] = sum + value
+    return result[index]
+  }, 0)
+  return result
 }

@@ -39,7 +39,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js'
-import { getWorkingTimesByUserId } from '@services/workingtimeServices.js'
+import { getWorkingTimesByUserId } from '@/api/workingtimeServices.js'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
 import 'vuetify/styles'
 

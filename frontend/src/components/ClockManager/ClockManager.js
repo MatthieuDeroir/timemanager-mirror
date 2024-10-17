@@ -1,10 +1,10 @@
-import Services from '@services';
-import LoaderComponent from '@components/Loader/LoaderComponent.vue';
+import { getClocksByUserId } from '@/api/clockServices.js'
+import LoaderComponent from '@components/Loader/LoaderComponent.vue'
 
 export default {
-  props:{
-    userId:{
-      type: [String,Number],
+  props: {
+    userId: {
+      type: [String, Number],
       required: true
     }
   },
@@ -65,16 +65,16 @@ export default {
     },
 
     getDate() {
-      const rowDate = new Date(this.items[0].time);
+      const rowDate = new Date(this.items[0].time)
       return rowDate.toLocaleDateString('en-GB', {
         day: '2-digit',
         month: 'long',
-        year: 'numeric',
+        year: 'numeric'
       })
     },
     getTime(item) {
-      const rowDate = new Date(item.time);
-      return rowDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      const rowDate = new Date(item.time)
+      return rowDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
     }
   }
 }
