@@ -160,18 +160,35 @@ const fetchUser = async (userId) => {
   emit('selecteduser', user.value);
 };
 
-function handleTurnOnEdit() {
+const handleTurnOnEdit = () => {
   editStatus.value = editStatus.value = true;
 }
-function handleSaveEdit() {
+const handleSaveEdit = () => {
+  loading.value = true;
   user.value.birthdate = new Date(user.value.birthdate).toISOString().split('T')[0];
   user.value.start_date = new Date(user.value.start_date).toISOString().split('T')[0];
   user.value.end_date = new Date(user.value.end_date).toISOString().split('T')[0];
+  
+  loading.value = false;
   updateUser(user.value.id, user.value);
   editStatus.value = false;
-  fetchUser(props.userId);
+  
+  user.value.birthdate = new Date(user.value.birthdate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });user.value.start_date = new Date(user.value.start_date).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });user.value.end_date= new Date(user.value.end_date).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+  loading.value = false;
 }
-function handleCancelEdit() {
+const handleCancelEdit = () => {
   editStatus.value = editStatus.value = false;
   fetchUser(props.userId);
 }
