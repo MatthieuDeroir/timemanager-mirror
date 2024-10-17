@@ -39,9 +39,11 @@ import {
   Title,
   Tooltip
 } from 'chart.js'
-import { getWorkingTimesByUserId } from '@/api/workingtimeServices.js'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
 import 'vuetify/styles'
+import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
+
+const workingTimesStore = useWorkingTimeStore()
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
@@ -117,12 +119,17 @@ const fetchWorkingTimes = async () => {
 
   if (startDate.value) {
     endDate.value = calculateEndDate(startDate.value)
-    const workingTimesData = await getWorkingTimesByUserId(
+    await workingTimesStore.loadWorkingTimes(
       props.userId,
       formatStartDate(startDate.value),
       formatEndDate(endDate.value)
     )
-    applyDateRangeFilter(workingTimesData)
+    // const workingTimesData = await getWorkingTimesByUserId(
+    //   props.userId,
+    //   formatStartDate(startDate.value),
+    //   formatEndDate(endDate.value)
+    // )
+    applyDateRangeFilter(workingTimesStore.workingTimes)
     loading.value = false
   }
 }
