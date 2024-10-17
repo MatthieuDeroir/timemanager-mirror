@@ -5,6 +5,19 @@
     justify-content: space-evenly;
     align-items: center;
 }
+.user-edit{
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+    width: 100%;
+}
+.user-edit-buttons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin: 10px;
+}
 
 .title{
     font-size: 17px;
@@ -29,4 +42,17 @@
     display: flex;
     color: var(--color-labelSecondary);
     width: 78px;
+}
+
+.edit-icon{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    fill: var(--color-blue);
+}
+
+.input-date, .input-text, .input-number{
+    padding: 0;
+    width: 100%;
+    border-radius: 0px;
 }
