@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["mdr/backend"]
+    branches: ["main"]
   pull_request:
-    branches: ["mdr/backend"]
+    branches: ["main"]
     types: [opened, synchronize, reopened]
 
 permissions:

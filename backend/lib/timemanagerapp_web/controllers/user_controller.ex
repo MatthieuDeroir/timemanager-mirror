@@ -5,14 +5,13 @@ defmodule TimeManagerAppWeb.UserController do
   alias TimeManagerApp.Users
   alias TimeManagerApp.Users.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
-  alias TimeManagerApp.Logs
+  alias TimeManagerApp.Repo
 
   action_fallback(TimeManagerAppWeb.FallbackController)
 
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())
 
-  # GET /api/users?email=XXX&username=YYY
   def index(conn, params) do
     users =
       case {Map.get(params, "email"), Map.get(params, "username")} do
@@ -34,6 +33,8 @@ defmodule TimeManagerAppWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
+      user = Repo.preload(user, :teams)
+
       conn
       |> put_status(:created)
       |> json(user)
@@ -81,7 +82,7 @@ defmodule TimeManagerAppWeb.UserController do
   end
 
   @doc """
-  Returns a list of users that share the same team_id.
+  Returns a list of users that share the same team.
   """
   def index_team(conn, %{"team_id" => team_id}) do
     users = Users.list_users_by_team_id(team_id)

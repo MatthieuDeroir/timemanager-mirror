@@ -8,8 +8,10 @@ defmodule TimeManagerAppWeb.Router do
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
     # User Routes
-    resources("/users", UserController, except: [:new, :edit])
-    get("/users/teams/:team_id", UserController, :index_team)
+    resources "/users", UserController, except: [:new, :edit] do
+      get("/teams", UserController, :user_teams)
+    end
+
     # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
     post("/clocks/:user_id", ClockController, :create)
@@ -27,7 +29,11 @@ defmodule TimeManagerAppWeb.Router do
     resources("/roles", RoleController, except: [:new, :edit])
 
     # Team Routes
-    resources("/teams", TeamController, except: [:new, :edit])
+    resources "/teams", TeamController, except: [:new, :edit] do
+      post("/users/:user_id/add", TeamController, :add_user)
+      delete("/users/:user_id/remove", TeamController, :remove_user)
+      get("/users", TeamController, :team_users)
+    end
 
     # Logs Routes
     resources("/logs", LogController, only: [:index, :show])
