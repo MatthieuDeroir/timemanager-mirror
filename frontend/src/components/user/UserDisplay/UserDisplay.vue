@@ -6,6 +6,52 @@
     <div class="category">
       <div class="title">Employee</div>
       <div class="infos">
+        <div class="label">Username:</div>
+        <div v-if="editStatus">
+          <input v-model="user.username" class="input-text" type="text" />
+        </div>
+        <div v-else>
+          <div>{{ user.username }}</div>
+        </div>
+      </div>
+    
+      <div v-if="editStatus">
+        <div class="infos">
+          <div class="label">Firstname:</div>
+          <div>
+            <input v-model="user.firstname" class="input-text" type="text" />
+          </div>
+        </div>
+      </div>
+    
+      <div v-if="editStatus">
+        <div class="infos">
+          <div class="label">Lastname:</div>
+          <div>
+            <input v-model="user.lastname" class="input-text" type="text" />
+          </div>
+        </div>
+      </div>
+    
+      <div v-if="editStatus">
+        <div class="infos">
+          <div class="label">Email:</div>
+          <div>
+            <input v-model="user.email" class="input-text" type="text" />
+          </div>
+        </div>
+      </div>
+    
+      <div v-if="editStatus">
+        <div class="infos">
+          <div class="label">Gender:</div>
+          <div>
+            <input v-model="user.gender" class="input-text" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <div class="infos">
         <div class="label">Birthdate:</div>
         <div v-if="editStatus">
           <input v-model="user.birthdate" class="input-date" type="date" />
@@ -35,43 +81,6 @@
         </div>
       </div>
 
-      <div class="infos">
-        <div class="label">Username:</div>
-        <div v-if="editStatus">
-          <input v-model="user.username" class="input-text" type="text" />
-        </div>
-        <div v-else>
-          <div>{{ user.username }}</div>
-        </div>
-      </div>
-
-      <div v-if="editStatus">
-        <div class="infos">
-          <div class="label">Firstname:</div>
-          <input v-model="user.firstname" class="input-text" type="text" />
-        </div>
-      </div>
-
-      <div v-if="editStatus">
-        <div class="infos">
-          <div class="label">Lastname:</div>
-          <input v-model="user.lastname" class="input-text" type="text" />
-        </div>
-      </div>
-
-      <div v-if="editStatus">
-        <div class="infos">
-          <div class="label">Email:</div>
-          <input v-model="user.email" class="input-text" type="text" />
-        </div>
-      </div>
-
-      <div v-if="editStatus">
-        <div class="infos">
-          <div class="label">Gender:</div>
-          <input v-model="user.gender" class="input-text" type="text" />
-        </div>
-      </div>
     </div>
     <div class="category">
       <div class="title">Contract</div>
@@ -109,6 +118,24 @@
         </div>
         <div v-else>
           <div>{{ user.end_date }}</div>
+        </div>
+      </div>
+      <div class="infos">
+        <div class="label">Team:</div>
+        <div v-if="editStatus">
+          <input v-model="user.team_id" class="input-number" type="number" />
+        </div>
+        <div v-else>
+          <div>{{ user.team_id }}</div>
+        </div>
+      </div>
+      <div class="infos">
+        <div class="label">Role:</div>
+        <div v-if="editStatus">
+          <input v-model="user.role_id" class="input-number" type="number" />
+        </div>
+        <div v-else>
+          <div>{{ user.role_id }}</div>
         </div>
       </div>
     </div>

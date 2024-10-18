@@ -21,9 +21,6 @@
     <div v-if="workingTimes" class="chart">
       <Bar :data="chartData" :options="chartOptions" />
     </div>
-    <div v-else>
-      <LoaderComponent class="loader" />
-    </div>
   </div>
 </template>
 

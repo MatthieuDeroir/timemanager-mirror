@@ -14,10 +14,14 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@store/User/UserStore'
+import { useClockStore } from '@store/Clock/ClockStore.js'
+import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
 
-const emit = defineEmits(['user-selected'])
 const router = useRouter()
 const userStore = useUserStore()
+const clockStore = useClockStore()
+const workingTimesStore = useWorkingTimeStore()
+
 
 const fetchUsers = async () => {
   await userStore.loadAllUsers()
@@ -30,11 +34,11 @@ onMounted(async () => {
 })
 
 const onUserSelected = (userId) => {
+  clockStore.loadClocks(userId)
+  workingTimesStore.loadWorkingTimes(userId)
   router.push({ name: 'Administrator', params: { userId } })
 }
 </script>
 
 <style scoped>
-.custom-autocomplete .v-input_control {
-}
 </style>

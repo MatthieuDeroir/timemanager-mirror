@@ -32,5 +32,57 @@
   </div>
 </template>
 
-<script src="./ClockManager.js"></script>
 <style src="./ClockManager.css" />
+<script setup>
+import { computed, onMounted } from 'vue'
+import LoaderComponent from '@components/Loader/LoaderComponent.vue'
+import { useClockStore } from '@store/Clock/ClockStore.js'
+
+
+const props = defineProps({
+        userId: {
+            type: [String, Number],
+            required: true
+        }
+    })
+
+    
+const clockStore = useClockStore()
+
+const clocks = computed(() => clockStore.clocks)
+const isLoading = computed(() => clockStore.isLoading)
+const storeError = computed(() => clockStore.error)
+
+const filteredClocks = computed(() => {
+    return clocks.value
+        .filter((item) => {
+            const date = new Date(item.time)
+            const dateNow = new Date()
+            return (
+                date.getFullYear() === dateNow.getFullYear() &&
+                date.getMonth() === dateNow.getMonth() &&
+                date.getDate() === dateNow.getDate()
+            )
+        })
+        .sort((current, item) => new Date(current.time) - new Date(item.time))
+})
+
+const handleCreateClock = async () => {
+    const newClockData = {
+        time: new Date().toISOString(),
+        status: !filteredClocks.value.length ? true : !filteredClocks.value[filteredClocks.value.length - 1].status,
+        userId: props.userId
+    }
+    await clockStore.createClock(newClockData)
+}
+
+const getTime = (item) => {
+    const rowDate = new Date(item.time)
+    return rowDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+}
+
+onMounted(() => {
+    clockStore.loadClocks(props.userId)
+})
+
+</script>
