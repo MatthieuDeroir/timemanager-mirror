@@ -1,24 +1,60 @@
-import {ref} from 'vue'
+import { useAuthStore } from '@/store/Auth/AuthStore'
+import { useRouter } from 'vue-router'
 
-// TODO - Example of a simple authentication composable, will be used in the future when we implement authentication, This method will be used to store the user information in the local storage:
 export function useAuth() {
-    const user = ref(null)
-    const isAuthenticated = ref(false)
+  const authStore = useAuthStore()
+  const router = useRouter()
 
-    const login = (userInfo) => {
-        user.value = userInfo
-        isAuthenticated.value = true
+  const login = async (credentials) => {
+    try {
+      const fakeApiCall = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            user: { id: 1, name: 'John Doe', role: 'admin' },
+            token: 'fake-jwt-token'
+          })
+        }, 1000)
+      })
+
+      const { user, token } = await fakeApiCall
+
+      authStore.login(user, token)
+      redirectToRoleBasedRoute(user.role, user.id)
+    } catch (error) {
+      console.error('Login error:', error)
+      throw new Error('Login failed')
+    }
+  }
+
+  const logout = () => {
+    authStore.logout()
+    router.push('/login')
+  }
+
+  const redirectToRoleBasedRoute = (role, userId) => {
+    if (!role || !userId) {
+      router.push('/login')
+      return
     }
 
-    const logout = () => {
-        user.value = null
-        isAuthenticated.value = false
+    switch (role) {
+      case 'admin':
+        router.push(`/admin/${1}`)
+        break
+      case 'manager':
+        router.push('/manager')
+        break
+      case 'worker':
+        router.push(`/worker/${userId}`)
+        break
+      default:
+        router.push('/unauthorized')
     }
+  }
 
-        return {
-        user,
-        isAuthenticated,
-        login,
-        logout
-    }
+  return {
+    login,
+    logout,
+    redirectToRoleBasedRoute
+  }
 }

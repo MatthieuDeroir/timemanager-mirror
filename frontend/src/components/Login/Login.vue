@@ -1,22 +1,36 @@
 <template>
   <div class="background blue"></div>
   <div class="login-wrapper">
-    <div class="login-page"> 
+    <div class="login-page">
       <div class="login-container">
-        <img src="../../assets/global/gotam-logo.png" alt="Gotham City Logo" class="logo" />
+        <img alt="Gotham City Logo" class="logo" src="../../assets/global/gotam-logo.png" />
         <h1>Login to Gotham</h1>
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" v-model="email" required placeholder="Your email here" class="textcenter"/>
+            <input
+              id="email"
+              v-model="email"
+              class="textcenter"
+              placeholder="Your email here"
+              required
+              type="email"
+            />
           </div>
           <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" v-model="password" required placeholder="Your password here" class="textcenter"/>
+            <input
+              id="password"
+              v-model="password"
+              class="textcenter"
+              placeholder="Your password here"
+              required
+              type="password"
+            />
           </div>
           <div class="white-circle">
-            <button type="submit" class="image-button">
-              <img src="../../assets/global/batman.png" alt="Batman Logo" class="logo" />
+            <button class="image-button" type="submit">
+              <img alt="Batman Logo" class="logo" src="../../assets/global/batman.png" />
             </button>
           </div>
         </form>
@@ -25,26 +39,18 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { handleLogin } from './Login.js'; // Adjust the path as necessary
-import { defineEmits } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useAuth } from '@/composables/useAuth'
 
-// Emit event for successful login
-const emit = defineEmits(['loginSuccess']);
+const email = ref('')
+const password = ref('')
 
-// Reactive variables for email and password
-const email = ref('');
-const password = ref('');
+const { login } = useAuth()
 
-// Function to handle the form submission
-const handleSubmit = () => {
-  if (handleLogin(email.value, password.value)) {
-    emit('loginSuccess'); // Emit the event if login is successful
-  } else {
-    alert('Login failed. Please check your credentials.'); // Handle failed login
-  }
-};
+const handleSubmit = async () => {
+  await login({ email: email.value, password: password.value })
+}
 </script>
 
 <style src="./Login.css"></style>
