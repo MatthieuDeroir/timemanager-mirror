@@ -10,12 +10,15 @@ defmodule TimeManagerApp.Auth.JWT do
   end
 
   def generate_token(user_id) do
-    claims = %{"user_id" => user_id}
+    csrf_token = :crypto.strong_rand_bytes(32) |> Base.encode64()
+    claims = %{"user_id" => user_id, "csrf_token" => csrf_token}
 
-    with {:ok, token, _claims} <- Joken.generate_and_sign(claims) do
-      {:ok, token}
-    else
-      error -> {:error, error}
+    case generate_and_sign(claims) do
+      {:ok, token, _full_claims} ->
+        {:ok, token, claims}
+
+      error ->
+        error
     end
   end
 

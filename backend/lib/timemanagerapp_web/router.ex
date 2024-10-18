@@ -40,8 +40,8 @@ defmodule TimeManagerAppWeb.Router do
 
     # Team Routes
     resources "/teams", TeamController, except: [:new, :edit] do
-      post("/users/:user_id/add", TeamController, :add_user)
-      delete("/users/:user_id/remove", TeamController, :remove_user)
+      post("/users/add", TeamController, :add_user)
+      delete("/users/remove", TeamController, :remove_user)
       get("/users", TeamController, :team_users)
     end
 

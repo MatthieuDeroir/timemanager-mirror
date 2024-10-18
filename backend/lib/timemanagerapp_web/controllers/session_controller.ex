@@ -2,27 +2,23 @@ defmodule TimeManagerAppWeb.SessionController do
   use TimeManagerAppWeb, :controller
 
   alias TimeManagerApp.Users
+  alias TimeManagerApp.Auth.JWT
 
   @doc """
-    Create a new session for a user.
+  Create a new session for a user.
   """
 
   def create(conn, %{"email" => email, "password" => password}) do
     case Users.authenticate_user(email, password) do
       {:ok, user} ->
-        IO.inspect(user)
+        {:ok, token, claims} = JWT.generate_token(user.id)
+        csrf_token = claims["csrf_token"]
 
-        case TimeManagerApp.Auth.JWT.generate_token(user.id) do
-          {:ok, token} ->
-            conn
-            |> put_status(:ok)
-            |> json(%{token: token})
+        conn = put_resp_cookie(conn, "jwt", token, http_only: true, secure: false)
 
-          {:error, reason} ->
-            conn
-            |> put_status(:internal_server_error)
-            |> json(%{error: reason})
-        end
+        conn
+        |> put_status(:ok)
+        |> json(%{csrf_token: csrf_token, user: user})
 
       {:error, reason} ->
         conn
@@ -34,4 +30,5 @@ defmodule TimeManagerAppWeb.SessionController do
   @doc """
   Delete a session for a user.
   """
+  # Implement logout functionality if needed
 end
