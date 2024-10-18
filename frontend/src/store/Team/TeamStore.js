@@ -33,7 +33,7 @@ export const useTeamStore = defineStore('teamStore', {
                 this.isLoading = false
             }
         },
-        async createTeam(data) {
+        async createNewTeam(data) {
             this.isLoading = true
             this.error = null
             const newTeam = await createTeam(data)
