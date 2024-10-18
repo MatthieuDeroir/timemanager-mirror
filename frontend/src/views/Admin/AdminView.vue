@@ -9,9 +9,7 @@ import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
-import DayliChart from '@components/Chart/DayliChart.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
-
 
 const props = defineProps({
   userId: {
@@ -24,7 +22,7 @@ const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
 const userGender = ref('User Information')
 
-const handleSelectedUser = (user) =>{
+const handleSelectedUser = (user) => {
   userTitle.value = `${user.firstname} ${user.lastname}`
   userSubtitle.value = user.email
   userGender.value = `(${user.gender})`
@@ -32,11 +30,11 @@ const handleSelectedUser = (user) =>{
 const createUserPopUp = ref(false)
 const handleOpenPopUpCreateUser = () => {
   console.log('Create User')
-  createUserPopUp.value = true;
+  createUserPopUp.value = true
   document.body.style.overflow = 'hidden'
 }
 const handleClosePopUp = () => {
-  createUserPopUp.value = false;
+  createUserPopUp.value = false
   document.body.style.overflow = 'auto'
 }
 
@@ -69,32 +67,46 @@ const getDate = () => {
 </script>
 
 <template>
-  <div v-if="createUserPopUp"><UserCreate @clickOut="handleClosePopUp"></UserCreate></div>
+  <div v-if="createUserPopUp">
+    <UserCreate @clickOut="handleClosePopUp"></UserCreate>
+  </div>
   <v-container>
     <v-row>
       <v-col cols="12" md="4">
-        <Card :logo="userIcon" :subtitle="userSubtitle" :title="userTitle" :otherInfo="userGender" color='blue' 
+        <Card
+          :actionFunction="handleOpenPopUpCreateUser"
+          :logo="userIcon"
+          :otherInfo="userGender"
+          :subtitle="userSubtitle"
+          :title="userTitle"
           actionButton='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>'
-          :actionFunction="handleOpenPopUpCreateUser">
+          color="blue"
+        >
           <UserDisplay :userId="userId" @selecteduser="handleSelectedUser" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="sliceIcon" subtitle="Working time" title="Working Time Visualization" color='green' >
+        <Card
+          :logo="sliceIcon"
+          color="green"
+          subtitle="Working time"
+          title="Working Time Visualization"
+        >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </Card>
       </v-col>
 
-      <v-col cols="12" md="4" style="min-height: 330px;">
-        <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager" color='red' >
+      <v-col cols="12" md="4" style="min-height: 330px">
+        <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
           <ClockManager :userId="userId" />
-          <DayliChart :userId="userId"/>
+          <!--          TODO : Fix daily chart to use store-->
+          <!--          <DayliChart :userId="userId"/>-->
         </Card>
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" subtitle="Manager" title="Working Time Manager" color='yellow' >
+        <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>
