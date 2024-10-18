@@ -8,9 +8,9 @@
 </template>
 
 <script setup>
-import { useAuth } from '@/composables/useAuth'
+import { useAuth } from '@composables/useAuth.js'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@store/Auth/AuthStore'
+import { useAuthStore } from '@store/Auth/AuthStore.js'
 
 const { logout, redirectToRoleBasedRoute } = useAuth()
 const { user } = useAuthStore()
@@ -21,7 +21,7 @@ const handleLogout = () => {
 }
 
 const redirectToCurrentUserRoute = () => {
-  redirectToRoleBasedRoute(user.role, user.id)
+  redirectToRoleBasedRoute(user?.role_id, user?.id)
 }
 </script>
 

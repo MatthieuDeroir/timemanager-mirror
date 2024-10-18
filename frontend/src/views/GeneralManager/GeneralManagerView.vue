@@ -8,10 +8,8 @@ import clockIcon from '@assets/icons/icons8-clock-48.png'
 import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
-import teamIcon from '@assets/icons/icons8-team-48.png'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
-import Team from '@components/Team/Team.vue'
 
 const props = defineProps({
   userId: {
@@ -31,6 +29,7 @@ const handleSelectedUser = (user) => {
 }
 const createUserPopUp = ref(false)
 const handleOpenPopUpCreateUser = () => {
+  console.log('Create User')
   createUserPopUp.value = true
   document.body.style.overflow = 'hidden'
 }
@@ -102,22 +101,16 @@ const getDate = () => {
         <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
           <ClockManager :userId="userId" />
           <!--          TODO : Fix daily chart to use store-->
-          <!--          <DayliChart :userId="userId"/>-->
+          <!--          <DayliChart :workerId="workerId"/>-->
         </Card>
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" :subtitle="userTitle" color="yellow" title="Working Time Manager">
+        <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
-        </Card>
-      </v-col>
-
-      <v-col cols="12" md="12">
-        <Card :logo="teamIcon" color="Orange" subtitle="Team" title="My Team">
-          <Team :userId="userId" />
         </Card>
       </v-col>
     </v-row>
   </v-container>
 </template>
-<style scoped src="./AdminView.css"></style>
+<style scoped src="GeneralManagerView.css"></style>

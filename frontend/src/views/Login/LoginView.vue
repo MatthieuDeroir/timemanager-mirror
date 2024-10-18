@@ -13,8 +13,7 @@ const { user, isAuthenticated } = useAuthStore()
 
 onMounted(() => {
   if (isAuthenticated) {
-    redirectToRoleBasedRoute(user?.role, user?.id)
-    console.log('auth', isAuthenticated)
+    redirectToRoleBasedRoute(user?.role_id, user?.id)
   }
 })
 </script>

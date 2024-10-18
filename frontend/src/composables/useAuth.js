@@ -1,52 +1,52 @@
 import { useAuthStore } from '@/store/Auth/AuthStore'
 import { useRouter } from 'vue-router'
+import { loginUser, logoutUser } from '@/api/AuthAPI.js'
+import { UserRole } from '@enum/User/UserRole.js'
 
 export function useAuth() {
   const authStore = useAuthStore()
   const router = useRouter()
 
   const login = async (credentials) => {
-    try {
-      const fakeApiCall = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            user: { id: 1, name: 'John Doe', role: 'admin' },
-            token: 'fake-jwt-token'
-          })
-        }, 1000)
-      })
-
-      const { user, token } = await fakeApiCall
-
-      authStore.login(user, token)
-      redirectToRoleBasedRoute(user.role, user.id)
-    } catch (error) {
-      console.error('Login error:', error)
-      throw new Error('Login failed')
-    }
+    const { user } = await loginUser(credentials)
+    const token = localStorage.getItem('TOKEN')
+    authStore.login(user, token)
+    redirectToRoleBasedRoute(user.role_id, user.id)
   }
 
   const logout = () => {
+    logoutUser()
     authStore.logout()
     router.push('/login')
   }
 
-  const redirectToRoleBasedRoute = (role, userId) => {
-    if (!role || !userId) {
+  const redirectToRoleBasedRoute = (roleId, userId) => {
+    const currentRouteParams = router.currentRoute.value.params
+
+    if (!roleId || !userId) {
       router.push('/login')
       return
     }
 
-    switch (role) {
-      case 'admin':
+    switch (roleId) {
+      case UserRole.ADMIN:
         router.push(`/admin/${1}`)
         break
-      case 'manager':
+
+      case UserRole.GENERAL_MANAGER:
+        router.push('/general-manager')
+        break
+
+      case UserRole.MANAGER:
         router.push('/manager')
         break
-      case 'worker':
-        router.push(`/worker/${userId}`)
+
+      case UserRole.EMPLOYEE:
+        if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
+          router.push(`/worker/${userId}`)
+        }
         break
+
       default:
         router.push('/unauthorized')
     }
