@@ -8,9 +8,16 @@ defmodule TimeManagerApp.Auth.JWT do
     default_claims()
   end
 
-  def generate_token(user_id) do
+  def generate_token(user_id, role_id) do
     csrf_token = :crypto.strong_rand_bytes(32) |> Base.encode64()
-    claims = %{"user_id" => user_id, "csrf_token" => csrf_token}
+
+    claims = %{
+      "user_id" => user_id,
+      "role_id" => role_id,
+      "csrf_token" => csrf_token,
+      #  expire in 24 hours
+      "exp" => DateTime.utc_now() |> DateTime.add(86400, :second)
+    }
 
     case generate_and_sign(claims) do
       {:ok, token, _full_claims} ->

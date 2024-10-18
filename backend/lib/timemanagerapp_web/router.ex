@@ -1,8 +1,27 @@
 defmodule TimeManagerAppWeb.Router do
+  alias Hex.API.Auth
   use TimeManagerAppWeb, :router
+
+  alias TimeManagerAppWeb.Plugs.AuthorizeRole
 
   pipeline :api do
     plug(:accepts, ["json"])
+  end
+
+  pipeline :admin do
+    plug(AuthorizeRole, 1)
+  end
+
+  pipeline :general_manager do
+    plug(AuthorizeRole, 2)
+  end
+
+  pipeline :manager do
+    plug(AuthorizeRole, 3)
+  end
+
+  pipeline :employee do
+    plug(AuthorizeRole, 4)
   end
 
   pipeline :authenticated do
@@ -14,14 +33,13 @@ defmodule TimeManagerAppWeb.Router do
 
     post("/login", SessionController, :create)
 
-    resources "/users", UserController, except: [:new, :edit] do
+    resources "/users", UserController, except: [:new, :edit, :create, :update, :delete] do
       get("/teams", UserController, :user_teams)
     end
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated])
-    # User Routes
+    pipe_through([:api, :authenticated, :admin, :general_manager, :manager, :employee])
 
     # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
@@ -31,21 +49,33 @@ defmodule TimeManagerAppWeb.Router do
     # WorkingTime Routes
     get("/workingtime/:user_id", WorkingTimeController, :index)
     get("/workingtime/:user_id/:id", WorkingTimeController, :show)
-    post("/workingtime/:user_id", WorkingTimeController, :create)
-    put("/workingtime/:id", WorkingTimeController, :update)
-    delete("/workingtime/:id", WorkingTimeController, :delete)
 
     # Role Routes
     resources("/roles", RoleController, except: [:new, :edit])
 
     # Team Routes
     resources "/teams", TeamController, except: [:new, :edit] do
-      post("/users/add", TeamController, :add_user)
-      delete("/users/remove", TeamController, :remove_user)
       get("/users", TeamController, :team_users)
     end
+  end
 
-    # Logs Routes
+  scope "/api", TimeManagerAppWeb do
+    pipe_through([:api, :authenticated, :admin, :general_manager, :manager])
+
+    post("/workingtime/:user_id", WorkingTimeController, :create)
+    put("/workingtime/:id", WorkingTimeController, :update)
+    delete("/workingtime/:id", WorkingTimeController, :delete)
+  end
+
+  scope "/api", TimeManagerAppWeb do
+    pipe_through([:api, :authenticated, :admin, :general_manager])
+    post("teams/users/add", TeamController, :add_user)
+    delete("teams/users/remove", TeamController, :remove_user)
+  end
+
+  scope "/api", TimeManagerAppWeb do
+    pipe_through([:api, :authenticated, :admin])
+    resources("/users", UserController, except: [:new, :edit])
     resources("/logs", LogController, only: [:index, :show])
   end
 
