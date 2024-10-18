@@ -5,19 +5,29 @@ defmodule TimeManagerAppWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :authenticated do
+    plug(TimeManagerAppWeb.Plugs.AuthPlug)
+  end
+
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
-    # User Routes
+
+    post("/login", SessionController, :create)
+
     resources "/users", UserController, except: [:new, :edit] do
       get("/teams", UserController, :user_teams)
     end
+  end
+
+  scope "/api", TimeManagerAppWeb do
+    pipe_through([:api, :authenticated])
+    # User Routes
 
     # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
     post("/clocks/:user_id", ClockController, :create)
     get("/clocks/:user_id/:id", ClockController, :show)
 
-    # WorkingTime Routes
     # WorkingTime Routes
     get("/workingtime/:user_id", WorkingTimeController, :index)
     get("/workingtime/:user_id/:id", WorkingTimeController, :show)

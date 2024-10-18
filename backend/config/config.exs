@@ -70,6 +70,9 @@ config :timemanagerapp, :phoenix_swagger,
     ]
   }
 
+# config/joken
+config :joken, default_signer: "secret"
+
 # If you dont use Poison
 config :phoenix_swagger, json_library: Jason
 

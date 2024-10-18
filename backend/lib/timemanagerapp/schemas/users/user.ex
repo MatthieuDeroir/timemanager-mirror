@@ -24,6 +24,7 @@ defmodule TimeManagerApp.Users.User do
              :updated_at,
              :teams
            ]}
+
   schema "users" do
     field(:firstname, :string)
     field(:lastname, :string)
@@ -37,6 +38,7 @@ defmodule TimeManagerApp.Users.User do
     field(:end_date, :date)
     field(:username, :string)
     field(:email, :string)
+    field(:password, :string, virtual: true)
     field(:password_hash, :string)
 
     belongs_to(:role, TimeManagerApp.Roles.Role)
@@ -65,13 +67,13 @@ defmodule TimeManagerApp.Users.User do
       :end_date,
       :username,
       :email,
-      :password_hash,
+      :password,
       :role_id
     ])
     |> validate_required([
       :username,
       :email,
-      :password_hash
+      :password
     ])
     |> validate_format(
       :email,
@@ -82,26 +84,35 @@ defmodule TimeManagerApp.Users.User do
     |> foreign_key_constraint(:role_id)
     |> validate_number(:salary, greater_than_or_equal_to: 0, message: "Salary cannot be negative")
     |> validate_date_order(:start_date, :end_date)
+    |> validate_length(:password, min: 6, message: "Password must be at least 6 characters long")
+    |> hash_password()
     |> put_teams_assoc(attrs)
+  end
+
+  defp hash_password(changeset) do
+    if changeset.valid? do
+      password = get_change(changeset, :password)
+
+      if password do
+        changeset
+        |> put_change(:password_hash, Bcrypt.hash_pwd_salt(password))
+        |> delete_change(:password)
+      else
+        changeset
+      end
+    else
+      changeset
+    end
   end
 
   defp validate_date_order(changeset, start_field, end_field) do
     start_date = get_field(changeset, start_field)
     end_date = get_field(changeset, end_field)
 
-    cond do
-      is_nil(start_date) or is_nil(end_date) ->
-        # Skip validation if either date is nil
-        changeset
-
-      Date.compare(start_date, end_date) == :gt ->
-        changeset
-        |> add_error(start_field, "must be before or the same as #{end_field}")
-        |> add_error(end_field, "must be after or the same as #{start_field}")
-
-      true ->
-        # Dates are in correct order; no changes needed
-        changeset
+    if start_date && end_date && start_date > end_date do
+      add_error(changeset, end_field, "must be after the start date")
+    else
+      changeset
     end
   end
 

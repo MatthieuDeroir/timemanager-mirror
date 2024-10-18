@@ -52,13 +52,17 @@ defmodule TimeManagerApp.MixProject do
        compile: false,
        depth: 1},
       {:swoosh, "~> 1.5"},
+      {:plug_cowboy, "~> 2.5"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
+      {:joken, "~> 2.5.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
+      {:comeonin, "~> 5.3"},
+      {:bcrypt_elixir, "~> 2.3"},
       # Add this line
       {:faker, "~> 0.17", only: [:dev, :test]}
     ]

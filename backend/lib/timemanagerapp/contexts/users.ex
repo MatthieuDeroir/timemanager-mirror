@@ -122,4 +122,21 @@ defmodule TimeManagerApp.Users do
     |> Ecto.Changeset.put_assoc(:teams, updated_teams)
     |> Repo.update()
   end
+
+  def authenticate_user(email, password) do
+    user = Repo.get_by(User, email: email)
+
+    cond do
+      user && Bcrypt.verify_pass(password, user.password_hash) ->
+        # Preload teams
+        user = Repo.preload(user, :teams)
+        {:ok, user}
+
+      user ->
+        {:error, "Invalid password"}
+
+      true ->
+        {:error, "User not found"}
+    end
+  end
 end
