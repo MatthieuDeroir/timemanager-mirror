@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/Auth/AuthStore'
 import { useRouter } from 'vue-router'
+import { loginUser } from '@/api/AuthAPI.js'
 
 export function useAuth() {
   const authStore = useAuthStore()
@@ -7,17 +8,16 @@ export function useAuth() {
 
   const login = async (credentials) => {
     try {
-      const fakeApiCall = new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            user: { id: 1, name: 'John Doe', role: 'worker' },
-            token: 'fake-jwt-token'
-          })
-        }, 1000)
-      })
+      // const fakeApiCall = new Promise((resolve) => {
+      //   setTimeout(() => {
+      //     resolve({
+      //       user: { id: 1, name: 'John Doe', role: 'worker' },
+      //       token: 'fake-jwt-token'
+      //     })
+      //   }, 1000)
+      // })
 
-      const { user, token } = await fakeApiCall
-
+      const { user, token } = await loginUser(credentials)
       authStore.login(user, token)
       redirectToRoleBasedRoute(user.role, user.id)
     } catch (error) {
@@ -27,6 +27,7 @@ export function useAuth() {
   }
 
   const logout = () => {
+    logout()
     authStore.logout()
     router.push('/login')
   }
