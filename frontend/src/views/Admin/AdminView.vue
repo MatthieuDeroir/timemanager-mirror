@@ -9,7 +9,9 @@ import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
+import DayliChart from '@components/Chart/DayliChart.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
+
 
 const props = defineProps({
   userId: {
@@ -87,6 +89,7 @@ const getDate = () => {
       <v-col cols="12" md="4" style="min-height: 330px;">
         <Card :logo="clockIcon" :subtitle="getDate()" title="Clock Manager" color='red' >
           <ClockManager :userId="userId" />
+          <DayliChart :userId="userId"/>
         </Card>
       </v-col>
 
