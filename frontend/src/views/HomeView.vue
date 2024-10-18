@@ -5,6 +5,7 @@ import WorkingTimeVisualization from '../components/WorkingTimeVisualization/Wor
 import ClockManager from '../components/ClockManager/ClockManager.vue';
 import UserComponent from '../components/UserSearch/UserSearch.vue';
 import CardComponent from '../components/Card/Card.vue';
+import Team from '../components/Team/Team.vue';
 // Used to store the working times
 const workingTimes = ref([]);
 
