@@ -22,9 +22,10 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', {
     async createWorkingTime(start, end, userId) {
       this.isLoading = true
       this.error = null
-      await createWorkingTime(start, end, userId) //const newWorkingTime =
+      const newWorkingTime = await createWorkingTime(start, end, userId) //
       //this.workingTimes.push(newWorkingTime)
       this.isLoading = false
+      return newWorkingTime
     },
 
     async updateWorkingTime(id, data) {

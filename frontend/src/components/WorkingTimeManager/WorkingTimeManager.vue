@@ -103,7 +103,8 @@ const saveWorkingTime = async (time) => {
       await workingTimeStore.updateWorkingTime(time.id, { start: time.start, end: time.end })
     } else {
       // Si c'est une nouvelle entrée
-      await workingTimeStore.createWorkingTime(time.start, time.end, props.userId)
+      const createdTime = await workingTimeStore.createWorkingTime(time.start, time.end, props.userId)
+      time.id = createdTime.id 
     }
     time.isEditing = false
     workingTimeStore.error = null
