@@ -61,13 +61,9 @@ export default defineComponent({
 
     const startDate = dayStart // Optional: can be passed from parent or a filter
     const endDate = dayEnd // Optional: same as above
-    console.log("trdf")
     const workingTimeStore = useWorkingTimeStore()
 
-    await workingTimeStore.loadWorkingTimes(this.userId, startDate, endDate)
-    const workingTimes =  workingTimeStore.workingTimes;      
-    console.log(workingTimes);
-    
+    const workingTimes = await workingTimeStore.loadWorkingTimes(this.userId, startDate, endDate)
 
     try {
       // Fetch the working times by userId
