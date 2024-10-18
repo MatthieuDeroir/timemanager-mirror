@@ -6,9 +6,15 @@
       </v-expansion-panel-title>
 
       <v-expansion-panel-text>
+        <div class="UserDiv">
+          <span class="UserRolle">Position</span>
+          <span class="UserFirstName">First Name</span>
+          <span class="UserLastName">Last Name</span>
+        </div>
         <div v-for="user in getUsersByTeam(team.id)" :key="user.id" class="UserDiv">
-          <p>{{ user.firstname }}</p>
-          <p>{{ user.lastname }}</p>
+          <span class="UserRolle">{{ getRoleName(user.role_id) }}</span>
+          <span class="UserFirstName">{{ user.firstname }}</span>
+          <span class="UserLastName">{{ user.lastname }}</span>
           <a :href="`mailto:${user.email}`" class="mailto-link">
             <img :src="emailIcon" alt="Email Us" />
           </a>
@@ -177,20 +183,62 @@ const mockedUsers = ref([
   },
 ]);
 
+const mockedRoles = ref([
+  { id: 1, name: 'employee' },
+  { id: 2, name: 'manager' },
+  { id: 3, name: 'admin' }
+]);
+
 const getUserTeams = () => {
   return mokedAllTeam.value.data.filter((team) => mokedUser.value.team_id.includes(team.id));
 };
 
+const getRoleName = (roleId) => {
+  const role = mockedRoles.value.find(role => role.id === roleId);
+  return role ? role.name : 'Unknown Role'; 
+};
+
 const getUsersByTeam = (teamId) => {
-  return mockedUsers.value.filter((user) => {
-    return Array.isArray(user.team_id) ? user.team_id.includes(teamId) : user.team_id === teamId;
-  });
+  return mockedUsers.value
+    .filter((user) => {
+      return Array.isArray(user.team_id) ? user.team_id.includes(teamId) : user.team_id === teamId;
+    })
+    .sort((a, b) => {
+      const rolePriority = { admin: 1, manager: 2, employee: 3 }; 
+      const roleA = getRoleName(a.role_id);
+      const roleB = getRoleName(b.role_id);
+      return (rolePriority[roleA] || 4) - (rolePriority[roleB] || 4); 
+    });
 };
 </script>
 
 <style scoped>
-.UserDiv{
+.UserDiv {
   display: flex;
+  align-items: center;
 }
+
+.UserRolle {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.UserFirstName {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.UserLastName {
+  width: 100px;
+  margin-right: 10px;
+}
+
+
+.mailto-link {
+  display: flex;
+  align-items: center; 
+}
+
+
 
 </style>
