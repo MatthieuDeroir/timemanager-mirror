@@ -13,6 +13,7 @@
           <div class="card-subtitle">{{ subtitle }}</div>
         </div>
       </div>
+      <div v-html="actionButton" v-if="actionButton" class="card-action" :style="{'fill':'var(--color-'+color+')'}" @click="triggerAction"></div>
     </div>
     <div class="card-body">
       <slot></slot>
@@ -38,21 +39,25 @@ export default {
     logo: {
       type: String
     },
-    height: {
-      type: String,
-      default: 'medium'
-    },
-    width: {
-      type: String,
-      default: 'short'
-    },
     color: {
-      type: String,
-      default: '' // or any default color you prefer
+      type: String
+    },
+    actionButton:{
+      type: String
+    },
+    actionFunction:{
+      type: Function
     }
   },
   setup(props) {
     return toRefs(props);
+  },
+  methods:{
+    triggerAction(){
+      if(this.actionFunction){
+        this.actionFunction()
+      }
+    }
   }
 };
 </script>

@@ -9,6 +9,7 @@ import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
+import UserCreate from '@components/user/UserCreate/UserCreate.vue'
 
 const props = defineProps({
   userId: {
@@ -26,7 +27,16 @@ const handleSelectedUser = (user) =>{
   userSubtitle.value = user.email
   userGender.value = `(${user.gender})`
 }
-
+const createUserPopUp = ref(false)
+const handleOpenPopUpCreateUser = () => {
+  console.log('Create User')
+  createUserPopUp.value = true;
+  document.body.style.overflow = 'hidden'
+}
+const handleClosePopUp = () => {
+  createUserPopUp.value = false;
+  document.body.style.overflow = 'auto'
+}
 
 // Used to store the working times
 const workingTimes = ref([])
@@ -47,7 +57,7 @@ const updateWorkingTimes = (updatedTimes) => {
 //   isAuthenticated.value = true
 // }
 
-function getDate() {
+const getDate = () => {
   return new Date().toLocaleDateString('en-GB', {
     day: '2-digit',
     month: 'long',
@@ -57,10 +67,13 @@ function getDate() {
 </script>
 
 <template>
+  <div v-if="createUserPopUp"><UserCreate @clickOut="handleClosePopUp"></UserCreate></div>
   <v-container>
     <v-row>
       <v-col cols="12" md="4">
-        <Card :logo="userIcon" :subtitle="userSubtitle" :title="userTitle" :otherInfo="userGender" color='blue' >
+        <Card :logo="userIcon" :subtitle="userSubtitle" :title="userTitle" :otherInfo="userGender" color='blue' 
+          actionButton='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>'
+          :actionFunction="handleOpenPopUpCreateUser">
           <UserDisplay :userId="userId" @selecteduser="handleSelectedUser" />
         </Card>
       </v-col>
