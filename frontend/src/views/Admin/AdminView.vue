@@ -10,6 +10,7 @@ import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
+import Team from '@components/Team/Team.vue'
 
 const props = defineProps({
   userId: {
@@ -108,6 +109,12 @@ const getDate = () => {
       <v-col cols="12" md="8">
         <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
+        </Card>
+      </v-col>
+
+      <v-col cols="12" md="12">
+        <Card :logo="userIcon" subtitle="Team" title="My Team" color='Orange' >
+          <Team :userId="userId"/>
         </Card>
       </v-col>
     </v-row>
