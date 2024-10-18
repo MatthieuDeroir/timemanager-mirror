@@ -4,7 +4,7 @@ import AdminView from '@views/Admin/AdminView.vue'
 import ManagerView from '@views/Manager/ManagerView.vue'
 import WorkerView from '@views/Worker/WorkerView.vue'
 import NotFound from '@views/NotFound/NotFound.vue'
-import Unauthorized from '@views/Unauthorized.vue'
+import Unauthorized from '@views/Unauthorized/Unauthorized.vue'
 import LoginView from '@views/Login/LoginView.vue'
 
 const routes = [
@@ -68,10 +68,17 @@ router.beforeEach((to, from, next) => {
     }
 
     const userRole = authStore.user?.role
+    const userId = authStore.user?.id
+
     if (to.meta.role && to.meta.role !== userRole) {
       return next('/unauthorized')
     }
+
+    if (userRole === 'worker' && to.params.userId !== userId.toString()) {
+      return next(`/worker/${userId}`)
+    }
   }
+
   next()
 })
 

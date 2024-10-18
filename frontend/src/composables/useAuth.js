@@ -10,7 +10,7 @@ export function useAuth() {
       const fakeApiCall = new Promise((resolve) => {
         setTimeout(() => {
           resolve({
-            user: { id: 1, name: 'John Doe', role: 'admin' },
+            user: { id: 1, name: 'John Doe', role: 'worker' },
             token: 'fake-jwt-token'
           })
         }, 1000)
@@ -32,6 +32,8 @@ export function useAuth() {
   }
 
   const redirectToRoleBasedRoute = (role, userId) => {
+    const currentRouteParams = router.currentRoute.value.params
+
     if (!role || !userId) {
       router.push('/login')
       return
@@ -41,12 +43,17 @@ export function useAuth() {
       case 'admin':
         router.push(`/admin/${1}`)
         break
+
       case 'manager':
         router.push('/manager')
         break
+
       case 'worker':
-        router.push(`/worker/${userId}`)
+        if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
+          router.push(`/worker/${userId}`)
+        }
         break
+
       default:
         router.push('/unauthorized')
     }
