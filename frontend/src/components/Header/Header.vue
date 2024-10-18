@@ -1,12 +1,19 @@
 <template>
   <header class="header">
-    <img alt="Gotham Logo" class="navbar-logo" src="@/assets/global/batman.png"/>
-    <UserSearch @user-selected="handleUserSelected"/>
-    
+    <img alt="Gotham Logo" class="navbar-logo" src="@/assets/global/batman.png" />
+    <div v-if="authStore.role === 'admin'">
+      <UserSearch @user-selected="handleUserSelected" />
+    </div>
     <div>
       <v-menu open-on-click>
         <template v-slot:activator="{ props }">
-          <div class="user-preferences" :style="{'background':'var(--linear-'+ getColor() +')'}" v-bind="props"> MD</div>
+          <div
+            :style="{ background: 'var(--linear-' + getColor() + ')' }"
+            class="user-preferences"
+            v-bind="props"
+          >
+            MD
+          </div>
         </template>
         <v-list>
           <v-list-item>
@@ -14,7 +21,7 @@
               <ColorPicker @colorSelected="passEmitingColor" />
             </v-list-item-title>
           </v-list-item>
-          <v-list-item v-for="(item, index) in items" :key="index">
+          <v-list-item v-for="(item, index) in items" :key="index" @click="handleItemClick(item)">
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -24,36 +31,43 @@
 </template>
 
 <script lang="ts" setup>
-import UserSearch from "../../components/user/UserSearch/UserSearch.vue";
-import ColorPicker from "./ColourPicker/ColourPicker.vue";
-import { ref } from 'vue';
+import UserSearch from '../../components/user/UserSearch/UserSearch.vue'
+import ColorPicker from './ColourPicker/ColourPicker.vue'
+import { ref } from 'vue'
+import { useAuthStore } from '@store/Auth/AuthStore'
+import { useAuth } from '@composables/useAuth'
 
-const items = [
-  { title: 'Profil' },
-  { title: 'Log out' },
-];
+const items = [{ title: 'Profil' }, { title: 'Log out' }]
 
-const emit = defineEmits(['colorSelected']);
+const emit = defineEmits(['colorSelected'])
+const authStore = useAuthStore()
+const auth = useAuth()
 
-const selectedUserId = ref<number | null>(null);
+const selectedUserId = ref<number | null>(null)
 
 const handleUserSelected = (userId: number) => {
-  selectedUserId.value = userId;
-};
-const passEmitingColor = (color) => {
-  emit('colorSelected', color); 
-};
+  selectedUserId.value = userId
+}
 
-function getColor(){
-  const selectedColorClass = ref('blue');
-  const storedColor = localStorage.getItem('selectedColor');
-  if(storedColor){
-    const color = JSON.parse(storedColor);
-    selectedColorClass.value = color.name.toLowerCase();
+const passEmitingColor = (color) => {
+  emit('colorSelected', color)
+}
+
+const handleItemClick = (item) => {
+  if (item.title === 'Log out') {
+    auth.logout()
+  }
+}
+
+function getColor() {
+  const selectedColorClass = ref('blue')
+  const storedColor = localStorage.getItem('selectedColor')
+  if (storedColor) {
+    const color = JSON.parse(storedColor)
+    selectedColorClass.value = color.name.toLowerCase()
   }
   return selectedColorClass.value
 }
-
 </script>
 
 <style scoped src="./Header.css"></style>
