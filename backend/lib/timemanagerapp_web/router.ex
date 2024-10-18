@@ -27,7 +27,11 @@ defmodule TimeManagerAppWeb.Router do
     resources("/roles", RoleController, except: [:new, :edit])
 
     # Team Routes
-    resources("/teams", TeamController, except: [:new, :edit])
+  resources "/teams", TeamController, except: [:new, :edit] do
+    post("/users/add", TeamController, :add_user)
+    delete("/users/remove", TeamController, :remove_user)
+    get("/users", TeamController, :team_users)
+  end
 
     # Logs Routes
     resources("/logs", LogController, only: [:index, :show])
