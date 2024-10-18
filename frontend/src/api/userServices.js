@@ -55,7 +55,7 @@ async function createUser(username, email) {
  * @param {Object} userParams - User fields to update
  * @returns {Promise<UserDTO>}
  */
-async function updateUser(userId, userParams) {
+export async function updateUser(userId, userParams) {
   const response = await fetch(`${API_BASE_URL}users/${userId}`, {
     method: 'PUT',
     headers: {

@@ -11,19 +11,19 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
-import { getAllUsers } from '@services/userServices'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@store/User/UserStore'
 
 const emit = defineEmits(['user-selected'])
 const router = useRouter()
-const users = ref([])
+const userStore = useUserStore()
 
 const fetchUsers = async () => {
-  users.value = await getAllUsers()
+  await userStore.loadAllUsers()
 }
 
-const userList = computed(() => users.value)
+const userList = computed(() => userStore.users)
 
 onMounted(async () => {
   await fetchUsers()
@@ -33,8 +33,8 @@ const onUserSelected = (userId) => {
   router.push({ name: 'Administrator', params: { userId } })
 }
 </script>
+
 <style scoped>
 .custom-autocomplete .v-input_control {
-  /* Your custom styles here */
 }
 </style>

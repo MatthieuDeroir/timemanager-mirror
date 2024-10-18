@@ -10,12 +10,12 @@
 
   --login-color-text-base: #333;
   --login-border-focus-color: #fff;
-  --login-background-color: rgba(255, 255, 255, 0.8);
-  --loign-input-border-color: rgba(255, 255, 255, 0.5);
+  --login-background-color: #FAFAFA;
+  --loign-input-border-color: rgb(100, 100, 100);
   --loign-input-focus-color: rgba(255, 255, 255, 0.6);
   --login-input-placeholder-color: rgba(170, 170, 170);
   --color-button-primary:#0099ff;
-  --color-button-danger:var(--color-systemRed);
+  --color-button-danger:var(--color-red);
   
   --color-orange: #ff9500;
   --color-yellow: #e5cc00;
@@ -78,7 +78,7 @@ body {
   padding: 0 16px;
   background-color: var(--color-button-primary);
   border-radius: 1000px;
-  color: white;
+  color: white !important;
 }
 
 .btn-danger{
@@ -86,5 +86,5 @@ body {
   padding: 0 16px;
   background-color: var(--color-button-danger);
   border-radius: 1000px;
-  color: white;
+  color: white !important;
 }

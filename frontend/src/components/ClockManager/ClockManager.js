@@ -1,80 +1,63 @@
-import Services from '@services';
-import LoaderComponent from '@components/Loader/LoaderComponent.vue';
+import { computed, ref, onMounted } from 'vue'
+import LoaderComponent from '@components/Loader/LoaderComponent.vue'
+import { useClockStore } from '@store/Clock/ClockStore.js'
 
+//TODO : Refactor this component to use the new composition API and the ClockStore
 export default {
-  props:{
-    userId:{
-      type: [String,Number],
-      required: true
-    }
-  },
-  components: {
-    LoaderComponent
-  },
-  data() {
-    return {
-      items: [],
-      loading: true,
-      currentClockStatus: null,
-      error: null,
-      date: null
-    }
-  },
-  mounted() {
-    this.getData()
-  },
-  methods: {
-    async getData() {
-      try {
-        Services.Clocks.getClocksByUserId(this.userId).then((data) => {
-          this.items = data.filter((item) => {
-            const date = new Date(item.time)
-            const dateNow = new Date()
-            return (
-              date.getFullYear() === dateNow.getFullYear() &&
-              date.getMonth() === dateNow.getMonth() &&
-              date.getDate() === dateNow.getDate()
-            )
-          })
-          this.items.sort((current, item) => new Date(current.time) - new Date(item.time))
-          if (this.items.length > 0) {
-            this.date = this.getDate()
-            this.currentClockStatus = this.getLastClock()
-          }
-          this.loading = false
+    components: {
+        LoaderComponent
+    },
+    props: {
+        userId: {
+            type: [String, Number],
+            required: true
+        }
+    },
+    setup(props) {
+        const clockStore = useClockStore()
+
+        const clocks = computed(() => clockStore.clocks)
+        const isLoading = computed(() => clockStore.isLoading)
+        const storeError = computed(() => clockStore.error)
+
+        const filteredClocks = computed(() => {
+            return clocks.value
+                .filter((item) => {
+                    const date = new Date(item.time)
+                    const dateNow = new Date()
+                    return (
+                        date.getFullYear() === dateNow.getFullYear() &&
+                        date.getMonth() === dateNow.getMonth() &&
+                        date.getDate() === dateNow.getDate()
+                    )
+                })
+                .sort((current, item) => new Date(current.time) - new Date(item.time))
         })
-      } catch (err) {
-        this.error = err.message
-        this.loading = false
-      }
-    },
 
-    getLastClock() {
-      return this.items[this.items.length - 1].status
-    },
+        const handleCreateClock = async () => {
+            const newClockData = {
+                time: new Date().toISOString(),
+                status: !filteredClocks.value.length ? false : !filteredClocks.value[filteredClocks.value.length - 1].status,
+                userId: props.userId
+            }
+            await clockStore.createClock(newClockData)
+        }
 
-    async handleCreateClock() {
-      var mock = await Services.Clocks.createClock(
-        new Date().toISOString(),
-        !this.currentClockStatus,
-        1
-      )
-      this.items.push(mock)
-      this.error = null
-      this.currentClockStatus = !this.currentClockStatus
-    },
+        const getTime = (item) => {
+            const rowDate = new Date(item.time)
+            return rowDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+        }
 
-    getDate() {
-      const rowDate = new Date(this.items[0].time);
-      return rowDate.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      })
-    },
-    getTime(item) {
-      const rowDate = new Date(item.time);
-      return rowDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        onMounted(() => {
+            clockStore.loadClocks(props.userId)
+        })
+
+        return {
+            filteredClocks,
+            isLoading,
+            storeError,
+            handleCreateClock,
+            getTime
+        }
     }
-  }
 }
