@@ -108,7 +108,7 @@ const getDate = () => {
       </v-col>
 
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
+        <Card :logo="workIcon" :subtitle="userTitle" title="Working Time Manager" color='yellow' >
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>

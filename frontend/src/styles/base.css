@@ -79,6 +79,8 @@ body {
   background-color: var(--color-button-primary);
   border-radius: 1000px;
   color: white !important;
+  width: fit-content;
+  height: fit-content;
 }
 
 .btn-danger{
@@ -87,4 +89,6 @@ body {
   background-color: var(--color-button-danger);
   border-radius: 1000px;
   color: white !important;
+  width: fit-content;
+  height: fit-content;
 }

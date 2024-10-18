@@ -40,6 +40,8 @@
 }
 .label{
     display: flex;
+    justify-content: start;
+    align-items: center;
     color: var(--color-labelSecondary);
     width: 78px;
 }
@@ -52,7 +54,12 @@
 }
 
 .input-date, .input-text, .input-number{
-    padding: 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 3px;
     width: 100%;
-    border-radius: 0px;
+    border-radius: 5px !important;
+    margin: 5px;
+    border: 1px solid var(--color-labelSecondary);
 }

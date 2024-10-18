@@ -1,25 +1,22 @@
 <template>
-  <div class="working-times">
-    <h2>Management of the working times for User: {{ userId }}</h2>
-
-    <div v-if="loading">Loading...</div>
+  
+  <div v-if="loading"><Loader></Loader></div>
+  <div v-else class="working-times">
+    <button class="btn-primary add-button" @click="addNewWorkingTime">Add new working time</button>
+    
     <div v-if="error" class="error">{{ error }}</div>
-
-    <!-- Bouton pour ajouter une nouvelle ligne -->
-    <button @click="addNewWorkingTime">Add new working time</button>
-
     <!-- Hours worked table-->
-    <table v-if="!loading && !error">
+    <v-table class="table" fixed-header height="400px" density='compact' v-if="!loading">
       <thead>
         <tr>
-          <th>Start Time</th>
-          <th>End Time</th>
-          <th>Total Hours Worked</th>
-          <th>Actions</th>
+          <th style="width: 30%;">Start Time</th>
+          <th style="width: 30%;">End Time</th>
+          <th style="width: 18%;">Total</th>
+          <th style="width: 22%;">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="time in workingTimes" :key="time.id || time.tempId">
+        <tr v-for="time in workingTimeStore.workingTimes" :key="time.id || time.tempId">
           <td>
             <input v-if="time.isEditing" v-model="time.start" type="datetime-local" />
             <span v-else>{{ new Date(time.start).toLocaleString() }}</span>
@@ -29,25 +26,21 @@
             <span v-else>{{ new Date(time.end).toLocaleString() }}</span>
           </td>
           <td>{{ calculateHoursWorked(time.start, time.end) }} hours</td>
-          <td>
-            <button v-if="time.isEditing" @click="saveWorkingTime(time)">Save</button>
-            <button v-else @click="editWorkingTime(time)">Edit</button>
-            <button @click="deleteWorkingTime(time.id || time.tempId)">Delete</button>
+          <td class="action-button-container">
+            <button class="btn-primary wt-btn" v-if="time.isEditing" @click="saveWorkingTime(time)">Save</button>
+            <button class="btn-primary wt-btn" v-else @click="editWorkingTime(time)">Edit</button>
+            <button class="btn-danger wt-btn" @click="deleteWorkingTime(time.id || time.tempId)">Delete</button>
           </td>
         </tr>
       </tbody>
-    </table>
+    </v-table>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import {
-  createWorkingTime as createTime,
-  deleteWorkingTime as deleteTime,
-  getWorkingTimesByUserId,
-  updateWorkingTime as updateTime
-} from '../../api/workingtimeServices'
+import { ref,computed } from 'vue'
+import Loader from '@components/Loader/LoaderComponent.vue'
+import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
 
 // Récupérer les props
 const props = defineProps({
@@ -57,24 +50,23 @@ const props = defineProps({
   }
 })
 
-// Variables réactives pour l'état de chargement, les erreurs, et les heures de travail
-const workingTimes = ref([])
-const loading = ref(true)
-const error = ref(null)
+const workingTimeStore = useWorkingTimeStore()
+const loading = computed(() => workingTimeStore.isLoading)
+const error = computed(() => workingTimeStore.error)
 const nextTempId = ref(0) // Pour identifier temporairement les nouvelles lignes
 
-// Fonction pour récupérer les heures de travail d'un utilisateur
-const getWorkingTimes = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    workingTimes.value = await getWorkingTimesByUserId(props.userId)
-  } catch (err) {
-    error.value = err.message || 'An error occurred'
-  } finally {
-    loading.value = false
-  }
-}
+
+
+// // Fonction pour récupérer les heures de travail d'un utilisateur
+// const getWorkingTimes = async () => {
+//   try {
+//     workingTimes.value = await workingTimes.getWorkingTimesByUserId(props.userId)
+    
+//   } catch (err) {
+//     error.value = err.message || 'An error occurred'
+//   }
+// }
+//workingTimes.value.sort((a, b) => new Date(b.start) - new Date(a.start))
 
 // Fonction pour calculer les heures travaillées entre deux dates
 const calculateHoursWorked = (start, end) => {
@@ -85,7 +77,10 @@ const calculateHoursWorked = (start, end) => {
 
 // Ajouter une nouvelle entrée de temps de travail
 const addNewWorkingTime = () => {
-  workingTimes.value.push({
+  if (workingTimeStore.workingTimes.some((t) => t.isEditing)) {
+    return
+  }
+  workingTimeStore.workingTimes.unshift({
     tempId: nextTempId.value++, // Temp ID pour la nouvelle ligne
     start: '',
     end: '',
@@ -102,50 +97,33 @@ const editWorkingTime = (time) => {
 
 // Sauvegarder une entrée de temps de travail
 const saveWorkingTime = async (time) => {
-  if (!isSameDay(time.start, time.end)) {
-    error.value = 'Start and End times must be on the same day.'
-    return
-  }
-
   try {
     if (time.id) {
       // Si l'entrée existe déjà, on la met à jour
-      await updateTime(time.id, { start: time.start, end: time.end })
+      await workingTimeStore.updateWorkingTime(time.id, { start: time.start, end: time.end })
     } else {
       // Si c'est une nouvelle entrée
-      const newTime = await createTime(time.start, time.end, props.userId)
-      time.id = newTime.id // Assigner l'ID réel une fois créé
+      await workingTimeStore.createWorkingTime(time.start, time.end, props.userId)
     }
     time.isEditing = false
-    error.value = null
-    getWorkingTimes() // Rafraîchir la liste
+    workingTimeStore.error = null
   } catch (err) {
-    error.value = err.message || 'Failed to save working time'
+    workingTimeStore.workingTimes = workingTimeStore.workingTimes.filter((t) => t.tempId !== time.tempId)
+    workingTimeStore.error = err.message || 'Failed to save working time'
+  } finally{
+    time.isEditing = false
   }
 }
 
 // Supprimer une entrée de temps de travail
 const deleteWorkingTime = async (idOrTempId) => {
-  const time = workingTimes.value.find((t) => t.id === idOrTempId || t.tempId === idOrTempId)
+  console.log(idOrTempId)
+  const time = workingTimeStore.workingTimes.find((t) => t.id === idOrTempId || t.tempId === idOrTempId)
   if (time.id) {
-    await deleteTime(time.id) // Si l'entrée existe dans la base, on la supprime
+    await workingTimeStore.deleteWorkingTime(time.id) // Si l'entrée existe dans la base, on la supprime
   }
-  // Supprimer localement
-  workingTimes.value = workingTimes.value.filter(
-    (t) => t.id !== idOrTempId && t.tempId !== idOrTempId
-  )
 }
 
-// Vérifier si les dates de début et de fin sont sur le même jour
-const isSameDay = (start, end) => {
-  const startDate = new Date(start)
-  const endDate = new Date(end)
-  return (
-    startDate.getFullYear() === endDate.getFullYear() &&
-    startDate.getMonth() === endDate.getMonth() &&
-    startDate.getDate() === endDate.getDate()
-  )
-}
 
 // Formater la date pour un input `datetime-local`
 const formatDateForInput = (dateString) => {
@@ -153,10 +131,7 @@ const formatDateForInput = (dateString) => {
   return date.toISOString().slice(0, 16) // Format "YYYY-MM-DDTHH:MM"
 }
 
-// Charger les données lors du montage du composant
-onMounted(() => {
-  getWorkingTimes()
-})
+
 </script>
 
 <style src="./WorkingTimeManager.css"></style>
