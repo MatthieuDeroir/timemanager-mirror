@@ -8,7 +8,7 @@ defmodule TimeManagerAppWeb.SessionController do
   Create a new session for a user.
   """
 
-  def create(conn, %{"email" => email, "password" => password}) do
+  def login(conn, %{"email" => email, "password" => password}) do
     case Users.authenticate_user(email, password) do
       {:ok, user} ->
         {:ok, token, claims} = JWT.generate_token(user.id, user.role_id)
@@ -25,6 +25,12 @@ defmodule TimeManagerAppWeb.SessionController do
         |> put_status(:unauthorized)
         |> json(%{error: reason})
     end
+  end
+
+  def logout(conn, _params) do
+    conn
+    |> delete_resp_cookie("jwt")
+    |> send_resp(:no_content, "")
   end
 
   @doc """

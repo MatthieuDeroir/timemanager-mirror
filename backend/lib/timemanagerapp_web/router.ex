@@ -31,7 +31,9 @@ defmodule TimeManagerAppWeb.Router do
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
 
-    post("auth/login", SessionController, :create)
+    post("auth/login", SessionController, :login)
+    post("auth/logout", SessionController, :logout)
+    post("auth/register", SessionController, :register)
   end
 
   scope "/api", TimeManagerAppWeb do
