@@ -1,12 +1,16 @@
-<script setup></script>
-
 <template>
-  <h1>MANAGER VIEW</h1>
+  <h1 class="main">MANAGER VIEW</h1>
 </template>
 
 <style scoped>
-h1 {
-  color: red;
-  z-index: 10000;
+.main {
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
 }
 </style>
+<script setup></script>

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <h1>Not Found</h1>
-    <p>Page not found.</p>
+    <h1>Unauthorized</h1>
+    <p>You don't have the right to be here.</p>
     <button class="logout-button" @click="redirectToCurrentUserRoute">Return to your route</button>
     <button class="logout-button" @click="handleLogout">Logout</button>
   </div>

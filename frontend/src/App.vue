@@ -1,46 +1,37 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { RouterView } from 'vue-router';
-import HeaderComponent from "@/components/Header/Header.vue";
-import LoginPage from "@/components/Login/Login.vue";
+import { computed, onMounted, ref } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
+import HeaderComponent from '@/components/Header/Header.vue'
 
-const isAuthenticated = ref(false);
-const selectedColorClass = ref('blue');
-
-// Function to handle successful login
-function handleLoginSuccess() {
-  isAuthenticated.value = true;
-}
+const route = useRoute()
+const selectedColorClass = ref('blue')
 
 function loadSelectedColor() {
-  const storedColor = localStorage.getItem('selectedColor');
+  const storedColor = localStorage.getItem('selectedColor')
   if (storedColor) {
-    const color = JSON.parse(storedColor);
-    selectedColorClass.value = color.name.toLowerCase();
+    const color = JSON.parse(storedColor)
+    selectedColorClass.value = color.name.toLowerCase()
   }
 }
 
-onMounted(loadSelectedColor);
+onMounted(loadSelectedColor)
 
 function updateColorClass(color) {
-  selectedColorClass.value = color.name.toLowerCase();
+  selectedColorClass.value = color.name.toLowerCase()
 }
 
-
+const shouldHideNavbar = computed(() => route.meta.hideNavbar)
 </script>
 
 <template>
   <div>
-    <!-- <LoginPage v-if="!isAuthenticated" @loginSuccess="handleLoginSuccess"/> -->
-    <!-- <div v-else> -->
-      <header>
-        <HeaderComponent @colorSelected="updateColorClass" />
-      </header>
-      <main class="main-content">
-        <div class="background" :class="[selectedColorClass]"></div>
-        <router-view/>
-      </main>
-    <!-- </div> -->
+    <header v-if="!shouldHideNavbar">
+      <HeaderComponent @colorSelected="updateColorClass" />
+    </header>
+    <main class="main-content">
+      <div :class="[selectedColorClass]" class="background"></div>
+      <router-view />
+    </main>
   </div>
 </template>
 
