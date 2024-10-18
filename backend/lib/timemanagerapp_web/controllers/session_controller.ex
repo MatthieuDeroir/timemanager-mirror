@@ -2,6 +2,7 @@ defmodule TimeManagerAppWeb.SessionController do
   use TimeManagerAppWeb, :controller
 
   alias TimeManagerApp.Users
+  alias TimeManagerApp.Roles
   alias TimeManagerApp.Auth.JWT
 
   @doc """
@@ -14,11 +15,11 @@ defmodule TimeManagerAppWeb.SessionController do
         {:ok, token, claims} = JWT.generate_token(user.id)
         csrf_token = claims["csrf_token"]
 
-        conn = put_resp_cookie(conn, "jwt", token, http_only: true, secure: false)
+        conn = put_resp_cookie(conn, "jwt", token, http_only: false, secure: false)
 
         conn
         |> put_status(:ok)
-        |> json(%{csrf_token: csrf_token, user: user})
+        |> json(%{csrf_token: csrf_token, user: user, role: role})
 
       {:error, reason} ->
         conn
