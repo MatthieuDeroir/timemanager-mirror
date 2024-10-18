@@ -8,7 +8,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
  * This method find all teams. Inside a component, you can use the store and the store will call this method to store the data.
  */
 export const getAllTeams = () =>
-    HttpClient.get('/teams')
+    HttpClient.get(`${API_BASE_URL}/teams`)
         .then((res) => res.data)
         .catch((error) => {
         console.error('Error fetching teams:', error)
@@ -18,7 +18,7 @@ export const getAllTeams = () =>
 /**
  * getAllUsersFromTeam
  * This method find a team by id.
- * @param id
+ * @param teamId
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export const getAllUsersFromTeam = (teamId) => HttpClient.get(`${API_BASE_URL}/teams/${teamId}`).then((res) => res.data)
@@ -26,7 +26,7 @@ export const getAllUsersFromTeam = (teamId) => HttpClient.get(`${API_BASE_URL}/t
 /**
  * getTeamsFromUser
  * This method find a team by id.
- * @param id
+ * @param userId
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export const getTeamsFromUser = (userId) => HttpClient.get(`${API_BASE_URL}/users/teams/${userId}`).then((res) => res.data)
@@ -37,7 +37,7 @@ export const getTeamsFromUser = (userId) => HttpClient.get(`${API_BASE_URL}/user
  * @param userId
  * @param teamId
  */
-export const addUsersToTeam = (start, end) => HttpClient.post(`${API_BASE_URL}/users/add/`,{start,end})
+export const addUsersToTeam = (userId, teamId) => HttpClient.post(`${API_BASE_URL}/users/add/`,{userId,teamId})
     .then((res) => res.data)
     .catch((error) => {
         console.error('Error adding user to team:', error)
@@ -50,7 +50,7 @@ export const addUsersToTeam = (start, end) => HttpClient.post(`${API_BASE_URL}/u
  * @param userId
  * @param teamId
  */
-export const removeUsersFromTeam = (start, end) => HttpClient.delete(`${API_BASE_URL}/users/remove/`,{start,end})
+export const removeUsersFromTeam = (userId, teamId) => HttpClient.delete(`${API_BASE_URL}/users/remove/`,{userId,teamId})
     .then((res) => res.data)
     .catch((error) => {
         console.error('Error removing a user from a team:', error)
@@ -64,8 +64,8 @@ export const removeUsersFromTeam = (start, end) => HttpClient.delete(`${API_BASE
  * @param {string} end
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const createTeam = (start, end) => HttpClient.post(`${API_BASE_URL}/teams/`,{
-    data:{start,end}
+export const createTeam = (id, name) => HttpClient.post(`${API_BASE_URL}/teams/`,{
+    data:{id, name}
 })
     .then((res) => res.data)
     .catch((error) => {
@@ -77,13 +77,13 @@ export const createTeam = (start, end) => HttpClient.post(`${API_BASE_URL}/teams
 /**
  * updateTeam
  * this method update information of a team
- * @param {string} start
- * @param {string} end
+ * @param {int} id
+ * @param {string} name
  * @param {number} teamId
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const updateTeam = (teamId, start, end) => HttpClient.put(`${API_BASE_URL}/teams/${teamId}`,{
-    data:{start,end}
+export const updateTeam = (teamId, id, name) => HttpClient.put(`${API_BASE_URL}/teams/${teamId}`,{
+    data:{id,name}
 })
     .then((res) => res.data)
     .catch((error) => {
