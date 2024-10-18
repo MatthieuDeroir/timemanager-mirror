@@ -1,193 +1,213 @@
-# seeds.exs
+# priv/repo/seeds.exs
 
 alias TimeManagerApp.Repo
 alias TimeManagerApp.Roles.Role
 alias TimeManagerApp.Teams.Team
 alias TimeManagerApp.Users.User
-alias TimeManagerApp.WorkingTimes.WorkingTime
 alias TimeManagerApp.Clocks.Clock
+alias TimeManagerApp.WorkingTimes.WorkingTime
 
-# Define Roles
-roles = [
-  %{id: 1, name: "admin"},
-  %{name: "general_manager"},
-  %{name: "manager"},
-  %{name: "employee"}
-]
+# Define a module for seeding
+defmodule TimeManagerApp.Seeds do
+  # Clear existing data
+  def run do
+    Repo.delete_all(WorkingTime)
+    Repo.delete_all(Clock)
+    Repo.delete_all(User)
+    Repo.delete_all(Role)
+    Repo.delete_all(Team)
 
-# Insert or update Roles
-Enum.each(roles, fn role_attrs ->
-  Repo.insert!(
-    %Role{}
-    |> Role.changeset(role_attrs),
-    on_conflict: [set: [name: role_attrs.name]],
-    conflict_target: [:name]
-  )
-end)
+    # Create roles
+    roles = [
+      %{"name" => "employee"},
+      %{"name" => "manager"},
+      %{"name" => "admin"}
+    ]
 
-# Fetch Roles by name
-admin_role = Repo.get_by!(Role, name: "admin")
-general_manager_role = Repo.get_by!(Role, name: "general_manager")
-manager_role = Repo.get_by!(Role, name: "manager")
-employee_role = Repo.get_by!(Role, name: "employee")
+    # Insert roles
+    Enum.each(roles, fn role ->
+      %Role{}
+      |> Role.changeset(role)
+      |> Repo.insert!()
+    end)
 
-# Create Teams
-teams = [
-  %{name: "Team Alpha"},
-  %{name: "Team Beta"},
-  %{name: "Team Gamma"}
-]
+    # Create teams
+    teams = [
+      %{"name" => "comptability"},
+      %{"name" => "security"},
+      %{"name" => "it"}
+    ]
 
-created_teams =
-  Enum.map(teams, fn team_attrs ->
-    Repo.insert!(
+    # Insert teams
+    Enum.each(teams, fn team ->
       %Team{}
-      |> Team.changeset(team_attrs),
-      on_conflict: [set: [name: team_attrs.name]],
-      conflict_target: [:name]
-    )
-  end)
+      |> Team.changeset(team)
+      |> Repo.insert!()
+    end)
 
-# Create Admin User
-admin_user_attrs = %{
-  firstname: "Admin",
-  lastname: "User",
-  username: "admin",
-  email: "admin@example.com",
-  password: "password",
-  role_id: admin_role.id
-}
+    # Get the inserted roles and teams
+    employee_role = Repo.get_by(Role, name: "employee")
+    manager_role = Repo.get_by(Role, name: "manager")
+    admin_role = Repo.get_by(Role, name: "admin")
 
-# Insert or update Admin User
-Repo.insert!(
-  %User{}
-  |> User.changeset(admin_user_attrs),
-  on_conflict: [set: [email: admin_user_attrs.email]],
-  conflict_target: [:email]
-)
+    comptability_team = Repo.get_by(Team, name: "comptability")
+    security_team = Repo.get_by(Team, name: "security")
+    it_team = Repo.get_by(Team, name: "it")
 
-# Create General Managers and Managers per Team
-Enum.each(created_teams, fn team ->
-  # General Manager
-  gm_attrs = %{
-    firstname: "GeneralManager",
-    lastname: team.name,
-    username: "gm_#{String.downcase(team.name)}",
-    email: "gm_#{String.downcase(team.name)}@example.com",
-    password: "password",
-    role_id: general_manager_role.id,
-    team_ids: [team.id]
-  }
+    # Create users with usernames
+    users = [
+      %User{
+        firstname: "Alice",
+        lastname: "Johnson",
+        username: "alice.johnson",
+        email: "alice@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Bob",
+        lastname: "Smith",
+        username: "bob.smith",
+        email: "bob@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Charlie",
+        lastname: "Brown",
+        username: "charlie.brown",
+        email: "charlie@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Diana",
+        lastname: "Prince",
+        username: "diana.prince",
+        email: "diana@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Eve",
+        lastname: "Adams",
+        username: "eve.adams",
+        email: "eve@example.com",
+        password_hash: "password",
+        role_id: manager_role.id
+      },
+      %User{
+        firstname: "Frank",
+        lastname: "Miller",
+        username: "frank.miller",
+        email: "frank@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Grace",
+        lastname: "Harris",
+        username: "grace.harris",
+        email: "grace@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Henry",
+        lastname: "Lee",
+        username: "henry.lee",
+        email: "henry@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Isabella",
+        lastname: "Taylor",
+        username: "isabella.taylor",
+        email: "isabella@example.com",
+        password_hash: "password",
+        role_id: employee_role.id
+      },
+      %User{
+        firstname: "Jack",
+        lastname: "Wilson",
+        username: "jack.wilson",
+        email: "jack@example.com",
+        password_hash: "password",
+        role_id: manager_role.id
+      },
+      %User{
+        firstname: "Liam",
+        lastname: "Garcia",
+        username: "liam.garcia",
+        email: "liam@example.com",
+        password_hash: "password",
+        role_id: admin_role.id
+      }
+    ]
 
-  Repo.insert!(
-    %User{}
-    |> User.changeset(gm_attrs),
-    on_conflict: [set: [email: gm_attrs.email]],
-    conflict_target: [:email]
-  )
+    # Insert users
+    Enum.each(users, fn user ->
+      Repo.insert!(user)
+    end)
 
-  # Manager
-  manager_attrs = %{
-    firstname: "Manager",
-    lastname: team.name,
-    username: "manager_#{String.downcase(team.name)}",
-    email: "manager_#{String.downcase(team.name)}@example.com",
-    password: "password",
-    role_id: manager_role.id,
-    team_ids: [team.id]
-  }
+    # Create working times for the last 7 days for each employee
+    for user <- Repo.all(User) do
+      for day <- 0..6 do
+        date = Date.utc_today() |> Date.add(-day)
 
-  Repo.insert!(
-    %User{}
-    |> User.changeset(manager_attrs),
-    on_conflict: [set: [email: manager_attrs.email]],
-    conflict_target: [:email]
-  )
-end)
+        working_times = [
+          %WorkingTime{
+            # 08:00
+            start: create_datetime(date, 8, 0),
+            # 12:00
+            end: create_datetime(date, 12, 0),
+            user_id: user.id,
+            # Set a default type value
+            type: "regular"
+          },
+          %WorkingTime{
+            # 14:00
+            start: create_datetime(date, 14, 0),
+            # 18:00
+            end: create_datetime(date, 18, 0),
+            user_id: user.id,
+            # Set a default type value
+            type: "regular"
+          }
+        ]
 
-# Create Employees
-employee_role_id = employee_role.id
-
-employee_users =
-  Enum.map(1..13, fn i ->
-    team_ids = Enum.map(Enum.take_random(created_teams, Enum.random(1..3)), & &1.id)
-
-    employee_attrs = %{
-      firstname: "Employee#{i}",
-      lastname: "Lastname#{i}",
-      username: "employee#{i}",
-      email: "employee#{i}@example.com",
-      password: "password",
-      role_id: employee_role_id,
-      team_ids: team_ids,
-      salary: Enum.random(30_000..50_000)
-    }
-
-    Repo.insert!(
-      %User{}
-      |> User.changeset(employee_attrs),
-      on_conflict: [set: [email: employee_attrs.email]],
-      conflict_target: [:email]
-    )
-  end)
-
-# Create Working Times and Clocks for Employees
-Enum.each(employee_users, fn user ->
-  Enum.each(1..2, fn _ ->
-    # Generate random start time between 8:00 and 16:00
-    start_hour = Enum.random(8..16)
-    start_minute = Enum.random(0..59)
-    today = Date.utc_today()
-    {:ok, start_time} = DateTime.new(today, Time.new!(start_hour, start_minute, 0), "Etc/UTC")
-
-    # Generate random duration between 1 and 2 hours
-    duration_minutes = Enum.random(60..120)
-    end_time = DateTime.add(start_time, duration_minutes * 60, :second)
-
-    # Ensure end_time is before 18:00
-    {:ok, end_of_day} = DateTime.new(today, ~T[18:00:00], "Etc/UTC")
-
-    end_time =
-      if DateTime.compare(end_time, end_of_day) == :gt do
-        end_of_day
-      else
-        end_time
+        # Insert working times individually
+        Enum.each(working_times, fn working_time ->
+          Repo.insert!(working_time)
+        end)
       end
+    end
 
-    # Create Working Time
-    working_time_attrs = %{
-      start: start_time,
-      end: end_time,
-      user_id: user.id
-    }
+    IO.puts("Seeding completed successfully!")
+  end
 
-    Repo.insert!(
-      %WorkingTime{}
-      |> WorkingTime.changeset(working_time_attrs)
-    )
+  # Helper function to create DateTime in UTC
+  defp create_datetime(date, hour, minute) do
+    case Time.new(hour, minute, 0) do
+      {:ok, time} ->
+        date_time = NaiveDateTime.new(date, time)
 
-    # Create Clock-in
-    clock_in_attrs = %{
-      time: start_time,
-      status: true,
-      user_id: user.id
-    }
+        case date_time do
+          {:ok, naive_dt} ->
+            DateTime.from_naive!(naive_dt, "Etc/UTC")
 
-    Repo.insert!(
-      %Clock{}
-      |> Clock.changeset(clock_in_attrs)
-    )
+          {:error, reason} ->
+            IO.puts("Failed to create NaiveDateTime: #{reason}")
+            nil
+        end
 
-    # Create Clock-out
-    clock_out_attrs = %{
-      time: end_time,
-      status: false,
-      user_id: user.id
-    }
+      {:error, reason} ->
+        IO.puts("Failed to create Time: #{reason}")
+        nil
+    end
+  end
+end
 
-    Repo.insert!(
-      %Clock{}
-      |> Clock.changeset(clock_out_attrs)
-    )
-  end)
-end)
+# Run the seeder
+TimeManagerApp.Seeds.run()
