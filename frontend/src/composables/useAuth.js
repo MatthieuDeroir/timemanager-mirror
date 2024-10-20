@@ -1,24 +1,20 @@
 import { useAuthStore } from '@/store/Auth/AuthStore'
 import { useRouter } from 'vue-router'
 import { loginUser } from '@/api/AuthAPI.js'
+import { UserRole } from '@enum/User/UserRole.js'
 
 export function useAuth() {
   const authStore = useAuthStore()
   const router = useRouter()
 
   const login = async (credentials) => {
-    console.log('Login credentials:', credentials)
-    const { user, token } = await loginUser(credentials)
+    const { user } = await loginUser(credentials)
+    const token = localStorage.getItem('TOKEN')
     authStore.login(user, token)
     redirectToRoleBasedRoute(user.role_id, user.id)
-    // } catch (error) {
-    //   console.error('Login error:', error)
-    //   throw new Error('Login failed')
-    // }
   }
 
   const logout = () => {
-    logout()
     authStore.logout()
     router.push('/login')
   }
@@ -32,15 +28,18 @@ export function useAuth() {
     }
 
     switch (roleId) {
-      case 1:
+      case UserRole.ADMIN:
+        console.log('Admin')
         router.push(`/admin/${1}`)
         break
 
-      case 2:
+      case UserRole.MANAGER:
+        console.log('Manager')
         router.push('/manager')
         break
 
-      case 3:
+      case UserRole.WORKER:
+        console.log('Worker')
         if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
           router.push(`/worker/${userId}`)
         }

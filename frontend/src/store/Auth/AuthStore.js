@@ -8,7 +8,6 @@ export const useAuthStore = defineStore('auth', () => {
   const login = (userData, userToken) => {
     user.value = userData
     token.value = userToken
-
     localStorage.setItem('CURRENT_USER', JSON.stringify(userData))
   }
 
@@ -20,9 +19,9 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('TOKEN')
   }
 
-  const isAuthenticated = () => {
-    return !!token.value
-  }
+  const isAuthenticated = computed(() => {
+    return !!token.value && !!user.value
+  })
 
   const role = computed(() => user.value?.role)
 

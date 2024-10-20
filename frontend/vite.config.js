@@ -18,7 +18,8 @@ export default defineConfig({
       '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
       '@dto': fileURLToPath(new URL('./src/dto', import.meta.url)),
       '@composables': fileURLToPath(new URL('./src/composables', import.meta.url)),
-      '@store': fileURLToPath(new URL('./src/store', import.meta.url))
+      '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
+      '@enum': fileURLToPath(new URL('./src/enum', import.meta.url))
     }
   }
 })

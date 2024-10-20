@@ -5,12 +5,24 @@ export const HttpClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  withCredentials: true
 })
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
 
 HttpClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('TOKEN')
+    let token = localStorage.getItem('TOKEN')
+
+    if (!token) {
+      token = getCookie('jwt')
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -21,17 +33,12 @@ HttpClient.interceptors.request.use(
   }
 )
 
-function getCookie(name) {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop().split(';').shift()
-}
-
 HttpClient.interceptors.response.use(
   (response) => {
     console.log('response', response)
 
     const jwtToken = getCookie('jwt')
+    console.log('jwtToken', jwtToken)
     if (jwtToken) {
       localStorage.setItem('TOKEN', jwtToken)
     }

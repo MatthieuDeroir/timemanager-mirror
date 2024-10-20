@@ -6,6 +6,7 @@ import WorkerView from '@views/Worker/WorkerView.vue'
 import NotFound from '@views/NotFound/NotFound.vue'
 import Unauthorized from '@views/Unauthorized/Unauthorized.vue'
 import LoginView from '@views/Login/LoginView.vue'
+import { UserRole } from '@enum/User/UserRole.js'
 
 const routes = [
   {
@@ -13,26 +14,26 @@ const routes = [
     redirect: '/login'
   },
   {
-    path: '/admin/:userId',
+    path: '/admin/:userId(\\d+)',
     name: 'Administrator',
     component: AdminView,
     props: (route) => ({ userId: Number(route.params.userId) }),
     key: (route) => route.params.userId,
-    meta: { requiresAuth: true, role: 'admin' }
+    meta: { requiresAuth: true, role: UserRole.ADMIN }
   },
   {
     path: '/manager',
     name: 'Manager',
     component: ManagerView,
-    meta: { requiresAuth: true, role: 'manager' }
+    meta: { requiresAuth: true, role: UserRole }
   },
   {
-    path: '/worker/:userId',
+    path: '/worker/:userId(\\d+)',
     name: 'Worker',
     component: WorkerView,
     props: (route) => ({ userId: Number(route.params.userId) }),
     key: (route) => route.params.userId,
-    meta: { requiresAuth: true, role: 'worker' }
+    meta: { requiresAuth: true, role: UserRole.WORKER }
   },
   {
     path: '/login',
@@ -44,13 +45,13 @@ const routes = [
     path: '/unauthorized',
     name: 'Unauthorized',
     component: Unauthorized,
-    meta: { hideNavbar: true }
+    meta: { hideNavbar: true, requiresAuth: true }
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
-    meta: { hideNavbar: true }
+    meta: { hideNavbar: true, requiresAuth: true }
   }
 ]
 
@@ -63,14 +64,15 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
   if (to.meta.requiresAuth) {
-    if (!authStore.isAuthenticated()) {
+    if (!authStore.isAuthenticated) {
       return next('/login')
     }
 
-    const userRole = authStore.user?.role
+    const userRole = authStore.user.role_id
     const userId = authStore.user?.id
 
     if (to.meta.role && to.meta.role !== userRole) {
+      console.log('Unauthorized')
       return next('/unauthorized')
     }
 

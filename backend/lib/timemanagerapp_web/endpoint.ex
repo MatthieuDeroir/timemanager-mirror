@@ -3,7 +3,7 @@ defmodule TimeManagerAppWeb.Endpoint do
 
   # Config to allow CORS requests from the frontend
   # Add the CORS plug
-  plug(CORSPlug, origin: ["localhost:5173"])
+  plug CORSPlug, origin: ["http://localhost:5173"], max_age: 86400, credentials: true
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
