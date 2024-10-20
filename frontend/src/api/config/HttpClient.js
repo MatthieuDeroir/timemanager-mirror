@@ -21,8 +21,21 @@ HttpClient.interceptors.request.use(
   }
 )
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
 HttpClient.interceptors.response.use(
   (response) => {
+    console.log('response', response)
+
+    const jwtToken = getCookie('jwt')
+    if (jwtToken) {
+      localStorage.setItem('TOKEN', jwtToken)
+    }
+
     return response
   },
   (error) => {

@@ -7,23 +7,14 @@ export function useAuth() {
   const router = useRouter()
 
   const login = async (credentials) => {
-    try {
-      // const fakeApiCall = new Promise((resolve) => {
-      //   setTimeout(() => {
-      //     resolve({
-      //       user: { id: 1, name: 'John Doe', role: 'worker' },
-      //       token: 'fake-jwt-token'
-      //     })
-      //   }, 1000)
-      // })
-
-      const { user, token } = await loginUser(credentials)
-      authStore.login(user, token)
-      redirectToRoleBasedRoute(user.role, user.id)
-    } catch (error) {
-      console.error('Login error:', error)
-      throw new Error('Login failed')
-    }
+    console.log('Login credentials:', credentials)
+    const { user, token } = await loginUser(credentials)
+    authStore.login(user, token)
+    redirectToRoleBasedRoute(user.role_id, user.id)
+    // } catch (error) {
+    //   console.error('Login error:', error)
+    //   throw new Error('Login failed')
+    // }
   }
 
   const logout = () => {
@@ -32,24 +23,24 @@ export function useAuth() {
     router.push('/login')
   }
 
-  const redirectToRoleBasedRoute = (role, userId) => {
+  const redirectToRoleBasedRoute = (roleId, userId) => {
     const currentRouteParams = router.currentRoute.value.params
 
-    if (!role || !userId) {
+    if (!roleId || !userId) {
       router.push('/login')
       return
     }
 
-    switch (role) {
-      case 'admin':
+    switch (roleId) {
+      case 1:
         router.push(`/admin/${1}`)
         break
 
-      case 'manager':
+      case 2:
         router.push('/manager')
         break
 
-      case 'worker':
+      case 3:
         if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
           router.push(`/worker/${userId}`)
         }

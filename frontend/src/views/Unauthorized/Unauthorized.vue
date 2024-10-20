@@ -21,7 +21,7 @@ const handleLogout = () => {
 }
 
 const redirectToCurrentUserRoute = () => {
-  redirectToRoleBasedRoute(user.role, user.id)
+  redirectToRoleBasedRoute(user?.role_id, user?.id)
 }
 </script>
 

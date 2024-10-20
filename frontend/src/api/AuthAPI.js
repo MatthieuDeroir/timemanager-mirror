@@ -6,7 +6,7 @@ import {HttpClient} from '@/api/config/HttpClient.js'
  * @param {Object} data - The user data (email, password).
  */
 export const loginUser = (data) =>
-  HttpClient.post('/login', {
+  HttpClient.post('/auth/login', {
     email: data.email,
     password: data.password
   }).then((res) => res.data)

@@ -34,15 +34,17 @@ defmodule TimeManagerAppWeb.Router do
     post("auth/login", SessionController, :login)
     post("auth/logout", SessionController, :logout)
     post("auth/register", SessionController, :register)
+
+    resources "/users", UserController, except: [:new, :edit, :update, :delete] do
+      get("/teams", UserController, :user_teams)
+    end
   end
 
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :admin, :general_manager, :manager, :employee])
     # pipe_through([:api])
 
-    resources "/users", UserController, except: [:new, :edit, :create, :update, :delete] do
-      get("/teams", UserController, :user_teams)
-    end
+
 
     # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
