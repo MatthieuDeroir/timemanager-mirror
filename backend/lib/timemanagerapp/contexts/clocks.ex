@@ -25,11 +25,11 @@ defmodule TimeManagerApp.Clocks do
     |> Repo.all()
   end
 
-  def create_clock_for_user(user_id, attrs) do
-    %Clock{}
-    # Use atom key
-    |> Clock.changeset(Map.put(attrs, :user_id, user_id))
-    |> Repo.insert()
+  def create_clock_for_user(user_id, attrs \\ %{}) do
+    case do_create_clock_for_user(user_id, attrs) do
+      {:ok, clock} -> {:ok, clock}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 
   defp do_create_clock_for_user(user_id, attrs) do
@@ -40,28 +40,5 @@ defmodule TimeManagerApp.Clocks do
 
   def get_clock(user_id, id) do
     Repo.get_by(Clock, id: id, user_id: user_id)
-  end
-
-  @doc """
-  Updates a clock.
-  """
-  def update_clock(%Clock{} = clock, attrs) do
-    clock
-    |> Clock.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a clock.
-  """
-  def delete_clock(%Clock{} = clock) do
-    Repo.delete(clock)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking clock changes.
-  """
-  def change_clock(%Clock{} = clock, attrs \\ %{}) do
-    Clock.changeset(clock, attrs)
   end
 end
