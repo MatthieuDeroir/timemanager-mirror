@@ -29,6 +29,6 @@ defmodule TimeManagerApp.Auth.JWT do
   end
 
   def verify_token(token) do
-    Joken.verify_and_validate(token_config, token)
+    Joken.verify_and_validate(token)
   end
 end
