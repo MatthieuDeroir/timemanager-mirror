@@ -35,14 +35,10 @@ HttpClient.interceptors.request.use(
 
 HttpClient.interceptors.response.use(
   (response) => {
-    console.log('response', response)
-
     const jwtToken = getCookie('jwt')
-    console.log('jwtToken', jwtToken)
     if (jwtToken) {
       localStorage.setItem('TOKEN', jwtToken)
     }
-
     return response
   },
   (error) => {
