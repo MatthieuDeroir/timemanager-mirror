@@ -27,7 +27,6 @@ defmodule TimeManagerAppWeb.Router do
     plug(AuthorizeRole, 1)
   end
 
-  # TODO: reenable Role-Based Access Control when development is done
   # public routes
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
@@ -43,7 +42,7 @@ defmodule TimeManagerAppWeb.Router do
 
   # employee routes
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated])
+    pipe_through([:api, :authenticated, :employee])
 
     get("/clocks/:user_id", ClockController, :index)
 
@@ -62,7 +61,7 @@ defmodule TimeManagerAppWeb.Router do
 
   # manager routes
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated])
+    pipe_through([:api, :authenticated, :manager])
 
     post("/workingtime/:user_id", WorkingTimeController, :create)
     put("/workingtime/:id", WorkingTimeController, :update)
@@ -71,7 +70,7 @@ defmodule TimeManagerAppWeb.Router do
 
   # general manager routes
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated])
+    pipe_through([:api, :authenticated, :general_manager])
 
     post("teams/:team_id/users/:user_id", TeamController, :add_user)
     delete("teams/:team_id/users/:user_id", TeamController, :remove_user)
@@ -79,7 +78,7 @@ defmodule TimeManagerAppWeb.Router do
 
   # admin routes
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated])
+    pipe_through([:api, :authenticated, :admin])
 
     resources("/users", UserController, except: [:new, :edit])
     resources("/logs", LogController, only: [:index, :show])

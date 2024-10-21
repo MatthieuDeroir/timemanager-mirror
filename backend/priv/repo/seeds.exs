@@ -249,7 +249,7 @@ defmodule TimeManagerApp.Seeds do
     # Insert users with changeset validations
     Enum.each(users, fn user ->
       %User{}
-      |> User.changeset(Map.from_struct(user))
+      |> User.create_changeset(Map.from_struct(user))
       |> Repo.insert!()
     end)
 
