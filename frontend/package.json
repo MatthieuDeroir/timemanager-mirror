@@ -17,7 +17,6 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
-    "@rollup/rollup-win32-x64-msvc": "^4.24.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
     "create-vuetify": "^2.2.6",
