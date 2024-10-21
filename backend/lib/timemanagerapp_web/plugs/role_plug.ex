@@ -34,7 +34,9 @@ defmodule TimeManagerAppWeb.Plugs.AuthorizeRole do
   end
 
   defp fetch_jwt(conn) do
-    case get_bearer_token(conn) do
+    conn = fetch_cookies(conn)
+
+    case conn.req_cookies["jwt"] do
       nil -> {:error, :no_token}
       token -> {:ok, token}
     end

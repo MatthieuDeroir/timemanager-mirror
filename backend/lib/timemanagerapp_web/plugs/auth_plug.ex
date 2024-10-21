@@ -6,8 +6,9 @@ defmodule TimeManagerAppWeb.Plugs.AuthPlug do
 
   def call(conn, _opts) do
     conn = fetch_cookies(conn)
+    IO.inspect(conn.req_cookies["jwt"])
 
-    case conn.cookies["jwt"] do
+    case conn.req_cookies["jwt"] do
       nil ->
         conn
         |> send_resp(:unauthorized, "Missing authentication token")
@@ -21,6 +22,7 @@ defmodule TimeManagerAppWeb.Plugs.AuthPlug do
 
             if csrf_token_header && csrf_token_header == csrf_token_jwt do
               assign(conn, :current_user, claims["user_id"])
+              conn
             else
               conn
               |> send_resp(:unauthorized, "Invalid CSRF token")
