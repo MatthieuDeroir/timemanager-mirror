@@ -71,9 +71,12 @@ defmodule TimeManagerApp.Users.User do
       :role_id
     ])
     |> validate_required([
+      :firstname,
+      :lastname,
       :username,
       :email,
-      :password
+      :password,
+      :role_id
     ])
     |> validate_format(
       :email,
