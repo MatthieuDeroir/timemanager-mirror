@@ -22,6 +22,7 @@ export function useAuth() {
 
   const redirectToRoleBasedRoute = (roleId, userId) => {
     const currentRouteParams = router.currentRoute.value.params
+    console.log('=>(useAuth.js:58) userId', userId)
 
     if (!roleId || !userId) {
       router.push('/login')
@@ -34,11 +35,15 @@ export function useAuth() {
         break
 
       case UserRole.GENERAL_MANAGER:
-        router.push(`/general-manager/${userId}`)
+        if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
+          router.push(`/general-manager/${userId}`)
+        }
         break
 
       case UserRole.MANAGER:
-        router.push(`/manager/${userId}`)
+        if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
+          router.push(`/manager/${userId}`)
+        }
         break
 
       case UserRole.EMPLOYEE:
