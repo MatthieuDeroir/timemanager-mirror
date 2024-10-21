@@ -29,11 +29,9 @@ HttpClient.interceptors.request.use(
     if (!token) {
       token = getCookie('jwt')
     }
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
-
     const csrfToken = localStorage.getItem('CSRF_TOKEN')
     if (csrfToken) {
       config.headers['x-csrf-token'] = csrfToken
@@ -54,12 +52,10 @@ HttpClient.interceptors.response.use(
     }
 
     const csrfToken = response.data.csrf_token
-    console.log('=>(HttpClient.js:58) csrfToken', csrfToken)
 
     if (csrfToken) {
       localStorage.setItem('CSRF_TOKEN', csrfToken)
     }
-
     return response
   },
   (error) => {

@@ -11,11 +11,9 @@ import { useAuthStore } from '@store/Auth/AuthStore'
 const { redirectToRoleBasedRoute } = useAuth()
 const { user, isAuthenticated } = useAuthStore()
 
-console.log('user dans login view', user)
 onMounted(() => {
   if (isAuthenticated) {
     redirectToRoleBasedRoute(user?.role_id, user?.id)
-    console.log('auth', isAuthenticated)
   }
 })
 </script>
