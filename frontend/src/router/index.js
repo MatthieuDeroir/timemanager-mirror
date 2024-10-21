@@ -25,12 +25,16 @@ const routes = [
     path: '/general-manager/:userId(\\d+)',
     name: 'GeneralManager',
     component: ManagerView,
+    props: (route) => ({ userId: Number(route.params.userId) }),
+    key: (route) => route.params.userId,
     meta: { requiresAuth: true, role: UserRole.GENERAL_MANAGER }
   },
   {
     path: '/manager/:userId(\\d+)',
     name: 'Manager',
     component: ManagerView,
+    props: (route) => ({ userId: Number(route.params.userId) }),
+    key: (route) => route.params.userId,
     meta: { requiresAuth: true, role: UserRole.MANAGER }
   },
   {
