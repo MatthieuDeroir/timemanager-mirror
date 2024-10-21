@@ -1,94 +1,98 @@
 :root {
-  --color-labelPrimary:rgba(0, 0, 0, 0.88);
-  --color-labelSecondary:rgba(0, 0, 0, 0.56);
-  --color-background-header:rgba(248, 248, 252, .4);
-  --color-cardHeader-background:rgba(248, 248, 252, .85);
-  --color-cardHeader-background-hover:rgba(120, 120, 128, 0.08);
-  --color-card-background:white;
-  --color-text-base:black;
-  /* --inverted-color-card-background:rgba(0, 0, 0, .75); */
+    --color-labelPrimary: rgba(0, 0, 0, 0.88);
+    --color-labelSecondary: rgba(0, 0, 0, 0.56);
+    --color-background-header: rgba(248, 248, 252, .4);
+    --color-cardHeader-background: rgba(248, 248, 252, .85);
+    --color-cardHeader-background-hover: rgba(120, 120, 128, 0.08);
+    --color-card-background: white;
+    --color-text-base: black;
+    /* --inverted-color-card-background:rgba(0, 0, 0, .75); */
 
-  --login-color-text-base: #333;
-  --login-border-focus-color: #fff;
-  --login-background-color: #FAFAFA;
-  --loign-input-border-color: rgb(100, 100, 100);
-  --loign-input-focus-color: rgba(255, 255, 255, 0.6);
-  --login-input-placeholder-color: rgba(170, 170, 170);
-  --color-button-primary:#0099ff;
-  --color-button-danger:var(--color-red);
-  
-  --color-orange: #ff9500;
-  --color-yellow: #e5cc00;
-  --color-green: #03a10e;
-  --color-blue: #0071e3;
-  --color-purple: #af52de;
-  --color-red:hsl(0, 100%, 44.5%);
+    --login-color-text-base: #333;
+    --login-border-focus-color: #fff;
+    --login-background-color: #FAFAFA;
+    --loign-input-border-color: rgb(100, 100, 100);
+    --loign-input-focus-color: rgba(255, 255, 255, 0.6);
+    --login-input-placeholder-color: rgba(170, 170, 170);
+    --color-button-primary: #0099ff;
+    --color-button-danger: var(--color-red);
 
-  --linear-blue:linear-gradient(64deg, #5ba0ff, #1a8eff 46%, #2d7eeb);
-  --linear-purple: linear-gradient(64deg, #8461c7, #4b2aa9 47%, #5d35b7);
-  --linear-red: linear-gradient(64deg, #e43732, #c32929 45%, #db5a5a);
-  --linear-green: linear-gradient(64deg, #429a42, #48b942 44%, #139c1c);
-  --linear-yellow: linear-gradient(64deg, #e6a536, #e6bd1c 45%, #e18f02);
-  --linear-orange: linear-gradient(64deg, #fb7539, #e47414 44%, #d16300);
+    --color-orange: #ff9500;
+    --color-yellow: #e5cc00;
+    --color-green: #03a10e;
+    --color-blue: #0071e3;
+    --color-purple: #af52de;
+    --color-red: hsl(0, 100%, 44.5%);
+
+    --linear-blue: linear-gradient(64deg, #5ba0ff, #1a8eff 46%, #2d7eeb);
+    --linear-purple: linear-gradient(64deg, #8461c7, #4b2aa9 47%, #5d35b7);
+    --linear-red: linear-gradient(64deg, #e43732, #c32929 45%, #db5a5a);
+    --linear-green: linear-gradient(64deg, #429a42, #48b942 44%, #139c1c);
+    --linear-yellow: linear-gradient(64deg, #e6a536, #e6bd1c 45%, #e18f02);
+    --linear-orange: linear-gradient(64deg, #fb7539, #e47414 44%, #d16300);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --color-labelPrimary: white;
-    --color-labelSecondary: hsla(0, 0%, 100%, 0.66);
-    --color-background-header: rgba(56, 56, 61, .6);
-    --color-cardHeader-background:rgba(56, 56, 61, .6);
-    --color-cardHeader-background-hover:rgba(116, 116, 128, 0.2);
-    --color-card-background:rgba(0, 0, 0, .75);
-    --inverted-color-card-background: rgba(255, 255, 255, 0.8);
+    :root {
+        --color-labelPrimary: white;
+        --color-labelSecondary: hsla(0, 0%, 100%, 0.66);
+        --color-background-header: rgba(56, 56, 61, .6);
+        --color-cardHeader-background: rgba(56, 56, 61, .6);
+        --color-cardHeader-background-hover: rgba(116, 116, 128, 0.2);
+        --color-card-background: rgba(0, 0, 0, .75);
+        --inverted-color-card-background: rgba(255, 255, 255, 0.8);
 
-    --login-color-text-base:#333;
-    --login-border-focus-color: #fff;
-    --login-background-color: rgba(255, 255, 255, 0.8);
-    --loign-input-border-color: rgba(255, 255, 255, 0.5);
-    --loign-input-focus-color: rgba(255, 255, 255, 0.6);
-    --login-input-placeholder-color: rgba(170, 170, 170);
-  }
+        --login-color-text-base: #333;
+        --login-border-focus-color: #fff;
+        --login-background-color: rgba(255, 255, 255, 0.8);
+        --loign-input-border-color: rgba(255, 255, 255, 0.5);
+        --loign-input-focus-color: rgba(255, 255, 255, 0.6);
+        --login-input-placeholder-color: rgba(170, 170, 170);
+    }
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
+    box-sizing: border-box;
+    margin: 0;
+    font-weight: normal;
 }
 
 body {
-  min-height: 100vh;
-  color: var(--color-labelPrimary);
-  transition:
-    color 0.5s,
+    min-height: 100vh;
+    color: var(--color-labelPrimary);
+    transition: color 0.5s,
     background-color 0.5s;
-  line-height: 1.6;
-  font-family:SF Pro Display, Helvetica Neue, sans-serif;
-  font-size: 14px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    font-family: SF Pro Display, Helvetica Neue, sans-serif;
+    font-size: 14px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.btn-primary{
-  font-size: 17px;
-  padding: 0 16px;
-  background-color: var(--color-button-primary);
-  border-radius: 1000px;
-  color: white !important;
-  width: fit-content;
-  height: fit-content;
+.btn-primary {
+    font-size: 17px;
+    padding: 0 16px;
+    background-color: var(--color-button-primary);
+    border-radius: 1000px;
+    color: white !important;
+    width: fit-content;
+    height: fit-content;
 }
 
-.btn-danger{
-  font-size: 17px;
-  padding: 0 16px;
-  background-color: var(--color-button-danger);
-  border-radius: 1000px;
-  color: white !important;
-  width: fit-content;
-  height: fit-content;
+.btn-danger {
+    font-size: 17px;
+    padding: 0 16px;
+    background-color: var(--color-button-danger);
+    border-radius: 1000px;
+    color: white !important;
+    width: fit-content;
+    height: fit-content;
+}
+
+.padding-top-view {
+    padding-top: 125px;
+    padding-bottom: 80px;
 }

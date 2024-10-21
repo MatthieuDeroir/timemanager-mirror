@@ -1,8 +1,6 @@
-@import url(styles/base.css);
+@import url(@styles/base.css);
 
 .main-content {
-    padding-top: 125px;
-    padding-bottom: 80px;
     color: var(--color-labelPrimary);
     font-family: SF Pro Display, Helvetica Neue, sans-serif;
 }
@@ -85,7 +83,8 @@
 
     .background.red:after {
         background: linear-gradient(64deg, #360200, #6e1515 46%, #5c0303);
-    } 
+    }
+
     .background {
         background-image: url(assets/global/wallpaper_dark.svg);
     }
