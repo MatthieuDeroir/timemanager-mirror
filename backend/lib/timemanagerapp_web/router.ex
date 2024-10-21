@@ -37,7 +37,8 @@ defmodule TimeManagerAppWeb.Router do
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin, :general_manager, :manager, :employee])
+    # pipe_through([:api, :authenticated, :admin, :general_manager, :manager, :employee])
+    pipe_through([:api])
 
     resources "/users", UserController, except: [:new, :edit, :create, :update, :delete] do
       get("/teams", UserController, :user_teams)
@@ -62,7 +63,8 @@ defmodule TimeManagerAppWeb.Router do
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin, :general_manager, :manager])
+    # pipe_through([:api, :authenticated, :admin, :general_manager, :manager])
+    pipe_through([:api])
 
     post("/workingtime/:user_id", WorkingTimeController, :create)
     put("/workingtime/:id", WorkingTimeController, :update)
@@ -70,13 +72,17 @@ defmodule TimeManagerAppWeb.Router do
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin, :general_manager])
+    # pipe_through([:api, :authenticated, :admin, :general_manager])
+    pipe_through([:api])
+
     post("teams/users/add", TeamController, :add_user)
     delete("teams/users/remove", TeamController, :remove_user)
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin])
+    # pipe_through([:api, :authenticated, :admin])
+    pipe_through([:api])
+
     resources("/users", UserController, except: [:new, :edit])
     resources("/logs", LogController, only: [:index, :show])
   end
