@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     localStorage.removeItem('CURRENT_USER')
     localStorage.removeItem('TOKEN')
+    localStorage.removeItem('CSRF_TOKEN')
   }
 
   const isAuthenticated = computed(() => {

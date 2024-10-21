@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { handleError } from './handleError.js'
+import {handleError} from './handleError.js'
 
+// Configuration d'Axios
 export const HttpClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
@@ -15,6 +16,12 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift()
 }
 
+function setJwtCookie(token) {
+  const expires = new Date()
+  expires.setTime(expires.getTime() + 24 * 60 * 60 * 1000)
+  document.cookie = `jwt=${token}; path=/; expires=${expires.toUTCString()}; secure; samesite=strict;`
+}
+
 HttpClient.interceptors.request.use(
   (config) => {
     let token = localStorage.getItem('TOKEN')
@@ -26,6 +33,12 @@ HttpClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+
+    const csrfToken = localStorage.getItem('CSRF_TOKEN')
+    if (csrfToken) {
+      config.headers['x-csrf-token'] = csrfToken
+    }
+
     return config
   },
   (error) => {
@@ -39,6 +52,14 @@ HttpClient.interceptors.response.use(
     if (jwtToken) {
       localStorage.setItem('TOKEN', jwtToken)
     }
+
+    const csrfToken = response.data.csrf_token
+    console.log('=>(HttpClient.js:58) csrfToken', csrfToken)
+
+    if (csrfToken) {
+      localStorage.setItem('CSRF_TOKEN', csrfToken)
+    }
+
     return response
   },
   (error) => {

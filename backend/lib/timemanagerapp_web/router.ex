@@ -41,13 +41,14 @@ defmodule TimeManagerAppWeb.Router do
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin, :general_manager, :manager, :employee])
+    pipe_through([:api, :authenticated])
     # pipe_through([:api])
 
 
 
     # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
+
     post("/clocks/:user_id", ClockController, :create)
     get("/clocks/:user_id/:id", ClockController, :show)
 

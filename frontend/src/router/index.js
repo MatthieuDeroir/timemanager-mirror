@@ -22,10 +22,16 @@ const routes = [
     meta: { requiresAuth: true, role: UserRole.ADMIN }
   },
   {
-    path: '/manager',
+    path: '/general-manager/:userId(\\d+)',
+    name: 'GeneralManager',
+    component: ManagerView,
+    meta: { requiresAuth: true, role: UserRole.GENERAL_MANAGER }
+  },
+  {
+    path: '/manager/:userId(\\d+)',
     name: 'Manager',
     component: ManagerView,
-    meta: { requiresAuth: true, role: UserRole }
+    meta: { requiresAuth: true, role: UserRole.MANAGER }
   },
   {
     path: '/worker/:userId(\\d+)',
@@ -33,7 +39,7 @@ const routes = [
     component: WorkerView,
     props: (route) => ({ userId: Number(route.params.userId) }),
     key: (route) => route.params.userId,
-    meta: { requiresAuth: true, role: UserRole.WORKER }
+    meta: { requiresAuth: true, role: UserRole.EMPLOYEE }
   },
   {
     path: '/login',
@@ -72,7 +78,6 @@ router.beforeEach((to, from, next) => {
     const userId = authStore.user?.id
 
     if (to.meta.role && to.meta.role !== userRole) {
-      console.log('Unauthorized')
       return next('/unauthorized')
     }
 

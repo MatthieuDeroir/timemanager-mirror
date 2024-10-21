@@ -2,7 +2,8 @@
  * User role enum
  */
 export const UserRole = {
-  WORKER: 1,
-  MANAGER: 2,
-  ADMIN: 3
+  ADMIN: 1,
+  GENERAL_MANAGER: 2,
+  MANAGER: 3,
+  EMPLOYEE: 4
 }

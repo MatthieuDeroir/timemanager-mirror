@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/Auth/AuthStore'
 import { useRouter } from 'vue-router'
-import { loginUser } from '@/api/AuthAPI.js'
+import { loginUser, logoutUser } from '@/api/AuthAPI.js'
 import { UserRole } from '@enum/User/UserRole.js'
 
 export function useAuth() {
@@ -15,6 +15,7 @@ export function useAuth() {
   }
 
   const logout = () => {
+    logoutUser()
     authStore.logout()
     router.push('/login')
   }
@@ -29,17 +30,18 @@ export function useAuth() {
 
     switch (roleId) {
       case UserRole.ADMIN:
-        console.log('Admin')
         router.push(`/admin/${1}`)
         break
 
+      case UserRole.GENERAL_MANAGER:
+        router.push('/general-manager')
+        break
+
       case UserRole.MANAGER:
-        console.log('Manager')
         router.push('/manager')
         break
 
-      case UserRole.WORKER:
-        console.log('Worker')
+      case UserRole.EMPLOYEE:
         if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
           router.push(`/worker/${userId}`)
         }

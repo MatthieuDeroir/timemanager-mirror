@@ -16,6 +16,6 @@ export const loginUser = (data) =>
  * Method use to logout the user from the context application
  * @returns {Promise}
  */
-export const logout = () => {
-  HttpClient.post('/logout')
+export const logoutUser = () => {
+  HttpClient.post('/auth/logout')
 }
