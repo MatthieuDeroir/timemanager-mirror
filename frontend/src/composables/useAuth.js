@@ -34,11 +34,11 @@ export function useAuth() {
         break
 
       case UserRole.GENERAL_MANAGER:
-        router.push('/general-manager')
+        router.push(`/general-manager/${userId}`)
         break
 
       case UserRole.MANAGER:
-        router.push('/manager')
+        router.push(`/manager/${userId}`)
         break
 
       case UserRole.EMPLOYEE:

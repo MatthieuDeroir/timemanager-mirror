@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <img alt="Gotham Logo" class="navbar-logo" src="@/assets/global/batman.png" />
-    <div v-if="authStore.role === 'admin'">
+    <div v-if="authStore.user && authStore.user.role_id === UserRole.ADMIN">
       <UserSearch @user-selected="handleUserSelected" />
     </div>
     <div>
@@ -36,13 +36,13 @@ import ColorPicker from './ColourPicker/ColourPicker.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@store/Auth/AuthStore'
 import { useAuth } from '@composables/useAuth'
+import { UserRole } from '@enum/User/UserRole'
 
 const items = [{ title: 'Profil' }, { title: 'Log out' }]
 
 const emit = defineEmits(['colorSelected'])
 const authStore = useAuthStore()
 const auth = useAuth()
-
 const selectedUserId = ref<number | null>(null)
 
 const handleUserSelected = (userId: number) => {
