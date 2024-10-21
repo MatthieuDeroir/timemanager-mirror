@@ -1,5 +1,4 @@
 defmodule TimeManagerAppWeb.Router do
-  alias Hex.API.Auth
   use TimeManagerAppWeb, :router
 
   alias TimeManagerAppWeb.Plugs.AuthorizeRole
@@ -8,24 +7,24 @@ defmodule TimeManagerAppWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  pipeline :admin do
-    plug(AuthorizeRole, 1)
-  end
-
-  pipeline :general_manager do
-    plug(AuthorizeRole, 2)
-  end
-
-  pipeline :manager do
-    plug(AuthorizeRole, 3)
+  pipeline :authenticated do
+    plug(TimeManagerAppWeb.Plugs.AuthPlug)
   end
 
   pipeline :employee do
     plug(AuthorizeRole, 4)
   end
 
-  pipeline :authenticated do
-    plug(TimeManagerAppWeb.Plugs.AuthPlug)
+  pipeline :manager do
+    plug(AuthorizeRole, 3)
+  end
+
+  pipeline :general_manager do
+    plug(AuthorizeRole, 2)
+  end
+
+  pipeline :admin do
+    plug(AuthorizeRole, 1)
   end
 
   scope "/api", TimeManagerAppWeb do
@@ -41,10 +40,7 @@ defmodule TimeManagerAppWeb.Router do
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated])
-    # pipe_through([:api])
-
-
+    pipe_through([:api, :authenticated, :employee])
 
     # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
@@ -65,9 +61,9 @@ defmodule TimeManagerAppWeb.Router do
     end
   end
 
+  # Other scopes with higher role requirements
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin, :general_manager, :manager])
-    # pipe_through([:api])
+    pipe_through([:api, :authenticated, :manager])
 
     post("/workingtime/:user_id", WorkingTimeController, :create)
     put("/workingtime/:id", WorkingTimeController, :update)
@@ -75,8 +71,7 @@ defmodule TimeManagerAppWeb.Router do
   end
 
   scope "/api", TimeManagerAppWeb do
-    pipe_through([:api, :authenticated, :admin, :general_manager])
-    # pipe_through([:api])
+    pipe_through([:api, :authenticated, :general_manager])
 
     post("teams/users/add", TeamController, :add_user)
     delete("teams/users/remove", TeamController, :remove_user)
@@ -84,7 +79,6 @@ defmodule TimeManagerAppWeb.Router do
 
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :admin])
-    # pipe_through([:api])
 
     resources("/users", UserController, except: [:new, :edit])
     resources("/logs", LogController, only: [:index, :show])
@@ -108,11 +102,6 @@ defmodule TimeManagerAppWeb.Router do
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:timemanagerapp, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do

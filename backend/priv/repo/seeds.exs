@@ -275,7 +275,7 @@ defmodule TimeManagerApp.Seeds do
         start_date: ~D[2017-11-03],
         end_date: nil,
         username: "henry.lee",
-        email: "henry@example.com",
+        email: "employee@employee.com",
         password: "password",
         role_id: employee_role.id,
         teams: [it_team]
@@ -300,9 +300,9 @@ defmodule TimeManagerApp.Seeds do
         start_date: ~D[2019-03-11],
         end_date: nil,
         username: "isabella.taylor",
-        email: "isabella@example.com",
+        email: "manager@manager.com",
         password: "password",
-        role_id: employee_role.id,
+        role_id: manager_role.id,
         teams: [comptability_team]
       },
       %User{
@@ -325,9 +325,9 @@ defmodule TimeManagerApp.Seeds do
         start_date: ~D[2013-05-22],
         end_date: nil,
         username: "jack.wilson",
-        email: "jack@example.com",
+        email: "generalmanager@generalmanager.com",
         password: "password",
-        role_id: manager_role.id,
+        role_id: general_manager_role.id,
         teams: [it_team]
       },
       %User{
@@ -350,7 +350,7 @@ defmodule TimeManagerApp.Seeds do
         start_date: ~D[2010-01-01],
         end_date: nil,
         username: "liam.garcia",
-        email: "liam@example.com",
+        email: "admin@admin.com",
         password: "password",
         role_id: admin_role.id,
         teams: []
