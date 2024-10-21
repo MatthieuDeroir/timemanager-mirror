@@ -4,6 +4,8 @@ defmodule TimeManagerAppWeb.TeamController do
 
   alias TimeManagerApp.Teams
   alias TimeManagerApp.Teams.Team
+  # Added alias for Repo
+  alias TimeManagerApp.Repo
   alias TimeManagerAppWeb.Swagger.TeamSwagger
 
   action_fallback(TimeManagerAppWeb.FallbackController)
@@ -40,6 +42,7 @@ defmodule TimeManagerAppWeb.TeamController do
   def delete(conn, %{"id" => id}) do
     team = Teams.get_team!(id)
 
+    # Changed from {:ok, %Team{}} to avoid unused variable
     with {:ok, %Team{}} <- Teams.delete_team(team) do
       send_resp(conn, :no_content, "")
     end
@@ -57,13 +60,19 @@ defmodule TimeManagerAppWeb.TeamController do
   Adds a user to a team.
   """
   def add_user(conn, %{"team_id" => team_id, "user_id" => user_id}) do
-    with {:ok, %Team{} = team} <- Teams.add_user_to_team(team_id, user_id) do
-      render(conn, :show, team: team)
+    # Removed binding to 'team'
+    with {:ok, %Team{}} <- Teams.add_user_to_team(team_id, user_id) do
+      team = Teams.get_team!(team_id) |> Repo.preload(:users)
+
+      conn
+      |> put_view(TimeManagerAppWeb.TeamJSON)
+      |> render("show.json", team: team)
     else
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(TimeManagerAppWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(TimeManagerAppWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -71,13 +80,19 @@ defmodule TimeManagerAppWeb.TeamController do
   Removes a user from a team.
   """
   def remove_user(conn, %{"team_id" => team_id, "user_id" => user_id}) do
-    with {:ok, %Team{} = team} <- Teams.remove_user_from_team(team_id, user_id) do
-      render(conn, :show, team: team)
+    # Removed binding to 'team'
+    with {:ok, %Team{}} <- Teams.remove_user_from_team(team_id, user_id) do
+      team = Teams.get_team!(team_id) |> Repo.preload(:users)
+
+      conn
+      |> put_view(TimeManagerAppWeb.TeamJSON)
+      |> render("show.json", team: team)
     else
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(TimeManagerAppWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(TimeManagerAppWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -85,8 +100,11 @@ defmodule TimeManagerAppWeb.TeamController do
   Returns a list of users that belong to a team.
   """
   def team_users(conn, %{"team_id" => team_id}) do
-    team = Teams.get_team!(team_id)
+    team = Teams.get_team!(team_id) |> Repo.preload(:users)
     users = team.users
-    render(conn, TimeManagerAppWeb.UserView, "index.json", users: users)
+
+    conn
+    |> put_view(TimeManagerAppWeb.UserJSON)
+    |> render("index.json", users: users)
   end
 end

@@ -27,6 +27,7 @@ defmodule TimeManagerAppWeb.Router do
     plug(AuthorizeRole, 1)
   end
 
+  # public routes
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
 
@@ -35,33 +36,30 @@ defmodule TimeManagerAppWeb.Router do
     post("auth/register", SessionController, :register)
 
     resources "/users", UserController, except: [:new, :edit, :update, :delete] do
-      get("/teams", UserController, :user_teams)
+      get("/teams/:user_id", UserController, :user_teams)
     end
   end
 
+  # employee routes
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :employee])
 
-    # Clock Routes
     get("/clocks/:user_id", ClockController, :index)
 
     post("/clocks/:user_id", ClockController, :create)
     get("/clocks/:user_id/:id", ClockController, :show)
 
-    # WorkingTime Routes
     get("/workingtime/:user_id", WorkingTimeController, :index)
     get("/workingtime/:user_id/:id", WorkingTimeController, :show)
 
-    # Role Routes
     resources("/roles", RoleController, except: [:new, :edit])
 
-    # Team Routes
-    resources "/teams", TeamController, except: [:new, :edit] do
-      get("/users", TeamController, :team_users)
+    resources "/teams", TeamController, except: [:new, :edit, :update, :delete] do
+      get("/users/:team_id", TeamController, :team_users)
     end
   end
 
-  # Other scopes with higher role requirements
+  # manager routes
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :manager])
 
@@ -70,13 +68,15 @@ defmodule TimeManagerAppWeb.Router do
     delete("/workingtime/:id", WorkingTimeController, :delete)
   end
 
+  # general manager routes
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :general_manager])
 
-    post("teams/users/add", TeamController, :add_user)
-    delete("teams/users/remove", TeamController, :remove_user)
+    post("teams/:team_id/users/:user_id", TeamController, :add_user)
+    delete("teams/:team_id/users/:user_id", TeamController, :remove_user)
   end
 
+  # admin routes
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :admin])
 
@@ -100,7 +100,6 @@ defmodule TimeManagerAppWeb.Router do
     }
   end
 
-  # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:timemanagerapp, :dev_routes) do
     import Phoenix.LiveDashboard.Router
 

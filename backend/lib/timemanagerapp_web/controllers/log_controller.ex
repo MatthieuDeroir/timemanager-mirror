@@ -25,14 +25,6 @@ defmodule TimeManagerAppWeb.LogController do
     render(conn, :show, log: log)
   end
 
-  def update(conn, %{"id" => id, "log" => log_params}) do
-    log = Logs.get_log!(id)
-
-    with {:ok, %Log{} = log} <- Logs.update_log(log, log_params) do
-      render(conn, :show, log: log)
-    end
-  end
-
   def delete(conn, %{"id" => id}) do
     log = Logs.get_log!(id)
 

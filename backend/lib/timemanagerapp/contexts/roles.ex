@@ -1,3 +1,4 @@
+# lib/timemanagerapp/roles.ex
 defmodule TimeManagerApp.Roles do
   @moduledoc """
   The Roles context.
@@ -26,5 +27,9 @@ defmodule TimeManagerApp.Roles do
 
   def delete_role(%Role{} = role) do
     Repo.delete(role)
+  end
+
+  def change_role(%Role{} = role) do
+    Role.changeset(role, %{})
   end
 end

@@ -1,4 +1,4 @@
-# lib/time_manager_app/time.ex
+# lib/timemanagerapp/time.ex
 
 defmodule TimeManagerApp.WorkingTimes do
   @moduledoc """

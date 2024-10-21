@@ -1,3 +1,4 @@
+# lib/timemanagerapp/teams.ex
 defmodule TimeManagerApp.Teams do
   @moduledoc """
   The Teams context.
@@ -50,7 +51,7 @@ defmodule TimeManagerApp.Teams do
   Gets teams by a list of IDs.
   """
   def get_teams_by_ids(team_ids) when is_list(team_ids) do
-    Repo.all(from(t in Team, where: t.id in ^team_ids))
+    Repo.all(from(t in Team, where: t.id in ^team_ids, preload: [:users]))
   end
 
   @doc """
@@ -58,7 +59,7 @@ defmodule TimeManagerApp.Teams do
   """
   def add_user_to_team(team_id, user_id) do
     team = get_team!(team_id)
-    user = Users.get_user!(user_id)
+    user = Users.get_user(user_id)
 
     team
     |> Ecto.Changeset.change()
@@ -78,5 +79,12 @@ defmodule TimeManagerApp.Teams do
     |> Ecto.Changeset.change()
     |> Ecto.Changeset.put_assoc(:users, updated_users)
     |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking team changes.
+  """
+  def change_team(%Team{} = team, attrs \\ %{}) do
+    Team.changeset(team, attrs)
   end
 end

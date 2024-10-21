@@ -1,3 +1,4 @@
+# lib/timemanagerapp/logs.ex
 defmodule TimeManagerApp.Logs do
   @moduledoc """
   The Logs context.
@@ -35,6 +36,15 @@ defmodule TimeManagerApp.Logs do
     %Log{}
     |> Log.changeset(%{user_id: user_id, action: action, message: message, level: level})
     |> Repo.insert()
+  end
+
+  @doc """
+  Updates a log.
+  """
+  def update_log(%Log{} = log, attrs) do
+    log
+    |> Log.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """

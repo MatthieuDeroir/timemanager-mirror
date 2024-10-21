@@ -52,7 +52,7 @@ defmodule TimeManagerApp.Users.User do
   end
 
   @doc false
-  def changeset(user, attrs) do
+  def create_changeset(user, attrs) do
     user
     |> cast(attrs, [
       :firstname,
@@ -73,7 +73,9 @@ defmodule TimeManagerApp.Users.User do
     |> validate_required([
       :username,
       :email,
-      :password
+      :password,
+      :firstname,
+      :lastname
     ])
     |> validate_format(
       :email,
@@ -86,6 +88,43 @@ defmodule TimeManagerApp.Users.User do
     |> validate_date_order(:start_date, :end_date)
     |> validate_length(:password, min: 6, message: "Password must be at least 6 characters long")
     |> hash_password()
+    |> put_teams_assoc(attrs)
+  end
+
+  @doc false
+  def update_changeset(user, attrs) do
+    user
+    |> cast(attrs, [
+      :firstname,
+      :lastname,
+      :address,
+      :phone,
+      :birthdate,
+      :gender,
+      :salary,
+      :position,
+      :start_date,
+      :end_date,
+      :username,
+      :email,
+      :password,
+      :role_id
+    ])
+    |> validate_required([
+      :username,
+      :email
+    ])
+    |> validate_format(
+      :email,
+      ~r/^[\w.!#$%&'*+\/=?^`{|}~\-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]{2,}$/,
+      message: "is not a valid email"
+    )
+    |> unique_constraint(:email)
+    |> foreign_key_constraint(:role_id)
+    |> validate_number(:salary, greater_than_or_equal_to: 0, message: "Salary cannot be negative")
+    |> validate_date_order(:start_date, :end_date)
+    |> maybe_validate_password()
+    |> maybe_hash_password()
     |> put_teams_assoc(attrs)
   end
 
@@ -127,6 +166,24 @@ defmodule TimeManagerApp.Users.User do
 
       _ ->
         changeset
+    end
+  end
+
+  defp maybe_validate_password(changeset) do
+    if get_change(changeset, :password) do
+      changeset
+      |> validate_required([:password])
+      |> validate_length(:password, min: 6, message: "Password must be at least 6 characters long")
+    else
+      changeset
+    end
+  end
+
+  defp maybe_hash_password(changeset) do
+    if get_change(changeset, :password) do
+      hash_password(changeset)
+    else
+      changeset
     end
   end
 end

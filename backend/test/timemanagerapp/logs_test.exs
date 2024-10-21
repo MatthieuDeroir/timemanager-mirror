@@ -1,12 +1,13 @@
+# test/timemanagerapp/logs_test.exs
 defmodule TimeManagerApp.LogsTest do
   use TimeManagerApp.DataCase
 
   alias TimeManagerApp.Logs
 
+  import TimeManagerApp.LogsFixtures
+
   describe "logs" do
     alias TimeManagerApp.Logs.Log
-
-    import TimeManagerApp.LogsFixtures
 
     @invalid_attrs %{action: nil, level: nil, message: nil}
 
@@ -21,11 +22,11 @@ defmodule TimeManagerApp.LogsTest do
     end
 
     test "create_log/1 with valid data creates a log" do
-      valid_attrs = %{action: "some action", level: "some level", message: "some message"}
+      valid_attrs = %{action: "some action", level: "info", message: "some message"}
 
       assert {:ok, %Log{} = log} = Logs.create_log(valid_attrs)
       assert log.action == "some action"
-      assert log.level == "some level"
+      assert log.level == "info"
       assert log.message == "some message"
     end
 
@@ -35,11 +36,16 @@ defmodule TimeManagerApp.LogsTest do
 
     test "update_log/2 with valid data updates the log" do
       log = log_fixture()
-      update_attrs = %{action: "some updated action", level: "some updated level", message: "some updated message"}
+
+      update_attrs = %{
+        action: "some updated action",
+        level: "warning",
+        message: "some updated message"
+      }
 
       assert {:ok, %Log{} = log} = Logs.update_log(log, update_attrs)
       assert log.action == "some updated action"
-      assert log.level == "some updated level"
+      assert log.level == "warning"
       assert log.message == "some updated message"
     end
 

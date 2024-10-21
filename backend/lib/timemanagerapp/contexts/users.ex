@@ -31,7 +31,8 @@ defmodule TimeManagerApp.Users do
   Gets a single user.
   """
   def get_user(id) do
-    Repo.get(User, id) |> Repo.preload(:teams)
+    Repo.get(User, id)
+    |> Repo.preload(teams: [:users])
   end
 
   @doc """
@@ -39,17 +40,18 @@ defmodule TimeManagerApp.Users do
   """
   def create_user(attrs \\ %{}) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.create_changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
   Updates a user.
   """
+
   def update_user(%User{} = user, attrs) do
     user
     |> Repo.preload(:teams)
-    |> User.changeset(attrs)
+    |> User.update_changeset(attrs)
     |> Repo.update()
   end
 

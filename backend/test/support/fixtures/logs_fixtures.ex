@@ -1,3 +1,4 @@
+# test/timemanagerapp/logs_fixtures.ex
 defmodule TimeManagerApp.LogsFixtures do
   @moduledoc """
   This module defines test helpers for creating
@@ -12,8 +13,9 @@ defmodule TimeManagerApp.LogsFixtures do
       attrs
       |> Enum.into(%{
         action: "some action",
-        level: "some level",
-        message: "some message"
+        level: "info",
+        message: "some message",
+        user_id: nil
       })
       |> TimeManagerApp.Logs.create_log()
 

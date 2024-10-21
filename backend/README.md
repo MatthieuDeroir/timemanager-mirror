@@ -5,7 +5,7 @@ To start your Phoenix server:
   * Cloning the repo `git clone git@githom:EpitechMscProPromo2026/T-POO-700-NAN_5.git`
   * Run `mix setup` to install and setup dependencies
   * Run `mix ecto.migrate` to init database's
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+  * Start Phoenix endpoint with (OLD) `mix phx.server`, (NEW) `source .env && mix phx.server` (on linux)
   * Run `mix test` to start test
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
