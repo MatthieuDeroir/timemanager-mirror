@@ -127,8 +127,7 @@ defmodule TimeManagerApp.Users do
     user = Repo.get_by(User, email: email)
 
     cond do
-      user && Bcrypt.verify_pass(password, user.password_hash) ->
-        # Preload teams
+      user && Pbkdf2.verify_pass(password, user.password_hash) ->
         user = Repo.preload(user, :teams)
         {:ok, user}
 

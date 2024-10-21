@@ -71,12 +71,9 @@ defmodule TimeManagerApp.Users.User do
       :role_id
     ])
     |> validate_required([
-      :firstname,
-      :lastname,
       :username,
       :email,
-      :password,
-      :role_id
+      :password
     ])
     |> validate_format(
       :email,
@@ -98,7 +95,7 @@ defmodule TimeManagerApp.Users.User do
 
       if password do
         changeset
-        |> put_change(:password_hash, Bcrypt.hash_pwd_salt(password))
+        |> put_change(:password_hash, Pbkdf2.hash_pwd_salt(password))
         |> delete_change(:password)
       else
         changeset

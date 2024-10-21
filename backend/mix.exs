@@ -61,9 +61,9 @@ defmodule TimeManagerApp.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
+      # {:bcrypt_elixir, "~> 2.3"},
+      {:pbkdf2_elixir, "~> 2.0"},
       {:comeonin, "~> 5.3"},
-      {:bcrypt_elixir, "~> 2.3"},
-      # Add this line
       {:faker, "~> 0.17", only: [:dev, :test]}
     ]
   end

@@ -82,7 +82,7 @@ defmodule TimeManagerApp.Seeds do
         email: "alice@example.com",
         password: "password",
         role_id: employee_role.id,
-        teams: [comptability_team]
+        teams: [comptability_team],
         password: "password",
         role_id: employee_role.id,
         teams: [comptability_team]
