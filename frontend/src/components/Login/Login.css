@@ -92,7 +92,7 @@ input::placeholder {
 }
 
 
-.image-button {   
+.image-button {
     border: none;
     cursor: pointer;
     margin-top: 10px;
@@ -109,7 +109,10 @@ input::placeholder {
     border-radius: 50%;
     width: 10rem;
     height: 10rem;
-    margin-left: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .image-button:hover {
@@ -119,8 +122,6 @@ input::placeholder {
 }
 
 .main-content {
-    padding-top: 125px;
-    padding-bottom: 80px;
     color: var(--color-labelPrimary);
 }
 

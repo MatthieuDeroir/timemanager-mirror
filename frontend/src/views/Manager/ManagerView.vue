@@ -69,7 +69,7 @@ const getDate = () => {
   <div v-if="createUserPopUp">
     <UserCreate @clickOut="handleClosePopUp"></UserCreate>
   </div>
-  <v-container>
+  <v-container class="padding-top-view">
     <v-row>
       <v-col cols="12" md="4">
         <Card
