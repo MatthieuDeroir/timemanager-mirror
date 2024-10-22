@@ -12,6 +12,7 @@ import teamIcon from '@assets/icons/icons8-team-48.png'
 import Team from '@components/Team/Team.vue'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
+import Calendar from '@/components/Calendar.vue'
 
 const props = defineProps({
   userId: {
@@ -115,6 +116,12 @@ const getDate = () => {
       <v-col cols="12" md="12">
         <Card :logo="teamIcon" color="orange" subtitle="Team" title="My Team">
           <Team :userId="userId" />
+        </Card>
+      </v-col>
+      <v-col cols="12" md="12">
+        <Card>
+          <Calendar :userId="userId"/>
+
         </Card>
       </v-col>
     </v-row>
