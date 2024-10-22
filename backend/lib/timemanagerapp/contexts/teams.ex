@@ -41,8 +41,7 @@ defmodule TimeManagerApp.Teams do
     Repo.all(
       from(t in Team,
         join: u in assoc(t, :users),
-        where: u.id == ^user_id,
-        preload: [:users]
+        where: u.id == ^user_id
       )
     )
   end

@@ -64,9 +64,7 @@ defmodule TimeManagerAppWeb.TeamController do
     with {:ok, %Team{}} <- Teams.add_user_to_team(team_id, user_id) do
       team = Teams.get_team!(team_id) |> Repo.preload(:users)
 
-      conn
-      |> put_view(TimeManagerAppWeb.TeamJSON)
-      |> render("show.json", team: team)
+      json(conn, team)
     else
       {:error, changeset} ->
         conn
@@ -84,9 +82,7 @@ defmodule TimeManagerAppWeb.TeamController do
     with {:ok, %Team{}} <- Teams.remove_user_from_team(team_id, user_id) do
       team = Teams.get_team!(team_id) |> Repo.preload(:users)
 
-      conn
-      |> put_view(TimeManagerAppWeb.TeamJSON)
-      |> render("show.json", team: team)
+      json(conn, team)
     else
       {:error, changeset} ->
         conn
@@ -100,9 +96,8 @@ defmodule TimeManagerAppWeb.TeamController do
   Returns a list of users that belong to a team.
   """
   def team_users(conn, %{"team_id" => team_id}) do
-    team = Teams.get_team!(team_id) |> Repo.preload(:users)
+    team = Teams.get_team!(team_id) |> Repo.preload(users: :teams)
     users = team.users
-
     json(conn, users)
   end
 end
