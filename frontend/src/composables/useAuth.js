@@ -2,6 +2,7 @@ import { useAuthStore } from '@/store/Auth/AuthStore'
 import { useRouter } from 'vue-router'
 import { loginUser, logoutUser } from '@/api/AuthAPI.js'
 import { UserRole } from '@enum/User/UserRole.js'
+import { useTeamStore } from '@store/Team/TeamStore.js'
 
 export function useAuth() {
   const authStore = useAuthStore()
@@ -15,6 +16,7 @@ export function useAuth() {
   }
 
   const logout = () => {
+    useTeamStore().teams = []
     logoutUser()
     authStore.logout()
     router.push('/login')
@@ -22,7 +24,6 @@ export function useAuth() {
 
   const redirectToRoleBasedRoute = (roleId, userId) => {
     const currentRouteParams = router.currentRoute.value.params
-    console.log('=>(useAuth.js:58) userId', userId)
 
     if (!roleId || !userId) {
       router.push('/login')
@@ -57,9 +58,17 @@ export function useAuth() {
     }
   }
 
+  const getUserInitial = () => {
+    if (!authStore.user) {
+      return ''
+    }
+    return `${authStore.user.firstname.charAt(0)}${authStore.user.lastname.charAt(0)}`
+  }
+
   return {
     login,
     logout,
-    redirectToRoleBasedRoute
+    redirectToRoleBasedRoute,
+    getUserInitial
   }
 }

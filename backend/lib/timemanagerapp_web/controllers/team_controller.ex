@@ -103,8 +103,6 @@ defmodule TimeManagerAppWeb.TeamController do
     team = Teams.get_team!(team_id) |> Repo.preload(:users)
     users = team.users
 
-    conn
-    |> put_view(TimeManagerAppWeb.UserJSON)
-    |> render("index.json", users: users)
+    json(conn, users)
   end
 end

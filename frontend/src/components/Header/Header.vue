@@ -12,7 +12,7 @@
             class="user-preferences"
             v-bind="props"
           >
-            MD
+            {{ getInitial}}
           </div>
         </template>
         <v-list>
@@ -43,6 +43,7 @@ const items = [{ title: 'Profil' }, { title: 'Log out' }]
 const emit = defineEmits(['colorSelected'])
 const authStore = useAuthStore()
 const auth = useAuth()
+const getInitial = auth.getUserInitial()
 const selectedUserId = ref<number | null>(null)
 
 const handleUserSelected = (userId: number) => {

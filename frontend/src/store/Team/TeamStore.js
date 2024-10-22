@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
-import TeamAPI from '@/api/TeamAPI'
-
-const { getAllTeams, getAllUsersFromTeam, getTeamsFromUser, addUsersToTeam, removeUsersFromTeam, createTeam, updateTeam, deleteTeam } = TeamAPI
+import teamApi from '@/api/TeamAPI.js'
 
 export const useTeamStore = defineStore('teamStore', {
     state: () => ({
@@ -11,73 +9,55 @@ export const useTeamStore = defineStore('teamStore', {
     }),
 
     actions: {
-        async loadTeams(start = null, end = null) {
+        async loadTeamByUserId(userId) {
             this.isLoading = true
             this.error = null
-            try {
-                this.teams = await getAllTeams(start, end)
-            } catch (error) {
-                this.error = error
-            } finally {
-                this.isLoading = false
-            }
-        },
-        async loadTeam(teamId, start = null, end = null) {
-            this.isLoading = true
-            this.error = null
-            try {
-                this.teams = await getTeam(teamId, start, end)
-            } catch (error) {
-                this.error = error
-            } finally {
-                this.isLoading = false
-            }
-        },
-        async createNewTeam(data) {
-            this.isLoading = true
-            this.error = null
-            const newTeam = await createTeam(data)
-            this.teams.push(newTeam)
+            const result = await teamApi.getTeamsByUserId(userId)
+            result.forEach((element, index) => {
+                if (this.teams[index] === undefined) {
+                    this.teams[index]= {}
+                }
+                teamApi.getUsersFromTeamId(element.id)
+                    .then((res) => this.teams[index].users = res.data)
+                    .catch((error) => {
+                        this.error = error
+                    })
+                this.teams[index].teamId = element.id
+                this.teams[index].name = element.name
+            });
             this.isLoading = false
         },
-        async loadUsersFromTeam(teamId) {
+        async addUserInTeam(teamId, userId) {
             this.isLoading = true
             this.error = null
-            this.teams = await getAllUsersFromTeam(teamId)
+            await teamApi.addUserInTeam(teamId, userId)
             this.isLoading = false
         },
-        async loadTeamsFromUser(userId) {
+        async deleteUserInTeam(teamId, userId) {
             this.isLoading = true
             this.error = null
-            this.teams = await getTeamsFromUser(userId)
+            await teamApi.deleteUserInTeam(teamId, userId)
             this.isLoading = false
+        },        
+        async createTeam(name) {
+           this.isLoading = true
+           this.error = null
+           const newTeam = await teamApi.createTeam(name)
+           this.teams.push(newTeam)
+           this.isLoading = false
         },
-        async addUserToTeam(userId, teamId) {
+        async updateTeam(teamId, name) {
             this.isLoading = true
             this.error = null
-            const newTeamMemeber = await addUsersToTeam(userId, teamId)
-            this.teams.user.push(newTeamMemeber)
-            this.isLoading = false
-        },
-        async removeUsersFromTeam(teamId, userId) {
-            this.isLoading = true
-            this.error = null
-            await removeUsersFromTeam(userId, teamId)
-            this.teams.user = this.teams.user.filter((wt) => wt.userId !== userId)
-            this.isLoading = false
-        },
-        async updateTeam(teamId, data) {
-            this.isLoading = true
-            this.error = null
-            await updateTeam(teamId, data)
-            this.teams = this.teams.map((wt) => wt.teamId !== teamId)
+            const updatedTeam = await teamApi.updateTeam(teamId, name)
+            this.teams = this.teams.map((team) => (team.teamId === teamId ? updatedTeam : team))
             this.isLoading = false
         },
         async deleteTeam(teamId) {
             this.isLoading = true
             this.error = null
-            await deleteTeam(teamId)
-            this.teams = this.teams.filter((wt) => wt.teamId !== teamId)
+            await teamApi.deleteTeam(teamId)
+            this.teams = this.teams.filter((team) => team.teamId !== teamId)
             this.isLoading = false
         }
     }

@@ -1,6 +1,4 @@
-import {HttpClient} from '@/api/config/HttpClient.js'
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+import { HttpClient } from '@/api/config/HttpClient.js'
 
 
 /**
@@ -8,53 +6,51 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
  * This method find all teams. Inside a component, you can use the store and the store will call this method to store the data.
  */
 export const getAllTeams = () =>
-    HttpClient.get(`${API_BASE_URL}/teams`)
-        .then((res) => res.data)
-        .catch((error) => {
-        console.error('Error fetching teams:', error)
-        throw error
-        })
-
-/**
- * getAllUsersFromTeam
- * This method find a team by id.
- * @param teamId
- * @returns {Promise<axios.AxiosResponse<any>>}
- */
-export const getAllUsersFromTeam = (teamId) => HttpClient.get(`${API_BASE_URL}/teams/${teamId}`).then((res) => res.data)
-
-/**
- * getTeamsFromUser
- * This method find a team by id.
- * @param userId
- * @returns {Promise<axios.AxiosResponse<any>>}
- */
-export const getTeamsFromUser = (userId) => HttpClient.get(`${API_BASE_URL}/users/teams/${userId}`).then((res) => res.data)
-
-/**
- * addUsersToTeam
- * this method add a user to a team
- * @param userId
- * @param teamId
- */
-export const addUsersToTeam = (userId, teamId) => HttpClient.post(`${API_BASE_URL}/users/add/`,{userId,teamId})
+  HttpClient.get(`/teams`)
     .then((res) => res.data)
     .catch((error) => {
-        console.error('Error adding user to team:', error)
-        throw error
+      console.error('Error fetching teams:', error)
+      throw error
     })
 
 /**
- * removeUsersFromTeam
- * this method add a user to a team
+ * getTeamsByUserId
+ * This method finds all team by user_id.
  * @param userId
- * @param teamId
+ * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const removeUsersFromTeam = (userId, teamId) => HttpClient.delete(`${API_BASE_URL}/users/remove/`,{userId,teamId})
+export const getTeamsByUserId = (userId) =>
+  HttpClient.get(`/users/teams/${userId}`)
     .then((res) => res.data)
     .catch((error) => {
-        console.error('Error removing a user from a team:', error)
-        throw error
+      console.error('Error fetching teams:', error)
+      throw error
+    })
+
+export const getUsersFromTeamId = (teamId) =>
+  HttpClient.get(`/teams/users/${teamId}`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error('Error fetching teams:', error)
+      throw error
+    })
+
+
+export const addUserInTeam = (teamId, userId) =>
+  HttpClient.post(`/teams/${teamId}/users/${userId}`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error('Error adding a new user in team:', error)
+      throw error
+    })
+
+
+export const deleteUserInTeam = (teamId, userId) =>
+  HttpClient.post(`/teams/${teamId}/users/${userId}`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error('Error deleting a user in team:', error)
+      throw error
     })
 
 /**
@@ -64,31 +60,31 @@ export const removeUsersFromTeam = (userId, teamId) => HttpClient.delete(`${API_
  * @param {string} end
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const createTeam = (id, name) => HttpClient.post(`${API_BASE_URL}/teams/`,{
-    data:{id, name}
-})
+export const createTeam = (name) =>
+  HttpClient.post(`/teams/`, {
+    data: { name }
+  })
     .then((res) => res.data)
     .catch((error) => {
-        console.error('Error adding a new team:', error)
-        throw error
+      console.error('Error adding a new team:', error)
+      throw error
     })
-
 
 /**
  * updateTeam
  * this method update information of a team
- * @param {int} id
  * @param {string} name
  * @param {number} teamId
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const updateTeam = (teamId, id, name) => HttpClient.put(`${API_BASE_URL}/teams/${teamId}`,{
-    data:{id,name}
-})
+export const updateTeam = (teamId, name) =>
+  HttpClient.put(`/teams/${teamId}`, {
+    data: { teamId, name }
+  })
     .then((res) => res.data)
     .catch((error) => {
-        console.error('Error updating team:', error)
-        throw error
+      console.error('Error updating team:', error)
+      throw error
     })
 
 /**
@@ -97,9 +93,21 @@ export const updateTeam = (teamId, id, name) => HttpClient.put(`${API_BASE_URL}/
  * @param {number} teamId
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const deleteTeam = (teamId) => HttpClient.delete(`${API_BASE_URL}/teams/${teamId}`)
+export const deleteTeam = (teamId) =>
+  HttpClient.delete(`/teams/${teamId}`)
     .then((res) => res.data)
     .catch((error) => {
-        console.error('Error updating team:', error)
-        throw error
+      console.error('Error updating team:', error)
+      throw error
     })
+
+export default {
+    getAllTeams,
+    getTeamsByUserId,
+    getUsersFromTeamId,
+    addUserInTeam,
+    deleteUserInTeam,
+    createTeam,
+    updateTeam,
+    deleteTeam
+}
