@@ -23,36 +23,43 @@ export function useAuth() {
   const redirectToRoleBasedRoute = (roleId, userId) => {
     const currentRouteParams = router.currentRoute.value.params
     console.log('=>(useAuth.js:58) userId', userId)
-
+    
+    console.log(roleId)
     if (!roleId || !userId) {
+      console.log('=>(useAuth.js:67) currentRouteParams', currentRouteParams)
       router.push('/login')
       return
     }
 
     switch (roleId) {
       case UserRole.ADMIN:
+        console.log('=>(useAuth.js:67) currentRouteParams', currentRouteParams)
         router.push(`/admin/${1}`)
         break
 
       case UserRole.GENERAL_MANAGER:
+        console.log('=>(useAuth.js:67) currentRouteParams', currentRouteParams)
         if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
           router.push(`/general-manager/${userId}`)
         }
         break
 
       case UserRole.MANAGER:
+        console.log('=>(useAuth.js:67) currentRouteParams', currentRouteParams)
         if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
           router.push(`/manager/${userId}`)
         }
         break
 
       case UserRole.EMPLOYEE:
+        console.log('=>(useAuth.js:67) currentRouteParams', currentRouteParams)
         if (!currentRouteParams.userId || currentRouteParams.userId !== userId.toString()) {
           router.push(`/worker/${userId}`)
         }
         break
 
       default:
+      console.log('=>(useAuth.js:67) currentRouteParams', currentRouteParams)
         router.push('/unauthorized')
     }
   }

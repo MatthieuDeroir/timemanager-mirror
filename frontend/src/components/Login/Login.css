@@ -98,11 +98,11 @@ input::placeholder {
     margin-top: 10px;
 }
 
-.image-button:hover {
+/* .image-button:hover {
     border-radius: 4px;
     cursor: pointer;
     transform: scale(1.05);
-}
+} */
 
 .white-circle {
     background-color: var(--inverted-color-card-background);
@@ -113,12 +113,6 @@ input::placeholder {
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-}
-
-.image-button:hover {
-    border-radius: 4px;
-    cursor: pointer;
-    transform: scale(1.05);
 }
 
 .main-content {
