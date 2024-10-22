@@ -4,7 +4,7 @@ defmodule TimeManagerApp.Teams.Team do
 
   alias TimeManagerApp.Users.User
 
-  @derive {Jason.Encoder, only: [:id, :name, :inserted_at, :updated_at, :users]}
+  @derive {Jason.Encoder, only: [:id, :name, :inserted_at, :updated_at]}
   schema "teams" do
     field(:name, :string)
 

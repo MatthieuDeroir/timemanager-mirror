@@ -6,6 +6,7 @@ defmodule TimeManagerAppWeb.UserController do
   alias TimeManagerApp.Users.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
   alias TimeManagerApp.Repo
+  alias TimeManagerApp.Teams
 
   action_fallback(TimeManagerAppWeb.FallbackController)
 
@@ -93,8 +94,7 @@ defmodule TimeManagerAppWeb.UserController do
   Returns the teams associated with a user.
   """
   def user_teams(conn, %{"user_id" => user_id}) do
-    user = Users.get_user(user_id)
-    teams = Users.get_teams_for_user(user)
+    teams = Teams.list_teams_by_user_id(user_id)
     json(conn, teams)
   end
 

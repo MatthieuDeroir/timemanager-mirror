@@ -8,21 +8,15 @@ defmodule TimeManagerApp.Users do
   alias TimeManagerApp.Users.User
   alias TimeManagerApp.Teams
 
-  @doc """
-  Returns the list of users.
-  """
   def list_users do
-    Repo.all(User) |> Repo.preload(:teams)
+    Repo.all(User) |> Repo.preload(teams: :users)
   end
 
-  @doc """
-  Returns the list of users filtered by email and username using partial matching.
-  """
   def list_users_by_email_and_username(email, username) do
     Repo.all(
       from(u in User,
         where: ilike(u.email, ^"%#{email}%") and ilike(u.username, ^"%#{username}%"),
-        preload: [:teams]
+        preload: [teams: :users]
       )
     )
   end
@@ -69,18 +63,14 @@ defmodule TimeManagerApp.Users do
     User.changeset(user, attrs)
   end
 
-  @doc """
-  Returns the list of users filtered by email using partial matching.
-  """
   def list_users_by_email(email) do
-    Repo.all(from(u in User, where: ilike(u.email, ^"%#{email}%"), preload: [:teams]))
+    Repo.all(from(u in User, where: ilike(u.email, ^"%#{email}%"), preload: [teams: :users]))
   end
 
-  @doc """
-  Returns the list of users filtered by username using partial matching.
-  """
   def list_users_by_username(username) do
-    Repo.all(from(u in User, where: ilike(u.username, ^"%#{username}%"), preload: [:teams]))
+    Repo.all(
+      from(u in User, where: ilike(u.username, ^"%#{username}%"), preload: [teams: :users])
+    )
   end
 
   @doc """
