@@ -9,6 +9,7 @@ import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import teamIcon from '@assets/icons/icons8-team-48.png'
+import calendarIcon from '@assets/icons/icons8-mail-48.png'
 import Team from '@components/Team/Team.vue'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
@@ -118,10 +119,10 @@ const getDate = () => {
           <Team :userId="userId" />
         </Card>
       </v-col>
-      <v-col cols="12" md="12">
-        <Card>
-          <Calendar :userId="userId"/>
 
+      <v-col cols="12" md="12">
+        <Card :logo="calendarIcon" color="purple" title="Calendar" subtitle="test">
+          <Calendar :userId="userId"/>
         </Card>
       </v-col>
     </v-row>

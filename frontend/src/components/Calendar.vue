@@ -29,27 +29,24 @@ export default {
         selectable: true,
         events: [],
        
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'addEventButton' // Display custom button in the header
-        },
+       
       }
       
     }
   },
   methods: {
     handleDateClick (arg) {
-      alert('Clicked on: ' + arg.dateStr);
-      alert('Coordinates: ' + arg.jsEvent.pageX + ',' + arg.jsEvent.pageY);
-      alert('Current view: ' + arg.view.type);
+      const event= arg.event
+      // alert('Clicked on: ' + arg.dateStr);
+      // alert('Coordinates: ' + arg.jsEvent.pageX + ',' + arg.jsEvent.pageY);
+      // alert('Current view: ' + arg.view.type);
       
     },
     handleEventClick (arg){
-      const event = arg.event;
-      alert('Event title: ' + event.title);
-      alert('Event start time: ' + event.start);
-      alert('Event end time: ' + event.start);
+      const event = arg.event
+      // alert('Event title: ' + event.title);
+      // alert('Event start time: ' + event.start);
+      // alert('Event end time: ' + event.start);
     },
     async getEvent(){
       try {
