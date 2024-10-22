@@ -39,3 +39,20 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+### Mobile compile and Minify for Production
+
+```sh
+npm run build_phone
+```
+
+### Mobile run app as an emulation on android
+
+In the folder gothamTimeManagerPhoneApp, execute ->
+
+```sh
+cordova emulate android
+```
+
+
+
+
