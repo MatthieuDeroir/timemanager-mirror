@@ -23,7 +23,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: path.resolve(__dirname, 'gothamTimeManagerPhoneApp/www'),
+    outDir: path.resolve(__dirname, './gothamTimeManagerPhoneApp/www'),
     emptyOutDir: true // This will clear the `www` folder before building
   }
 });
