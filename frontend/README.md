@@ -45,6 +45,13 @@ npm run lint
 npm run build_phone
 ```
 
+### Link Android studio container to the executing computer
+
+in android studio terminal, execute ->
+```sh
+adb reverse tcp:4000 tcp:4000
+```
+
 ### Mobile run app as an emulation on android
 
 In the folder gothamTimeManagerPhoneApp, execute ->
