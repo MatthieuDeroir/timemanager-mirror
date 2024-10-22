@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["main"]
+    branches: ["mdr/backend"]
   pull_request:
-    branches: ["main"]
+    branches: ["mdr/backend"]
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -30,9 +30,9 @@ jobs:
         working-directory: ./backend
         run: mix deps.get
 
-      # - name: Run Tests
-      #   working-directory: ./backend
-      #   run: mix test
+      - name: Run Tests
+        working-directory: ./backend
+        run: mix test
 
       - name: Build Docker Image for Backend
         id: build-image

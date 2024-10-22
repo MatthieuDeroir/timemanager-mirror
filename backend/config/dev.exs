@@ -2,17 +2,14 @@ import Config
 
 # Configure your database
 config :timemanagerapp, TimeManagerApp.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "timemanagerapp_dev",
-  # username: "timemanagerapp_db_user",
-  # password: "GC99yK2VYzgdMzdYgjYZFhCwBuznIVsL",
-  # hostname: "dpg-cs4e9ct2ng1s739isue0-a.oregon-postgres.render.com",
-  # database: "timemanagerapp",
+  username: System.get_env("DB_USERNAME"),
+  password: System.get_env("DB_PASSWORD"),
+  hostname: System.get_env("DB_HOSTNAME"),
+  database: System.get_env("DB_NAME"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 10,
+  ssl: true
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

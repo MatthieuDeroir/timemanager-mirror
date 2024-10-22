@@ -255,19 +255,19 @@ defmodule TimeManagerApp.Seeds do
 
     # Create working times for the last 7 days for each user
     for user <- Repo.all(User) do
-      for day <- 0..6 do
+      for day <- 0..13 do
         date = Date.utc_today() |> Date.add(-day)
 
         working_times = [
           %WorkingTime{
-            start: create_datetime(date, 8, 0),
-            end: create_datetime(date, 12, 0),
+            start: random_datetime(date, 8),
+            end: random_datetime(date, 12),
             user_id: user.id,
             type: "regular"
           },
           %WorkingTime{
-            start: create_datetime(date, 14, 0),
-            end: create_datetime(date, 18, 0),
+            start: random_datetime(date, 14),
+            end: random_datetime(date, 18),
             user_id: user.id,
             type: "regular"
           }
@@ -283,25 +283,18 @@ defmodule TimeManagerApp.Seeds do
     IO.puts("Seeding completed successfully!")
   end
 
-  # Helper function to create DateTime in UTC
-  defp create_datetime(date, hour, minute) do
-    case Time.new(hour, minute, 0) do
-      {:ok, time} ->
-        date_time = NaiveDateTime.new(date, time)
+  defp random_datetime(base_date, hour) do
+    # Randomly add or subtract up to 2 hours (7200 seconds) with minutes and seconds
+    seconds_variation = Enum.random(-7200..7200)
+    minutes_variation = Enum.random(0..59)
+    seconds_extra = Enum.random(0..59)
 
-        case date_time do
-          {:ok, naive_dt} ->
-            DateTime.from_naive!(naive_dt, "Etc/UTC")
-
-          {:error, reason} ->
-            IO.puts("Failed to create NaiveDateTime: #{reason}")
-            nil
-        end
-
-      {:error, reason} ->
-        IO.puts("Failed to create Time: #{reason}")
-        nil
-    end
+    base_date
+    |> DateTime.new!(~T[00:00:00])
+    |> DateTime.add(
+      hour * 3600 + seconds_variation + minutes_variation * 60 + seconds_extra,
+      :second
+    )
   end
 end
 
