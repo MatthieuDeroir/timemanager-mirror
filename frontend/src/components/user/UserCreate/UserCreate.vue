@@ -9,7 +9,7 @@
       title="Create user"
     >
       <div class="create-container">
-        <form @submit.prevent="createUser">
+        <form @submit.prevent="handleCreateUser">
           <div class="sections-container">
             <div class="employee-section">
               <div class="input-container">
@@ -87,7 +87,7 @@
 import { defineEmits, ref } from 'vue'
 import Card from '@/components/Card/Card.vue'
 import AddUser from '@assets/icons/icons8-add-48.png'
-import { createUser } from '@/api/UserAPI.js'
+import { useUserStore } from '@store/User/UserStore.js'
 
 const user = ref({
   firstname: '',
@@ -111,10 +111,10 @@ const emit = defineEmits(['clickOut'])
 const handleClickOut = () => {
   emit('clickOut')
 }
+const userStore = useUserStore()
 
 async function handleCreateUser() {
-  console.log(user.value)
-  const response = await createUser(/*TODO*/)
+  const response = await userStore.createUser(user)
   console.log(response)
 }
 </script>

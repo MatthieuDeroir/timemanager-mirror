@@ -1,35 +1,46 @@
 <template>
-  <v-expansion-panels>
-    <v-expansion-panel v-for="team in getUserTeams()" :key="team.id">
+  <div v-if="teamError">{{ teamError }}</div>  
+  <div v-if="teamLoading"> <Loader></Loader></div>
+  <v-expansion-panels v-else>
+    <h3 v-if="teams.length<=0" class="no-team">You are not affected to any teams</h3>
+    <v-expansion-panel  v-for="team in teams" :key="team.id">
       <v-expansion-panel-title>
-        {{ team.name }}
+        <h3>{{ team.name }} </h3>
       </v-expansion-panel-title>
-
-      <v-expansion-panel-text>
+      <v-expansion-panel-text v-if="team.users">
         <div class="UserDiv">
-          <span class="UserRolle">Position</span>
-          <span class="UserFirstName">First Name</span>
-          <span class="UserLastName">Last Name</span>
+          <span class="user-role">Role</span>
+          <span class="user-position">Position</span>
+          <span class="user-firstName">First Name</span>
+          <span class="user-lastname">Last Name</span>
         </div>
-        <div v-for="user in getUsersByTeam(team.id)" :key="user.id" class="UserDiv">
-          <span class="UserRolle">{{ getRoleName(user.role_id) }}</span>
-          <span class="UserFirstName">{{ user.firstname }}</span>
-          <span class="UserLastName">{{ user.lastname }}</span>
+        <div v-for="user in team.users" :key="user" class="UserDiv">
+          <span class="user-role">{{ getRoleName(user.role_id) }}</span>
+          <span class="user-position">{{ user.position }}</span>
+          <span class="user-firstName">{{ user.firstname }}</span>
+          <span class="user-lastname">{{ user.lastname }}</span>
           <a :href="`mailto:${user.email}`" class="mailto-link">
             <img :src="emailIcon" alt="Email Us" />
           </a>
-          <hr />
+          <hr/>
         </div>
 
-        <p v-if="getUsersByTeam(team.id).length === 0">No users found for this team.</p>
+        <p v-if="team.users.length === 0">No users found for this team.</p>
       </v-expansion-panel-text>
+    <v-expansion-panel-text v-else>
+      Issue loading users for this team.
+    </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { UserRole } from '../../enum/User/UserRole';
 import emailIcon from '@assets/icons/icons8-mail-48.png'
+import { useAuthStore } from '@store/Auth/AuthStore.js'
+import { useTeamStore } from '@store/Team/TeamStore.js'
+import Loader from '@components/Loader/LoaderComponent.vue'
 
 const props = defineProps({
   userId: {
@@ -38,179 +49,33 @@ const props = defineProps({
   },
 });
 
-const mokedUser = ref({
-  id: 1,
-  firstname: 'Alice',
-  lastname: 'Johnson',
-  address: null,
-  phone: null,
-  birthdate: null,
-  gender: null,
-  salary: null,
-  position: null,
-  start_date: null,
-  end_date: null,
-  username: 'alice.johnson',
-  email: 'alice@example.com',
-  role_id: 1,
-  team_id: [1, 3],
-  inserted_at: '2024-10-16T12:58:01Z',
-  updated_at: '2024-10-16T12:58:01Z',
+const teamStore = useTeamStore();
+const authStore = useAuthStore();
+const teams = teamStore.teams;
+const teamLoading = computed(() => teamStore.isLoading);
+const teamError = computed(() => teamStore.error);
+
+onMounted(() => {
+  teamStore.loadTeamByUserId(authStore.user.id)
 });
 
-const mokedAllTeam = ref({
-  data: [
-    { id: 1, name: 'comptability' },
-    { id: 2, name: 'security' },
-    { id: 3, name: 'it' },
-  ],
-});
 
-const mockedUsers = ref([
-  {
-    id: 1,
-    firstname: 'Alice',
-    lastname: 'Johnson',
-    address: null,
-    phone: null,
-    birthdate: null,
-    gender: null,
-    salary: null,
-    position: null,
-    start_date: null,
-    end_date: null,
-    username: 'alice.johnson',
-    email: 'alice@example.com',
-    role_id: 1,
-    team_id: [1, 3],
-    inserted_at: '2024-10-16T12:58:01Z',
-    updated_at: '2024-10-16T12:58:01Z',
-  },
-  {
-    id: 2,
-    firstname: 'Bob',
-    lastname: 'Smith',
-    address: null,
-    phone: null,
-    birthdate: null,
-    gender: null,
-    salary: null,
-    position: null,
-    start_date: null,
-    end_date: null,
-    username: 'bob.smith',
-    email: 'bob@example.com',
-    role_id: 1,
-    team_id: [1],
-    inserted_at: '2024-10-16T12:58:01Z',
-    updated_at: '2024-10-16T12:58:01Z',
-  },
-  {
-    id: 3,
-    firstname: 'Charlie',
-    lastname: 'Brown',
-    address: null,
-    phone: null,
-    birthdate: null,
-    gender: null,
-    salary: null,
-    position: null,
-    start_date: null,
-    end_date: null,
-    username: 'charlie.brown',
-    email: 'charlie@example.com',
-    role_id: 1,
-    team_id: [1],
-    inserted_at: '2024-10-16T12:58:01Z',
-    updated_at: '2024-10-16T12:58:01Z',
-  },
-  {
-    id: 4,
-    firstname: 'Diana',
-    lastname: 'Prince',
-    address: null,
-    phone: null,
-    birthdate: null,
-    gender: null,
-    salary: null,
-    position: null,
-    start_date: null,
-    end_date: null,
-    username: 'diana.prince',
-    email: 'diana@example.com',
-    role_id: 1,
-    team_id: [1],
-    inserted_at: '2024-10-16T12:58:01Z',
-    updated_at: '2024-10-16T12:58:01Z',
-  },
-  {
-    id: 5,
-    firstname: 'Eve',
-    lastname: 'Adams',
-    address: null,
-    phone: null,
-    birthdate: null,
-    gender: null,
-    salary: null,
-    position: null,
-    start_date: null,
-    end_date: null,
-    username: 'eve.adams',
-    email: 'eve@example.com',
-    role_id: 2,
-    team_id: [1],
-    inserted_at: '2024-10-16T12:58:01Z',
-    updated_at: '2024-10-16T12:58:01Z',
-  },
-  {
-    id: 11,
-    firstname: 'Liam',
-    lastname: 'Garcia',
-    address: null,
-    phone: null,
-    birthdate: null,
-    gender: null,
-    salary: null,
-    position: null,
-    start_date: null,
-    end_date: null,
-    username: 'liam.garcia',
-    email: 'liam@example.com',
-    role_id: 3,
-    team_id: [3],
-    inserted_at: '2024-10-16T12:58:01Z',
-    updated_at: '2024-10-16T12:58:01Z',
-  },
-]);
-
-const mockedRoles = ref([
-  { id: 1, name: 'employee' },
-  { id: 2, name: 'manager' },
-  { id: 3, name: 'admin' }
-]);
-
-const getUserTeams = () => {
-  return mokedAllTeam.value.data.filter((team) => mokedUser.value.team_id.includes(team.id));
+const getRoleName = (role_Id) => {
+    if (role_Id === UserRole.Admin) {
+      return 'Admin';
+    } else if (role_Id === UserRole.Manager) {
+      return 'Manager';
+    } else if (role_Id === UserRole.Employee) {
+      return 'Employee';
+    } else {
+      return 'Unknown Role';
+    } 
 };
 
-const getRoleName = (roleId) => {
-  const role = mockedRoles.value.find(role => role.id === roleId);
-  return role ? role.name : 'Unknown Role'; 
-};
-
-const getUsersByTeam = (teamId) => {
-  return mockedUsers.value
-    .filter((user) => {
-      return Array.isArray(user.team_id) ? user.team_id.includes(teamId) : user.team_id === teamId;
-    })
-    .sort((a, b) => {
-      const rolePriority = { admin: 1, manager: 2, employee: 3 }; 
-      const roleA = getRoleName(a.role_id);
-      const roleB = getRoleName(b.role_id);
-      return (rolePriority[roleA] || 4) - (rolePriority[roleB] || 4); 
-    });
-};
 </script>
+
+
+
 
 <style scoped>
 .UserDiv {
@@ -218,21 +83,13 @@ const getUsersByTeam = (teamId) => {
   align-items: center;
 }
 
-.UserRolle {
+.user-firstname, .user-lastname, .user-position, .user-role {
   width: 100px;
   margin-right: 10px;
 }
-
-.UserFirstName {
-  width: 100px;
-  margin-right: 10px;
+.no-team{
+  margin:100px;
 }
-
-.UserLastName {
-  width: 100px;
-  margin-right: 10px;
-}
-
 
 .mailto-link {
   display: flex;

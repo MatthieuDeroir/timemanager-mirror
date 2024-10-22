@@ -9,9 +9,9 @@ import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import teamIcon from '@assets/icons/icons8-team-48.png'
+import Team from '@components/Team/Team.vue'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
-import Team from '@components/Team/Team.vue'
 
 const props = defineProps({
   userId: {
@@ -113,7 +113,7 @@ const getDate = () => {
       </v-col>
 
       <v-col cols="12" md="12">
-        <Card :logo="teamIcon" color="Orange" subtitle="Team" title="My Team">
+        <Card :logo="teamIcon" color="orange" subtitle="Team" title="My Team">
           <Team :userId="userId" />
         </Card>
       </v-col>
