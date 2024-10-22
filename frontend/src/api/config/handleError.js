@@ -1,12 +1,4 @@
 export function handleError(error) {
-  // console.log("--=-=-=-");
-  // console.log(error.response);
-  // console.log(error.request);
-  // console.log(error.message);
-  // console.log(error.response.status);
-  // console.log(error.response.body);
-  // console.log(error.response.data);
-  // console.log("--=-=-=-");
   let errorMessage = 'An unexpected error occurred.'
 
   if (error.response) {

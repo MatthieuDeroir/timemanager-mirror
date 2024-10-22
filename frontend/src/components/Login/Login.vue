@@ -50,16 +50,8 @@ const { login } = useAuth()
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-  alert('Button clicked');  // Check if the event is firing on click
-  console.log('Email:', email.value, 'Password:', password.value);  // Debugging logs
   await login({ email: email.value, password: password.value });
 };
-
-document.addEventListener('deviceready', () => {
-  alert('Device is ready, app can handle interactions.');
-  // Now your login logic should work properly after Cordova is ready
-});
-
 
 </script>
 
