@@ -9,5 +9,10 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-EXPOSE 8080
-CMD [ "http-server", "dist", "-p", "8080" ]
+# Utiliser la variable d'environnement PORT, avec une valeur par défaut de 8080 si non définie
+ENV PORT=8080
+
+EXPOSE $PORT
+
+# Utiliser la forme shell pour que la variable d'environnement soit interprétée
+CMD http-server dist -p $PORT

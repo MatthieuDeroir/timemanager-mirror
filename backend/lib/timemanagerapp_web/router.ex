@@ -31,9 +31,9 @@ defmodule TimeManagerAppWeb.Router do
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
 
-    post("auth/login", SessionController, :login)
-    post("auth/logout", SessionController, :logout)
-    post("auth/register", SessionController, :register)
+    post("/auth/login", SessionController, :login)
+    post("/auth/logout", SessionController, :logout)
+    post("/auth/register", SessionController, :register)
 
     resources("/users", UserController, except: [:new, :edit, :update, :delete])
     get("/users/teams/:user_id", UserController, :user_teams)
@@ -70,8 +70,8 @@ defmodule TimeManagerAppWeb.Router do
   scope "/api", TimeManagerAppWeb do
     pipe_through([:api, :authenticated, :general_manager])
 
-    post("teams/:team_id/users/:user_id", TeamController, :add_user)
-    delete("teams/:team_id/users/:user_id", TeamController, :remove_user)
+    post("/teams/:team_id/users/:user_id", TeamController, :add_user)
+    delete("/teams/:team_id/users/:user_id", TeamController, :remove_user)
   end
 
   # admin routes
