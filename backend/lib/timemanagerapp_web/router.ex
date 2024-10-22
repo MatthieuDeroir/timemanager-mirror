@@ -35,9 +35,8 @@ defmodule TimeManagerAppWeb.Router do
     post("auth/logout", SessionController, :logout)
     post("auth/register", SessionController, :register)
 
-    resources "/users", UserController, except: [:new, :edit, :update, :delete] do
-      get("/teams/:user_id", UserController, :user_teams)
-    end
+    resources("/users", UserController, except: [:new, :edit, :update, :delete])
+    get("/users/teams/:user_id", UserController, :user_teams)
   end
 
   # employee routes
@@ -54,9 +53,8 @@ defmodule TimeManagerAppWeb.Router do
 
     resources("/roles", RoleController, except: [:new, :edit])
 
-    resources "/teams", TeamController, except: [:new, :edit, :update, :delete] do
-      get("/users/:team_id", TeamController, :team_users)
-    end
+    resources("/teams", TeamController, except: [:new, :edit, :update, :delete])
+    get("/teams/users/:team_id", TeamController, :team_users)
   end
 
   # manager routes
