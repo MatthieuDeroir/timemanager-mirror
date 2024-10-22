@@ -21,5 +21,9 @@ export default defineConfig({
       '@enum': fileURLToPath(new URL('./src/enum', import.meta.url)),
       '@styles': fileURLToPath(new URL('./src/styles', import.meta.url))
     }
+  },
+  build: {
+    outDir: path.resolve(__dirname, './gothamTimeManagerPhoneApp/www'),
+    emptyOutDir: true // This will clear the `www` folder before building
   }
 });
