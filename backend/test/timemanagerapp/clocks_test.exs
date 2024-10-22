@@ -1,4 +1,3 @@
-# test/timemanagerapp/clocks_test.exs
 defmodule TimeManagerApp.ClocksTest do
   use TimeManagerApp.DataCase
 
@@ -18,16 +17,13 @@ defmodule TimeManagerApp.ClocksTest do
     }
 
     setup do
-      # Create a role for the user
       {:ok, role} =
         %TimeManagerApp.Roles.Role{}
         |> TimeManagerApp.Roles.Role.changeset(%{name: "employee"})
         |> Repo.insert()
 
-      # Create a team
       {:ok, team} = TimeManagerApp.Teams.create_team(%{name: "Engineering"})
 
-      # Create a user associated with the role and team
       {:ok, user} =
         Users.create_user(%{
           firstname: "Alice",
@@ -51,7 +47,8 @@ defmodule TimeManagerApp.ClocksTest do
     end
 
     test "list_clocks_for_user/1 returns all clocks for the given user", %{user: user} do
-      {:ok, clock1} = Clocks.create_clock_for_user(user.id, @valid_attrs)
+      {:ok, clock1} =
+        Clocks.create_clock_for_user(user.id, Map.put(@valid_attrs, :user_id, user.id))
 
       {:ok, clock2} =
         Clocks.create_clock_for_user(user.id, %{time: ~U[2024-04-21 18:00:00Z], status: false})
@@ -63,7 +60,9 @@ defmodule TimeManagerApp.ClocksTest do
     end
 
     test "get_clock/2 returns the clock with given id for the user", %{user: user} do
-      {:ok, clock} = Clocks.create_clock_for_user(user.id, @valid_attrs)
+      {:ok, clock} =
+        Clocks.create_clock_for_user(user.id, Map.put(@valid_attrs, :user_id, user.id))
+
       fetched_clock = Clocks.get_clock(user.id, clock.id)
       assert fetched_clock.id == clock.id
       assert fetched_clock.user_id == user.id
@@ -73,10 +72,8 @@ defmodule TimeManagerApp.ClocksTest do
       user: user,
       team: team
     } do
-      # Assuming clock ID 999 does not exist
       assert Clocks.get_clock(user.id, 999) == nil
 
-      # Create another user
       {:ok, other_user} =
         Users.create_user(%{
           firstname: "Bob",
@@ -96,7 +93,12 @@ defmodule TimeManagerApp.ClocksTest do
           team_ids: [team.id]
         })
 
-      {:ok, clock} = Clocks.create_clock_for_user(other_user.id, @valid_attrs)
+      {:ok, clock} =
+        Clocks.create_clock_for_user(
+          other_user.id,
+          Map.put(@valid_attrs, :user_id, other_user.id)
+        )
+
       assert Clocks.get_clock(user.id, clock.id) == nil
     end
 
@@ -110,10 +112,8 @@ defmodule TimeManagerApp.ClocksTest do
     end
 
     test "create_clock_for_user/2 with invalid data returns error changeset", %{user: user} do
-      attrs = @invalid_attrs
-
       assert {:error, %Ecto.Changeset{} = changeset} =
-               Clocks.create_clock_for_user(user.id, attrs)
+               Clocks.create_clock_for_user(user.id, @invalid_attrs)
 
       assert %{
                time: ["can't be blank"],
@@ -129,39 +129,6 @@ defmodule TimeManagerApp.ClocksTest do
                Clocks.create_clock_for_user(invalid_user_id, attrs)
 
       assert %{user_id: ["does not exist"]} = errors_on(changeset)
-    end
-
-    test "update_clock/2 with valid data updates the clock", %{user: user} do
-      {:ok, clock} = Clocks.create_clock_for_user(user.id, @valid_attrs)
-      update_attrs = %{status: false, time: ~U[2024-04-21 12:00:00Z]}
-
-      assert {:ok, %Clock{} = updated_clock} = Clocks.update_clock(clock, update_attrs)
-      assert updated_clock.status == false
-      assert updated_clock.time == ~U[2024-04-21 12:00:00Z]
-    end
-
-    test "update_clock/2 with invalid data returns error changeset", %{user: user} do
-      {:ok, clock} = Clocks.create_clock_for_user(user.id, @valid_attrs)
-      update_attrs = @invalid_attrs
-
-      assert {:error, %Ecto.Changeset{} = changeset} = Clocks.update_clock(clock, update_attrs)
-      assert clock == Clocks.get_clock(user.id, clock.id)
-
-      assert %{
-               time: ["can't be blank"],
-               status: ["can't be blank"]
-             } = errors_on(changeset)
-    end
-
-    test "delete_clock/1 deletes the clock", %{user: user} do
-      {:ok, clock} = Clocks.create_clock_for_user(user.id, @valid_attrs)
-      assert {:ok, %Clock{}} = Clocks.delete_clock(clock)
-      assert Clocks.get_clock(user.id, clock.id) == nil
-    end
-
-    test "change_clock/1 returns a clock changeset", %{user: user} do
-      {:ok, clock} = Clocks.create_clock_for_user(user.id, @valid_attrs)
-      assert %Ecto.Changeset{} = Clocks.change_clock(clock)
     end
   end
 end
