@@ -6,6 +6,7 @@ defmodule TimeManagerApp.Clocks do
   alias TimeManagerApp.Repo
   # Ensure the correct alias is used
   alias TimeManagerApp.Clocks.Clock
+  alias TimeManagerApp.WorkingTimes
   import Ecto.Query, only: [from: 2]
 
   # --- Clocks Functions ---
@@ -25,10 +26,22 @@ defmodule TimeManagerApp.Clocks do
     |> Repo.all()
   end
 
+  @doc """
+  Creates a clock for a user. If the clock has `status: false`, it will create a corresponding working time.
+  """
   def create_clock_for_user(user_id, attrs \\ %{}) do
     case do_create_clock_for_user(user_id, attrs) do
-      {:ok, clock} -> {:ok, clock}
-      {:error, changeset} -> {:error, changeset}
+      {:ok, clock} ->
+        # Check if the clock-out status is false
+        if clock.status == false do
+          # Attempt to create the corresponding working time
+          WorkingTimes.create_working_time_after_clock_out(user_id, clock)
+        end
+
+        {:ok, clock}
+
+      {:error, changeset} ->
+        {:error, changeset}
     end
   end
 

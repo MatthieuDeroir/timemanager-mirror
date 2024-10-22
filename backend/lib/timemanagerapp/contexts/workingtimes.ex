@@ -1,5 +1,3 @@
-# lib/timemanagerapp/time.ex
-
 defmodule TimeManagerApp.WorkingTimes do
   @moduledoc """
   The Time context.
@@ -7,11 +5,13 @@ defmodule TimeManagerApp.WorkingTimes do
 
   import Ecto.Query, warn: false
   alias TimeManagerApp.Repo
-
+  alias TimeManagerApp.Clocks.Clock
   alias TimeManagerApp.WorkingTimes.WorkingTime
 
-  # Function to create a working time after clocking out
-  defp create_working_time_after_clock_out(user_id, clock_out) do
+  @doc """
+  Creates a working time entry when a user clocks out (status: false) using the last clock-in time.
+  """
+  def create_working_time_after_clock_out(user_id, clock_out) do
     # Retrieve the last clock-in (status == true)
     case get_last_clock_with_status_before_time(user_id, true, clock_out.time) do
       nil ->
@@ -30,7 +30,9 @@ defmodule TimeManagerApp.WorkingTimes do
     end
   end
 
-  # Function to retrieve the last clock with a given status for a user before a specific time
+  @doc """
+  Retrieve the last clock-in event (status: true) for a user before a given time.
+  """
   def get_last_clock_with_status_before_time(user_id, status, time) do
     Clock
     |> where([c], c.user_id == ^user_id and c.status == ^status and c.time <= ^time)
@@ -43,7 +45,6 @@ defmodule TimeManagerApp.WorkingTimes do
 
   @doc """
   Fetches a specific working time by its ID and ensures that it belongs to the given user.
-
   Returns `nil` if the working time is not found or does not belong to the user.
   """
   def get_workingtime(user_id, workingtime_id) do
@@ -55,29 +56,12 @@ defmodule TimeManagerApp.WorkingTimes do
   end
 
   @doc """
-  Returns the list of working times for a specific user within a date range.
+  Returns the list of working times for a specific user. You can optionally filter by a date range.
   """
-  def list_workingtime_for_user(user_id, start_datetime, end_datetime) do
-    Repo.all(
-      from(wt in WorkingTime,
-        where: wt.user_id == ^user_id and wt.start >= ^start_datetime and wt.end <= ^end_datetime
-      )
-    )
-  end
-
-  @doc """
-  Returns the list of all working times.
-  """
-  def list_all_workingtimes do
-    Repo.all(WorkingTime)
-  end
-
-  @doc """
-  Returns the list of working times for a specific user.
-  """
+  def list_workingtime_for_user(user_id, start_datetime \\ nil, end_datetime \\ nil)
 
   # Fetch all working times for a user
-  def list_workingtime_for_user(user_id) do
+  def list_workingtime_for_user(user_id, nil, nil) do
     Repo.all(
       from(wt in WorkingTime,
         where: wt.user_id == ^user_id
@@ -86,7 +70,7 @@ defmodule TimeManagerApp.WorkingTimes do
   end
 
   # Fetch working times for a user starting from a specific datetime
-  def list_workingtime_for_user(user_id, start_datetime) do
+  def list_workingtime_for_user(user_id, start_datetime, nil) do
     Repo.all(
       from(wt in WorkingTime,
         where: wt.user_id == ^user_id and wt.start >= ^start_datetime
@@ -95,27 +79,12 @@ defmodule TimeManagerApp.WorkingTimes do
   end
 
   # Fetch working times for a user between a specific start and end datetime
-  def list_workingtime_for_user(user_id, start_datetime \\ nil, end_datetime \\ nil) do
-    query =
+  def list_workingtime_for_user(user_id, start_datetime, end_datetime) do
+    Repo.all(
       from(wt in WorkingTime,
-        where: wt.user_id == ^user_id
+        where: wt.user_id == ^user_id and wt.start >= ^start_datetime and wt.end <= ^end_datetime
       )
-
-    query =
-      if start_datetime do
-        from(wt in query, where: wt.start >= ^start_datetime)
-      else
-        query
-      end
-
-    query =
-      if end_datetime do
-        from(wt in query, where: wt.end <= ^end_datetime)
-      else
-        query
-      end
-
-    Repo.all(query)
+    )
   end
 
   @doc """

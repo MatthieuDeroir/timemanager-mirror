@@ -41,7 +41,6 @@ defmodule TimeManagerAppWeb.Plugs.AuthorizeRole do
     end
   end
 
-  # Allow passing multiple role IDs for flexibility
   def call(conn, required_role_ids) when is_list(required_role_ids) do
     with {:ok, token} <- fetch_jwt(conn),
          {:ok, claims} <- JWT.verify_and_validate(token),
