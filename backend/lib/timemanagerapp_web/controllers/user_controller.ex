@@ -89,6 +89,15 @@ defmodule TimeManagerAppWeb.UserController do
     json(conn, users)
   end
 
+  @doc """
+  Returns the teams associated with a user.
+  """
+  def user_teams(conn, %{"user_id" => user_id}) do
+    user = Users.get_user(user_id)
+    teams = Users.get_teams_for_user(user)
+    json(conn, teams)
+  end
+
   # Swagger schema for User
   def swagger_definitions do
     UserSwagger.swagger_definitions()
