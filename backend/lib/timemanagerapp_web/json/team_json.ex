@@ -20,7 +20,7 @@ defmodule TimeManagerAppWeb.TeamJSON do
     %{
       id: team.id,
       name: team.name,
-      #users: Enum.map(team.users, &UserJSON.user_data/1),
+      # users: Enum.map(team.users, &UserJSON.user_data/1),
       inserted_at: team.inserted_at,
       updated_at: team.updated_at
     }
