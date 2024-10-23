@@ -9,8 +9,20 @@ defmodule TimeManagerApp.Users do
   alias TimeManagerApp.Teams
 
   def list_users do
-    Repo.all(User) |> Repo.preload(teams: :users)
+    Repo.all(User) |> Repo.preload(:teams)
   end
+
+  def get_user_with_teams(user_id) do
+    Repo.get(User, user_id) |> Repo.preload(:teams)
+  end
+
+
+  def get_user_with_full_teams(user_id) do
+    Repo.get(User, user_id) |> Repo.preload(teams: [:users])
+  end
+
+
+
 
   def list_users_by_email_and_username(email, username) do
     Repo.all(
@@ -73,46 +85,15 @@ defmodule TimeManagerApp.Users do
     )
   end
 
-  @doc """
-  Returns the list of users that are part of a specific team.
-  """
-  def list_users_by_team_id(team_id) do
-    Repo.all(
-      from(u in User,
-        join: t in assoc(u, :teams),
-        where: t.id == ^team_id,
-        preload: [:teams]
-      )
-    )
-  end
+
+
+
 
   @doc """
   Gets users by a list of IDs.
   """
   def get_users_by_ids(user_ids) when is_list(user_ids) do
     Repo.all(from(u in User, where: u.id in ^user_ids))
-  end
-
-  def add_user_to_team(user_id, team_id) do
-    user = Users.get_user(user_id)
-    team = Teams.get_team!(team_id)
-
-    user
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:teams, [team | user.teams])
-    |> Repo.update()
-  end
-
-  def remove_user_from_team(user_id, team_id) do
-    user = Users.get_user(user_id)
-    team = Teams.get_team!(team_id)
-
-    updated_teams = user.teams |> Enum.reject(fn t -> t.id == team_id end)
-
-    user
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:teams, updated_teams)
-    |> Repo.update()
   end
 
   def authenticate_user(email, password) do
