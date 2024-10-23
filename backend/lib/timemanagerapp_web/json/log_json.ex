@@ -1,26 +1,49 @@
 defmodule TimeManagerAppWeb.LogJSON do
-  alias TimeManagerApp.Logs.Log
 
-  @doc """
-  Renders a list of logs.
-  """
-  def index(%{logs: logs}) do
-    %{data: for(log <- logs, do: data(log))}
+  def render("index.json", %{logs: logs}) do
+    %{logs: Enum.map(logs, &format_log/1)}
   end
 
-  @doc """
-  Renders a single log.
-  """
-  def show(%{log: log}) do
-    %{data: data(log)}
+  def render("show.json", %{log: log}) do
+    format_log(log)
   end
 
-  defp data(%Log{} = log) do
+  defp format_log(%TimeManagerApp.Logs.Log{
+    action: action,
+    message: message,
+    user: %TimeManagerApp.Users.User{
+      id: user_id,
+      username: username,
+      role: role,
+      teams: teams
+    }
+  }) do
     %{
-      id: log.id,
-      action: log.action,
-      message: log.message,
-      level: log.level
+      action: action,
+      message: message,
+      user: %{
+        id: user_id,
+        username: username,
+        role: %{
+          id: role.id,
+          name: role.name
+        },
+        teams: Enum.map(teams, fn team ->
+          %{id: team.id, name: team.name}
+        end)
+      }
+    }
+  end
+
+  defp format_log(%TimeManagerApp.Logs.Log{
+    action: action,
+    message: message,
+    user: nil
+  }) do
+    %{
+      action: action,
+      message: message,
+      user: nil
     }
   end
 end
