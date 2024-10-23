@@ -1,6 +1,7 @@
 defmodule TimeManagerAppWeb.Router do
   use TimeManagerAppWeb, :router
   alias TimeManagerAppWeb.Plugs.AuthorizeRole
+  alias TimeManagerAppWeb.Plugs.LogPlug
 
   @moduledoc """
   The Router module for the TimeManagerAppWeb.
@@ -98,6 +99,10 @@ defmodule TimeManagerAppWeb.Router do
     plug AuthorizeRole, 1
   end
 
+  pipeline :log_requests do
+    plug LogPlug
+  end
+
   # Public Routes
   scope "/api", TimeManagerAppWeb do
     pipe_through(:api)
@@ -108,7 +113,7 @@ defmodule TimeManagerAppWeb.Router do
     resources("/users", UserController, only: [:index, :show, :create])
 
     scope "/" do
-      pipe_through(:authenticated)
+      pipe_through([:authenticated, :log_requests])
 
       scope "/" do
         pipe_through(:role_employee)
@@ -133,7 +138,7 @@ defmodule TimeManagerAppWeb.Router do
 
       scope "/" do
         pipe_through(:role_general_manager)
-        resources("/teams", TeamController, only: [:update, :delete, :edit, :new])
+        resources("/teams", TeamController, except: [:edit, :new])
       end
 
       scope "/" do
