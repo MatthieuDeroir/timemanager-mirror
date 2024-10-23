@@ -30,8 +30,7 @@ export default {
       required: true
     },
     subtitle: {
-      type: String,
-      default: '------'
+      type: String
     },
     otherInfo:{
       type: String

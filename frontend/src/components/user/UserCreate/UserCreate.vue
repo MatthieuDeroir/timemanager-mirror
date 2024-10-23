@@ -1,7 +1,7 @@
 <template>
   <div class="off-side">
     <Card
-      :actionFunction="handleClickOut"
+      :actionFunction="handleClosePopUp"
       :logo="AddUser"
       actionButton='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close</title><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>'
       color="purple"
@@ -84,7 +84,7 @@
 </template>
 <style src="./UserCreate.css"></style>
 <script setup>
-import { defineEmits, ref } from 'vue'
+import {defineEmits, onBeforeUnmount, onMounted, ref} from 'vue'
 import Card from '@/components/Card/Card.vue'
 import AddUser from '@assets/icons/icons8-add-48.png'
 import { useUserStore } from '@store/User/UserStore.js'
@@ -107,14 +107,29 @@ const user = ref({
   team_id: ''
 })
 
-const emit = defineEmits(['clickOut'])
-const handleClickOut = () => {
-  emit('clickOut')
-}
 const userStore = useUserStore()
+const emit = defineEmits(['closePopUp'])
+
+const handleClosePopUp = () => {
+  emit('closePopUp')
+}
 
 async function handleCreateUser() {
   const response = await userStore.createUser(user)
   console.log(response)
 }
+
+const handleEscKey = (event) => {
+  if (event.key === 'Escape' || event.key === 'Esc') {
+    handleClosePopUp();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('keydown', handleEscKey);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleEscKey);
+});
 </script>

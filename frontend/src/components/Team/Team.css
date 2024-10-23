@@ -1,0 +1,32 @@
+.team-create{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+}
+
+.team-name-input{
+    padding: 5px 10px;
+    width: 300px;
+    margin-right: 20px;
+}
+
+.user-container {
+    display: flex;
+    align-items: center;
+}
+
+.user-firstname, .user-lastname, .user-position, .user-role {
+    width: 100px;
+    margin-right: 10px;
+}
+.no-team{
+    margin:100px;
+}
+
+.mailto-link {
+    display: flex;
+    align-items: center;
+}

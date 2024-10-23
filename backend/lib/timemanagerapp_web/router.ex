@@ -133,7 +133,7 @@ defmodule TimeManagerAppWeb.Router do
 
       scope "/" do
         pipe_through(:role_general_manager)
-        resources("/teams", TeamController, only: [:update, :delete, :edit, :new])
+        resources("/teams", TeamController, except: [:update, :delete, :edit, :new])
       end
 
       scope "/" do

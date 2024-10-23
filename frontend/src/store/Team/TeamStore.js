@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import teamApi from '@/api/TeamAPI.js'
 
 export const useTeamStore = defineStore('teamStore', {
@@ -9,22 +9,28 @@ export const useTeamStore = defineStore('teamStore', {
     }),
 
     actions: {
+        async loadAllTeams() {
+            this.isLoading = true
+            this.error = null
+            this.teams = await teamApi.getAllTeams().catch((error) => {
+                this.error = error
+            })
+            console.log('store',this.teams)
+            this.isLoading = false
+        },
         async loadTeamByUserId(userId) {
             this.isLoading = true
             this.error = null
             const result = await teamApi.getTeamsByUserId(userId)
-            result.forEach((element, index) => {
+            for (const [index,element] of result.entries()) {
                 if (this.teams[index] === undefined) {
                     this.teams[index]= {}
                 }
-                teamApi.getUsersFromTeamId(element.id)
-                    .then((res) => this.teams[index].users = res.data)
-                    .catch((error) => {
-                        this.error = error
-                    })
+                this.teams[index].users = await teamApi.getUsersFromTeamId(element.id)
                 this.teams[index].teamId = element.id
                 this.teams[index].name = element.name
-            });
+            }
+            console.log('store team',this.teams)
             this.isLoading = false
         },
         async addUserInTeam(teamId, userId) {

@@ -6,7 +6,7 @@ import { HttpClient } from '@/api/config/HttpClient.js'
  * This method find all teams. Inside a component, you can use the store and the store will call this method to store the data.
  */
 export const getAllTeams = () =>
-  HttpClient.get(`/teams`)
+      HttpClient.get(`/teams`)
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error fetching teams:', error)
@@ -37,7 +37,7 @@ export const getUsersFromTeamId = (teamId) =>
 
 
 export const addUserInTeam = (teamId, userId) =>
-  HttpClient.post(`/teams/${teamId}/users/${userId}`)
+  HttpClient.post(`/user_teams/add`)
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error adding a new user in team:', error)
@@ -46,7 +46,7 @@ export const addUserInTeam = (teamId, userId) =>
 
 
 export const deleteUserInTeam = (teamId, userId) =>
-  HttpClient.post(`/teams/${teamId}/users/${userId}`)
+  HttpClient.delete(`/user_teams/delete`)
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error deleting a user in team:', error)
@@ -62,7 +62,7 @@ export const deleteUserInTeam = (teamId, userId) =>
  */
 export const createTeam = (name) =>
   HttpClient.post(`/teams/`, {
-    data: { name }
+    team: { name }
   })
     .then((res) => res.data)
     .catch((error) => {
