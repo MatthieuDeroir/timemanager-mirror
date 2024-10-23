@@ -24,12 +24,19 @@
     --color-purple: #af52de;
     --color-red: hsl(0, 100%, 44.5%);
 
+
     --linear-blue: linear-gradient(64deg, #5ba0ff, #1a8eff 46%, #2d7eeb);
     --linear-purple: linear-gradient(64deg, #8461c7, #4b2aa9 47%, #5d35b7);
     --linear-red: linear-gradient(64deg, #e43732, #c32929 45%, #db5a5a);
     --linear-green: linear-gradient(64deg, #429a42, #48b942 44%, #139c1c);
     --linear-yellow: linear-gradient(64deg, #e6a536, #e6bd1c 45%, #e18f02);
     --linear-orange: linear-gradient(64deg, #fb7539, #e47414 44%, #d16300);
+    --linear-brown: linear-gradient(64deg, #8d6e63, #7b5e57 46%, #5d4f48);
+    --linear-light-green: linear-gradient(64deg, #a5d6a7, #81c784 46%, #66bb6a);
+    --linear-cyan: linear-gradient(64deg, #80deea, #4dd0e1 46%, #26c6da);
+    --linear-orange-red: linear-gradient(64deg, #ff8a65, #ff7043 46%, #ff5722);
+    --linear-indigo: linear-gradient(64deg, #7986cb, #5c6bc0 46%, #3f51b5);
+    --linear-gold: linear-gradient(64deg, #ffd54f, #ffca28 46%, #ffb300);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,7 +70,7 @@ body {
     min-height: 100vh;
     color: var(--color-labelPrimary);
     transition: color 0.5s,
-    background-color 0.5s;
+        background-color 0.5s;
     line-height: 1.6;
     font-family: SF Pro Display, Helvetica Neue, sans-serif;
     font-size: 14px;
