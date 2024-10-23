@@ -30,7 +30,6 @@
 }
 
 .card-header-container {
-    z-index: 100;
     display: flex;
     border-radius: 10px 10px 0px 0px;
     background-color: var(--color-cardHeader-background);
