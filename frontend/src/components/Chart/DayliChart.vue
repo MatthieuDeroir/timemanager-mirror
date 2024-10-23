@@ -61,8 +61,8 @@ export default defineComponent({
     const endDate = dayEnd 
 
     const workingTimeStore = useWorkingTimeStore()
-    await workingTimeStore.loadWorkingTimes(this.userId, startDate, endDate)
-    const workingTimes = workingTimeStore.workingTimes
+    await workingTimeStore.loadWorkingTimesByDay(this.userId, startDate, endDate)
+    const workingTimes = workingTimeStore.workingTimesByDay
 
     // Calculate total hours worked per day
     const totalHoursByDay = this.calculateTotalHoursByDay(workingTimes)

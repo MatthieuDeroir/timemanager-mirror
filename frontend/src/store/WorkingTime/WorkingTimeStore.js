@@ -7,6 +7,7 @@ const { getWorkingTimesByUserId, createWorkingTime, updateWorkingTime, deleteWor
 export const useWorkingTimeStore = defineStore('workingTimeStore', {
   state: () => ({
     workingTimes: [],
+    workingTimesByDay: [],
     isLoading: false,
     error: null
   }),
@@ -18,7 +19,12 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', {
       this.workingTimes = await getWorkingTimesByUserId(userId, start, end)
       this.isLoading = false
     },
-
+    async loadWorkingTimesByDay(userId, start, end) {
+      this.isLoading = true
+      this.error = null
+      this.workingTimesByDay = await getWorkingTimesByUserId(userId, start, end)
+      this.isLoading = false
+    },
     async createWorkingTime(start, end, userId) {
       this.isLoading = true
       this.error = null
@@ -42,6 +48,6 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', {
       await deleteWorkingTime(id)
       this.workingTimes = this.workingTimes.filter((wt) => wt.id !== id)
       this.isLoading = false
-    }
+    },
   }
 })
