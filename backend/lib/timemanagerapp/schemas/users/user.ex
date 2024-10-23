@@ -47,6 +47,7 @@ defmodule TimeManagerApp.Users.User do
 
     has_many(:clocks, TimeManagerApp.Clocks.Clock)
     has_many(:working_times, TimeManagerApp.WorkingTimes.WorkingTime)
+    has_many :logs, TimeManagerApp.Logs.Log
 
     timestamps(type: :utc_datetime)
   end

@@ -38,6 +38,7 @@ defmodule TimeManagerApp.Logs do
     |> Repo.insert()
   end
 
+
   @doc """
   Updates a log.
   """
