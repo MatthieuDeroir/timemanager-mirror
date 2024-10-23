@@ -123,7 +123,7 @@ const getDate = () => {
 
       </v-col>
             <v-col cols="12" md="12">
-        <Card :logo="logsIcon" color="light-green" subtitle="Users Logs" title="Users Logs">
+        <Card :logo="logsIcon" color="pink" subtitle="Users Logs" title="Users Logs">
           <LogsComponent/>
         </Card>
       </v-col>
