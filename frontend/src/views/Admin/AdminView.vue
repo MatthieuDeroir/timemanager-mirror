@@ -104,7 +104,6 @@ const getDate = () => {
       <v-col cols="12" md="4" style="min-height: 330px">
         <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
           <ClockManager :userId="userId" />
-          <!--          TODO : Fix daily chart to use store-->
           <DayliChart :userId="userId"/>
         </Card>
       </v-col>

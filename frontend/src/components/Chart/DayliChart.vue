@@ -47,7 +47,7 @@ export default defineComponent({
     this.loaded = false
 
     const formatDateToISO = (date) => {
-      return date.toISOString().slice(0, 19) + 'Z' // Trim milliseconds and add 'Z' for UTC
+      return date.toISOString().slice(0, 19) + 'Z' 
     }
     //init Date 
     let dayStart = new Date()
@@ -112,7 +112,6 @@ export default defineComponent({
       if (quotientDataPourcentage>0){
         if (quotientDataPourcentage >= 1) {
         for (let i = 0; i < quotientDataPourcentage; i++) {
-          console.log('i:' + i)
           prepareDataset.push({
             label: 'Work Duration (Hours)',
             backgroundColor: ['#03a10e', '#aaaaaa'],
