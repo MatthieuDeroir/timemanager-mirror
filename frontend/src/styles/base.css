@@ -37,6 +37,7 @@
     --linear-orange-red: linear-gradient(64deg, #ff8a65, #ff7043 46%, #ff5722);
     --linear-indigo: linear-gradient(64deg, #7986cb, #5c6bc0 46%, #3f51b5);
     --linear-gold: linear-gradient(64deg, #ffd54f, #ffca28 46%, #ffb300);
+    --linear-pink: linear-gradient(64deg, #f48fb1, #f06292 46%, #ec407a);
 }
 
 @media (prefers-color-scheme: dark) {
