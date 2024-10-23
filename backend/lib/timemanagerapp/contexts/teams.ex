@@ -13,6 +13,15 @@ defmodule TimeManagerApp.Teams do
     Repo.all(Team) |> Repo.preload(:users)
   end
 
+  def get_team_with_users(team_id) do
+    Repo.get(Team, team_id) |> Repo.preload(:users)
+  end
+
+  def get_team_with_full_users(team_id) do
+    Repo.get(Team, team_id) |> Repo.preload(users: [:teams])
+  end
+
+
   def get_team!(id) do
     Repo.get!(Team, id) |> Repo.preload(:users)
   end
@@ -53,32 +62,6 @@ defmodule TimeManagerApp.Teams do
     Repo.all(from(t in Team, where: t.id in ^team_ids, preload: [:users]))
   end
 
-  @doc """
-  Adds a user to a team.
-  """
-  def add_user_to_team(team_id, user_id) do
-    team = get_team!(team_id)
-    user = Users.get_user(user_id)
-
-    team
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:users, [user | team.users])
-    |> Repo.update()
-  end
-
-  @doc """
-  Removes a user from a team.
-  """
-  def remove_user_from_team(team_id, user_id) do
-    team = get_team!(team_id)
-
-    updated_users = Enum.reject(team.users, fn u -> u.id == user_id end)
-
-    team
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:users, updated_users)
-    |> Repo.update()
-  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking team changes.

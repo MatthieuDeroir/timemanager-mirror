@@ -6,13 +6,28 @@ defmodule TimeManagerAppWeb.UserController do
   alias TimeManagerApp.Users.User
   alias TimeManagerAppWeb.Swagger.UserSwagger
   alias TimeManagerApp.Repo
-  alias TimeManagerApp.Teams
 
   action_fallback(TimeManagerAppWeb.FallbackController)
 
   # Inject paths from UserSwagger
   Module.eval_quoted(__MODULE__, UserSwagger.paths())
 
+  @doc """
+  Lists all users, optionally filtered by email and/or username.
+
+  ## Parameters
+    - conn: The connection.
+    - params: The query parameters containing optional email and username filters.
+
+  ## Examples
+      GET /users
+
+      GET /users?email=johndoe@example.com
+
+      GET /users?username=johndoe
+
+      GET /users?email=johndoe@example.com&username=johndoe
+  """
   def index(conn, params) do
     users =
       case {Map.get(params, "email"), Map.get(params, "username")} do
@@ -32,6 +47,16 @@ defmodule TimeManagerAppWeb.UserController do
     json(conn, users)
   end
 
+  @doc """
+  Creates a new user and returns it with the 'teams' relationship preloaded.
+
+  ## Parameters
+    - conn: The connection.
+    - params: The request body containing user data.
+
+  ## Examples
+      POST /users
+  """
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
       user = Repo.preload(user, :teams)
@@ -42,6 +67,16 @@ defmodule TimeManagerAppWeb.UserController do
     end
   end
 
+  @doc """
+  Shows a user by ID. Returns a 404 status if the user is not found.
+
+  ## Parameters
+    - conn: The connection.
+    - params: The path parameters containing user ID.
+
+  ## Examples
+      GET /users/:id
+  """
   def show(conn, %{"id" => id}) do
     case Users.get_user(id) do
       nil ->
@@ -54,6 +89,16 @@ defmodule TimeManagerAppWeb.UserController do
     end
   end
 
+  @doc """
+  Updates a user by ID with the given parameters. Returns a 404 status if the user is not found.
+
+  ## Parameters
+    - conn: The connection.
+    - params: The path parameters containing user ID and the request body containing user data.
+
+  ## Examples
+      PUT /users/:id
+  """
   def update(conn, %{"id" => id, "user" => user_params}) do
     case Users.get_user(id) do
       nil ->
@@ -68,6 +113,16 @@ defmodule TimeManagerAppWeb.UserController do
     end
   end
 
+  @doc """
+  Deletes a user by ID. Returns a 404 status if the user is not found.
+
+  ## Parameters
+    - conn: The connection.
+    - params: The path parameters containing user ID.
+
+  ## Examples
+      DELETE /users/:id
+  """
   def delete(conn, %{"id" => id}) do
     case Users.get_user(id) do
       nil ->
@@ -80,22 +135,6 @@ defmodule TimeManagerAppWeb.UserController do
           send_resp(conn, :no_content, "")
         end
     end
-  end
-
-  @doc """
-  Returns a list of users that share the same team.
-  """
-  def index_team(conn, %{"team_id" => team_id}) do
-    users = Users.list_users_by_team_id(team_id)
-    json(conn, users)
-  end
-
-  @doc """
-  Returns the teams associated with a user.
-  """
-  def user_teams(conn, %{"user_id" => user_id}) do
-    teams = Teams.list_teams_by_user_id(user_id)
-    json(conn, teams)
   end
 
   # Swagger schema for User

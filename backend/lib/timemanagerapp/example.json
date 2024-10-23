@@ -1,0 +1,18 @@
+{
+  "action": "action",
+  "message": "message",
+  "user": {
+    "id": 0,
+    "username": "username",
+    "role": {
+      "id": 1,
+      "name": "admin"
+    },
+    "teams": [
+      {
+        "id": 1,
+        "name": "comptability"
+      }
+    ]
+  }
+}

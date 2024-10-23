@@ -24,3 +24,4 @@ defmodule TimeManagerApp.Logs.Log do
     |> foreign_key_constraint(:user_id)
   end
 end
+

@@ -1,22 +1,47 @@
 defmodule TimeManagerAppWeb.TeamController do
+  @moduledoc """
+  Controller for managing teams in the Time Manager application.
+
+  This controller provides actions to list, create, show, update, and delete teams.
+  It also includes Swagger documentation for the Team schema.
+  """
+
   use TimeManagerAppWeb, :controller
   use PhoenixSwagger
 
   alias TimeManagerApp.Teams
   alias TimeManagerApp.Teams.Team
-  # Added alias for Repo
-  alias TimeManagerApp.Repo
   alias TimeManagerAppWeb.Swagger.TeamSwagger
 
   action_fallback(TimeManagerAppWeb.FallbackController)
 
   Module.eval_quoted(__MODULE__, TeamSwagger.paths())
 
+  @doc """
+  Lists all teams.
+
+  ## Parameters
+    - conn: The connection struct.
+    - _params: A map of request parameters.
+
+  ## Returns
+    - Renders the index view with the list of teams.
+  """
   def index(conn, _params) do
     teams = Teams.list_teams()
     render(conn, :index, teams: teams)
   end
 
+  @doc """
+  Creates a new team.
+
+  ## Parameters
+    - conn: The connection struct.
+    - %{"team" => team_params}: A map containing the team parameters.
+
+  ## Returns
+    - Renders the show view with the newly created team.
+  """
   def create(conn, %{"team" => team_params}) do
     with {:ok, %Team{} = team} <- Teams.create_team(team_params) do
       conn
@@ -26,11 +51,31 @@ defmodule TimeManagerAppWeb.TeamController do
     end
   end
 
+  @doc """
+  Shows details of a single team.
+
+  ## Parameters
+    - conn: The connection struct.
+    - %{"id" => id}: A map containing the team ID.
+
+  ## Returns
+    - Renders the show view with the team details.
+  """
   def show(conn, %{"id" => id}) do
     team = Teams.get_team!(id)
     render(conn, :show, team: team)
   end
 
+  @doc """
+  Updates a team.
+
+  ## Parameters
+    - conn: The connection struct.
+    - %{"id" => id, "team" => team_params}: A map containing the team ID and updated team parameters.
+
+  ## Returns
+    - Renders the show view with the updated team.
+  """
   def update(conn, %{"id" => id, "team" => team_params}) do
     team = Teams.get_team!(id)
 
@@ -39,65 +84,31 @@ defmodule TimeManagerAppWeb.TeamController do
     end
   end
 
+  @doc """
+  Deletes a team.
+
+  ## Parameters
+    - conn: The connection struct.
+    - %{"id" => id}: A map containing the team ID.
+
+  ## Returns
+    - Sends a no_content response.
+  """
   def delete(conn, %{"id" => id}) do
     team = Teams.get_team!(id)
 
-    # Changed from {:ok, %Team{}} to avoid unused variable
     with {:ok, %Team{}} <- Teams.delete_team(team) do
       send_resp(conn, :no_content, "")
     end
   end
 
   @doc """
-  Returns a list of teams that a user belongs to.
+  Returns Swagger definitions for the Team schema.
+
+  ## Returns
+    - Swagger definitions for the Team schema.
   """
-  def user_teams(conn, %{"user_id" => user_id}) do
-    teams = Teams.list_teams_by_user_id(user_id)
-    render(conn, :index, teams: teams)
-  end
-
-  @doc """
-  Adds a user to a team.
-  """
-  def add_user(conn, %{"team_id" => team_id, "user_id" => user_id}) do
-    # Removed binding to 'team'
-    with {:ok, %Team{}} <- Teams.add_user_to_team(team_id, user_id) do
-      team = Teams.get_team!(team_id) |> Repo.preload(:users)
-
-      json(conn, team)
-    else
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> put_view(TimeManagerAppWeb.ChangesetView)
-        |> render("error.json", changeset: changeset)
-    end
-  end
-
-  @doc """
-  Removes a user from a team.
-  """
-  def remove_user(conn, %{"team_id" => team_id, "user_id" => user_id}) do
-    # Removed binding to 'team'
-    with {:ok, %Team{}} <- Teams.remove_user_from_team(team_id, user_id) do
-      team = Teams.get_team!(team_id) |> Repo.preload(:users)
-
-      json(conn, team)
-    else
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> put_view(TimeManagerAppWeb.ChangesetView)
-        |> render("error.json", changeset: changeset)
-    end
-  end
-
-  @doc """
-  Returns a list of users that belong to a team.
-  """
-  def team_users(conn, %{"team_id" => team_id}) do
-    team = Teams.get_team!(team_id) |> Repo.preload(users: :teams)
-    users = team.users
-    json(conn, users)
+  def swagger_definitions do
+    TeamSwagger.swagger_definitions()
   end
 end
