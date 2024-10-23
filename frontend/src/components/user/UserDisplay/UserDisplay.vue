@@ -14,7 +14,7 @@
           <div>{{ user.username }}</div>
         </div>
       </div>
-    
+
       <div v-if="editStatus">
         <div class="infos">
           <div class="label">Firstname:</div>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-    
+
       <div v-if="editStatus">
         <div class="infos">
           <div class="label">Lastname:</div>
@@ -32,7 +32,7 @@
           </div>
         </div>
       </div>
-    
+
       <div v-if="editStatus">
         <div class="infos">
           <div class="label">Email:</div>
@@ -41,7 +41,7 @@
           </div>
         </div>
       </div>
-    
+
       <div v-if="editStatus">
         <div class="infos">
           <div class="label">Gender:</div>
@@ -80,7 +80,6 @@
           <div>{{ user.address }}</div>
         </div>
       </div>
-
     </div>
     <div class="category">
       <div class="title">Contract</div>
@@ -163,7 +162,8 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
-import { getUserById, updateUser } from '@/api/UserAPI.js'
+import { getUserById } from '@/api/UserAPI.js'
+import { useUserStore } from '@store/User/UserStore'
 
 const props = defineProps({
   userId: {
@@ -171,10 +171,13 @@ const props = defineProps({
     required: true
   }
 })
+
 const loading = ref({})
 const editStatus = ref(false)
 const user = ref({})
 const emit = defineEmits(['selecteduser'])
+const userStore = useUserStore()
+
 const fetchUser = async (userId) => {
   user.value = await getUserById(userId)
   user.value.birthdate = new Date(user.value.birthdate).toLocaleDateString('en-GB', {
@@ -199,37 +202,38 @@ const fetchUser = async (userId) => {
 const handleTurnOnEdit = () => {
   editStatus.value = editStatus.value = true
 }
-const handleSaveEdit = () => {
+const handleSaveEdit = async () => {
   loading.value = true
 
-  user.value.birthdate = new Date(user.value.birthdate).toISOString().split('T')[0]
-  user.value.start_date = new Date(user.value.start_date).toISOString().split('T')[0]
-  user.value.end_date = new Date(user.value.end_date).toISOString().split('T')[0]
+  try {
+    user.value.birthdate = new Date(user.value.birthdate).toISOString().split('T')[0]
+    user.value.start_date = new Date(user.value.start_date).toISOString().split('T')[0]
+    user.value.end_date = new Date(user.value.end_date).toISOString().split('T')[0]
 
-  updateUser(user.value.id, { user: user.value })
-    .then(() => {
-      user.value.birthdate = new Date(user.value.birthdate).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-      })
-      user.value.start_date = new Date(user.value.start_date).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-      })
-      user.value.end_date = new Date(user.value.end_date).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-      })
-      editStatus.value = false
-      loading.value = false
+    await userStore.updateUser(user.value.id, { user: user.value })
+
+    user.value.birthdate = new Date(user.value.birthdate).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
     })
-    .catch((error) => {
-      console.error('Error updating user: ', error)
-      loading.value = false
+    user.value.start_date = new Date(user.value.start_date).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
     })
+    user.value.end_date = new Date(user.value.end_date).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    })
+
+    editStatus.value = false
+  } catch (error) {
+    console.error('Error updating user: ', error)
+  } finally {
+    loading.value = false
+  }
 }
 
 const handleCancelEdit = () => {

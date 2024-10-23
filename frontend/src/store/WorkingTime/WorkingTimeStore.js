@@ -1,47 +1,86 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { workingTimesCollection } from '@/loki'
 import WorkingTimeAPI from '@/api/WorkingTimeAPI'
 
-const { getWorkingTimesByUserId, createWorkingTime, updateWorkingTime, deleteWorkingTime } =
-  WorkingTimeAPI
+export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
+  const workingTimes = ref([])
+  const isLoading = ref(false)
+  const error = ref(null)
 
-export const useWorkingTimeStore = defineStore('workingTimeStore', {
-  state: () => ({
-    workingTimes: [],
-    isLoading: false,
-    error: null
-  }),
+  const loadWorkingTimes = (userId) => {
+    isLoading.value = true
+    error.value = null
 
-  actions: {
-    async loadWorkingTimes(userId, start = null, end = null) {
-      this.isLoading = true
-      this.error = null
-      this.workingTimes = await getWorkingTimesByUserId(userId, start, end)
-      this.isLoading = false
-    },
+    if (navigator.onLine) {
+      WorkingTimeAPI.getWorkingTimesByUserId(userId)
+        .then((serverWorkingTimes) => {
+          workingTimes.value = serverWorkingTimes
 
-    async createWorkingTime(start, end, userId) {
-      this.isLoading = true
-      this.error = null
-      const newWorkingTime = await createWorkingTime(start, end, userId) //
-      //this.workingTimes.push(newWorkingTime)
-      this.isLoading = false
-      return newWorkingTime
-    },
-
-    async updateWorkingTime(id, data) {
-      this.isLoading = true
-      this.error = null
-      const updatedWorkingTime = await updateWorkingTime(id, data)
-      this.workingTimes = this.workingTimes.map((wt) => (wt.id === id ? updatedWorkingTime : wt))
-      this.isLoading = false
-    },
-
-    async deleteWorkingTime(id) {
-      this.isLoading = true
-      this.error = null
-      await deleteWorkingTime(id)
-      this.workingTimes = this.workingTimes.filter((wt) => wt.id !== id)
-      this.isLoading = false
+          workingTimesCollection.clear()
+          workingTimesCollection.insert(serverWorkingTimes)
+        })
+        .catch((err) => {
+          console.error('Erreur lors de la récupération des données depuis le serveur', err)
+          error.value = 'Impossible de charger les données depuis le serveur.'
+          workingTimes.value = workingTimesCollection.find()
+        })
+        .finally(() => {
+          isLoading.value = false
+        })
+    } else {
+      // Si offline, charger depuis LokiJS
+      workingTimes.value = workingTimesCollection.find()
+      isLoading.value = false
     }
+  }
+
+  const createWorkingTimeAction = (start, end, userId) => {
+    isLoading.value = true
+    error.value = null
+
+    const newWorkingTime = { start, end, userId, id: Date.now(), synced: false, action: 'create' }
+    workingTimesCollection.insert(newWorkingTime)
+    workingTimes.value.push(newWorkingTime)
+
+    isLoading.value = false
+  }
+
+  const updateWorkingTimeAction = (id, data) => {
+    isLoading.value = true
+    error.value = null
+
+    const existing = workingTimesCollection.findOne({ id })
+    Object.assign(existing, data, { synced: false, action: 'update' })
+    workingTimesCollection.update(existing)
+    workingTimes.value = workingTimes.value.map((wt) => (wt.id === id ? existing : wt))
+
+    isLoading.value = false
+  }
+
+  const deleteWorkingTimeAction = (id) => {
+    isLoading.value = true
+    error.value = null
+
+    const existing = workingTimesCollection.findOne({ id })
+    if (existing) {
+      existing.synced = false
+      existing.action = 'delete'
+      workingTimesCollection.update(existing)
+    }
+
+    workingTimes.value = workingTimes.value.filter((wt) => wt.id !== id)
+
+    isLoading.value = false
+  }
+
+  return {
+    workingTimes,
+    isLoading,
+    error,
+    loadWorkingTimes,
+    createWorkingTimeAction,
+    updateWorkingTimeAction,
+    deleteWorkingTimeAction
   }
 })

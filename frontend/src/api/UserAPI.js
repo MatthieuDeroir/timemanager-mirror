@@ -6,7 +6,7 @@ import {HttpClient} from '@/api/config/HttpClient.js'
  * This data and endpoints will be accessed only by admin.
  * @returns {Promise} - Return a promise with the response data.
  */
-export const loadAllUsers = () =>
+export const getAllUsers = () =>
   HttpClient.get('/users')
     .then((res) => res.data)
     .catch((error) => {
@@ -28,13 +28,13 @@ export const getUserById = (id) => HttpClient.get(`/users/${id}`).then((res) => 
  * @param data
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export const createUser = (data) => HttpClient.post('/users', data).then((res) => res.data)
+export const create = (data) => HttpClient.post('/users', data).then((res) => res.data)
 
 /**
  * updateUser
  * This method update a user by id.
  */
-export const updateUser = (id, data) => HttpClient.put(`/users/${id}`, data).then((res) => res.data)
+export const update = (id, data) => HttpClient.put(`/users/${id}`, data).then((res) => res.data)
 
 /**
  * deleteUser
@@ -45,9 +45,9 @@ export const updateUser = (id, data) => HttpClient.put(`/users/${id}`, data).the
 export const deleteUser = (id) => HttpClient.delete(`/users/${id}`).then((res) => res.data)
 
 export default {
-  loadAllUsers,
+  getAllUsers,
   getUserById,
-  createUser,
-  updateUser,
+  create,
+  update,
   deleteUser
 }
