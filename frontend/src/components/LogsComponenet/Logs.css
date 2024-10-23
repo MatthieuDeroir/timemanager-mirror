@@ -1,0 +1,46 @@
+.logs {
+    padding: 20px;
+}
+
+.chartheader {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.header {
+    width: 150px;
+}
+
+.log-entry {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    text-wrap: wrap;
+}
+
+.role,
+.action,
+.message,
+.date,
+.team {
+    width: 150px;
+}
+
+.username {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+}
+
+.team-info {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+}
+
+.username-info,
+.team-info {
+    margin: 0;
+}
