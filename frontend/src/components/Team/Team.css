@@ -12,7 +12,24 @@
     width: 300px;
     margin-right: 20px;
 }
-
+.team-expansion-panel{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.add-user-in-team{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background-color: #e6e6e6;
+    fill: darkorange;
+}
 .user-container {
     display: flex;
     align-items: center;
