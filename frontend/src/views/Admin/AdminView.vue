@@ -14,6 +14,7 @@ import Team from '@components/Team/Team.vue'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
 import Calendar from '@/components/Calendar.vue'
+import DayliChart from '@components/Chart/DayliChart.vue'
 
 const props = defineProps({
   userId: {
@@ -104,7 +105,7 @@ const getDate = () => {
         <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
           <ClockManager :userId="userId" />
           <!--          TODO : Fix daily chart to use store-->
-          <!--          <DayliChart :userId="userId"/>-->
+          <DayliChart :userId="userId"/>
         </Card>
       </v-col>
 

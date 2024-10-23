@@ -5,10 +5,8 @@
 </template>
 
 <script>
-// import DoughnutChart from './DoughnutChart.vue';
 import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from 'chart.js'
 import { defineComponent } from 'vue'
-// import { getWorkingTimesByUserId } from '@services/workingtimeServices.js'
 import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
 import { Doughnut } from 'vue-chartjs'
 
@@ -51,34 +49,28 @@ export default defineComponent({
     const formatDateToISO = (date) => {
       return date.toISOString().slice(0, 19) + 'Z' // Trim milliseconds and add 'Z' for UTC
     }
-
+    //init Date 
     let dayStart = new Date()
-    dayStart.setHours(0, 0, 0, 0)
     let dayEnd = new Date()
+    dayStart.setHours(0, 0, 0, 0)
     dayEnd.setHours(23, 59, 59, 59)
     dayEnd = formatDateToISO(dayEnd)
     dayStart = formatDateToISO(dayStart)
 
-    const startDate = dayStart // Optional: can be passed from parent or a filter
-    const endDate = dayEnd // Optional: same as above
+    const startDate = dayStart
+    const endDate = dayEnd 
+
     const workingTimeStore = useWorkingTimeStore()
+    await workingTimeStore.loadWorkingTimes(this.userId, startDate, endDate)
+    const workingTimes = workingTimeStore.workingTimes
 
-    const workingTimes = await workingTimeStore.loadWorkingTimes(this.userId, startDate, endDate)
-
-    try {
-      // Fetch the working times by userId
-
-      // Calculate total hours worked per day
-      const totalHoursByDay = this.calculateTotalHoursByDay(workingTimes)
-      // console.log(workingTimes)
-      // console.log(totalHoursByDay)
-
-      // Prepare the chart data
-      this.chartData = this.createChartData(totalHoursByDay)
-      this.loaded = true
-    } catch (err) {
-      this.error = err.message || 'An error occurred while fetching data.'
-    }
+    // Calculate total hours worked per day
+    const totalHoursByDay = this.calculateTotalHoursByDay(workingTimes)
+      
+    // Prepare the chart data
+    this.chartData = this.createChartData(totalHoursByDay)
+    this.loaded = true
+  
     this.loaded = true
   },
   methods: {
@@ -88,7 +80,7 @@ export default defineComponent({
       workingTimes.forEach((time) => {
         const start = new Date(time.start)
         const end = new Date(time.end)
-        const dateKey = start.toLocaleDateString() // Group by date
+        const dateKey = start.toLocaleDateString() 
         const hoursWorked = (end - start) / (1000 * 60 * 60) // Convert ms to hours
 
         if (totalHours[dateKey]) {
@@ -102,9 +94,10 @@ export default defineComponent({
     },
 
     createChartData(totalHoursByDay) {
-      // const labels = Object.keys(totalHoursByDay); // Dates
-      const labels = ['worked hours'] // Dates
-      const data = Object.values(totalHoursByDay) // Hours worked
+
+      const labels = ['worked hours'] 
+      const data = Object.values(totalHoursByDay) 
+
       const decimalHoursToPourentage = (decimalHours, referenceHours = 8) => {
         const pourcentageHours = (decimalHours / referenceHours) * 100
         return pourcentageHours.toFixed(2)
@@ -114,15 +107,10 @@ export default defineComponent({
       const dataOver = (dataPourcentageOver * 8) / 100
       const quotientDataPourcentage = Math.floor(dataPourcentage / 100)
       const prepareDataset = []
-      console.log('AAAAAAAAAAA', Object(totalHoursByDay))
+ 
 
-      console.log('data:' + data)
-      console.log('data%' + dataPourcentage)
-      console.log('data%over' + dataPourcentageOver)
-      console.log('dataOver', dataOver)
-      console.log('data nb tour:' + quotientDataPourcentage)
-
-      if (quotientDataPourcentage >= 1) {
+      if (quotientDataPourcentage>0){
+        if (quotientDataPourcentage >= 1) {
         for (let i = 0; i < quotientDataPourcentage; i++) {
           console.log('i:' + i)
           prepareDataset.push({
@@ -135,11 +123,16 @@ export default defineComponent({
       }
       prepareDataset.push({
         label: 'Work Duration (Hours)',
-        backgroundColor: ['#ff9500', '#aaaaaa', '#ffffff'],
-        data: [dataOver, 8 - dataOver, 0, 0]
+        backgroundColor: ['#ff9500', '#aaaaaa'],
+        data: [dataOver, 8 - dataOver,]
+      })}
+      else{
+        prepareDataset.push({
+        label: 'Work Duration (Hours)',
+        backgroundColor: ['#03a10e', '#aaaaaa'],
+        data: [dataOver, 8 - dataOver,]
       })
-      console.log('prepareDataset', prepareDataset)
-      console.log('prepareDataset[1]', prepareDataset[1])
+      }
 
       // Ensure that chartData has labels and datasets
       return {
