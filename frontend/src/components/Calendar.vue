@@ -24,26 +24,28 @@ export default {
         plugins: [ dayGridPlugin, interactionPlugin, timeGridPlugin],
         initialView: 'dayGridMonth',
         timeZone:'UTC',
-        dateClick: this.handleDateClick, 
         eventClick: this.handleEventClick,
         selectable: true,
         events: [],
        
        
-      }
+      },
+      selectedEvent: null,
+      showEventModal:false
       
     }
   },
   methods: {
-    handleDateClick (arg) {
-      const event= arg.event
-      // alert('Clicked on: ' + arg.dateStr);
-      // alert('Coordinates: ' + arg.jsEvent.pageX + ',' + arg.jsEvent.pageY);
-      // alert('Current view: ' + arg.view.type);
-      
-    },
+    
     handleEventClick (arg){
       const event = arg.event
+      this.selectedEvent={
+        title:event.title,
+        start:event.start,
+        end:event.end
+      }
+      this.showEventModal=true
+
       // alert('Event title: ' + event.title);
       // alert('Event start time: ' + event.start);
       // alert('Event end time: ' + event.start);
@@ -62,15 +64,15 @@ export default {
           allDay: false,
         }));
      
-        console.log(this.calendarOptions.events)
+        // console.log(this.calendarOptions.events)
       
       } catch (error) {
         console.error("Failed to load events:", error);
       }
     },
-    async createEvent(){
-      const workingTimeStore = useWorkingTimeStore()
-      await workingTimeStore.createWorkingTime(this.userId, "2024-10-08:08:00:00", "2024-10-10:16:00:00")
+    async closeModal(){
+      this.showEventModal=false
+      this.selectedEvent=null
 
     }
   },
@@ -81,8 +83,52 @@ export default {
 </script>
 
 <template>
-  <FullCalendar :options="calendarOptions" />
+  <div>
+    <FullCalendar :options="calendarOptions" />
+    <div v-if="showEventModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <h2>{{ selectedEvent.title }}</h2>
+        <p><strong>Start:</strong> {{ selectedEvent.start }}</p>
+        <p><strong>End:</strong> {{ selectedEvent.end }}</p>
+      </div>
+    </div>
+
+  </div>
 </template>
 
-<style scoped>   
+<style scoped>  
+  .modal {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    text-align: center;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  } 
 </style>
