@@ -15,6 +15,68 @@ defmodule TimeManagerApp.Logs do
     Repo.all(Log)
   end
 
+  def list_logs_by_role(role_id) do
+    Log
+    |> join(:inner, [l], u in assoc(l, :user))
+    |> where([l, u], u.role_id == ^role_id)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+  def list_logs_by_team(team_id) do
+    Log
+    |> join(:inner, [l], u in assoc(l, :user))
+    |> join(:inner, [l, u], t in assoc(u, :teams))
+    |> where([l, u, t], t.id == ^team_id)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+  def list_logs_by_user(user_id) do
+    Log
+    |> where([l], l.user_id == ^user_id)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+  def list_logs_by_date_range(start_date, end_date) do
+    Log
+    |> where([l], l.inserted_at >= ^start_date and l.inserted_at <= ^end_date)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+  def list_logs_by_role_and_date(role_id, start_date, end_date) do
+    Log
+    |> join(:inner, [l], u in assoc(l, :user))
+    |> where([l, u], u.role_id == ^role_id)
+    |> where([l], l.inserted_at >= ^start_date and l.inserted_at <= ^end_date)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+  def list_logs_by_team_and_date(team_id, start_date, end_date) do
+    Log
+    |> join(:inner, [l], u in assoc(l, :user))
+    |> join(:inner, [l, u], t in assoc(u, :teams))
+    |> where([l, u, t], t.id == ^team_id)
+    |> where([l], l.inserted_at >= ^start_date and l.inserted_at <= ^end_date)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+  def list_logs_by_user_and_date(user_id, start_date, end_date) do
+    Log
+    |> where([l], l.user_id == ^user_id)
+    |> where([l], l.inserted_at >= ^start_date and l.inserted_at <= ^end_date)
+    |> Repo.all()
+    |> Repo.preload([user: [:role, :teams]])
+  end
+
+
+
+
+
   @doc """
   Gets a single log.
   """

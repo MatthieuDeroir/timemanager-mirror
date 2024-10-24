@@ -29,7 +29,7 @@ defmodule TimeManagerAppWeb.TeamController do
   """
   def index(conn, _params) do
     teams = Teams.list_teams()
-    render(conn, :index, teams: teams)
+    json(conn, teams)
   end
 
   @doc """
@@ -63,7 +63,7 @@ defmodule TimeManagerAppWeb.TeamController do
   """
   def show(conn, %{"id" => id}) do
     team = Teams.get_team!(id)
-    render(conn, :show, team: team)
+    json(conn, team)
   end
 
   @doc """
@@ -80,7 +80,7 @@ defmodule TimeManagerAppWeb.TeamController do
     team = Teams.get_team!(id)
 
     with {:ok, %Team{} = team} <- Teams.update_team(team, team_params) do
-      render(conn, :show, team: team)
+      json(conn, team)
     end
   end
 

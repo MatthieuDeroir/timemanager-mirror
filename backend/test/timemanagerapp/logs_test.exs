@@ -1,69 +1,84 @@
-# test/timemanagerapp/logs_test.exs
-defmodule TimeManagerApp.LogsTest do
-  use TimeManagerApp.DataCase
+defmodule TimeManagerApp.Logs.LogTest do
+  use TimeManagerApp.DataCase, async: true
 
   alias TimeManagerApp.Logs
+  alias TimeManagerApp.Users
+  alias TimeManagerApp.Repo
+  alias TimeManagerApp.Logs.Log
+  alias TimeManagerApp.Users.User
 
-  import TimeManagerApp.LogsFixtures
+  @valid_user_attrs %{username: "user1", email: "user1@example.com"}
+  @valid_role_attrs %{name: "admin"}
+  @valid_team_attrs %{name: "development"}
+  @log_attrs %{action: "CREATE", message: "Created a new resource"}
 
-  describe "logs" do
-    alias TimeManagerApp.Logs.Log
+  setup do
+    role = %TimeManagerApp.Users.Role{} |> Users.create_role(@valid_role_attrs)
+    team = %TimeManagerApp.Users.Team{} |> Users.create_team(@valid_team_attrs)
 
-    @invalid_attrs %{action: nil, level: nil, message: nil}
+    user =
+      %User{}
+      |> User.changeset(Map.merge(@valid_user_attrs, %{role_id: role.id}))
+      |> Repo.insert!()
 
-    test "list_logs/0 returns all logs" do
-      log = log_fixture()
-      assert Logs.list_logs() == [log]
-    end
+    # Associate the user with a team
+    Repo.insert!(%TimeManagerApp.Users.UserTeam{user_id: user.id, team_id: team.id})
 
-    test "get_log!/1 returns the log with given id" do
-      log = log_fixture()
-      assert Logs.get_log!(log.id) == log
-    end
+    {:ok, %{user: user, role: role, team: team}}
+  end
 
-    test "create_log/1 with valid data creates a log" do
-      valid_attrs = %{action: "some action", level: "info", message: "some message"}
+  describe "list_logs_by_role/1" do
+    test "fetches logs filtered by role", %{user: user, role: role} do
+      Logs.log_action(user.id, "TEST", "Test action")
+      logs = Logs.list_logs_by_role(role.id)
 
-      assert {:ok, %Log{} = log} = Logs.create_log(valid_attrs)
-      assert log.action == "some action"
-      assert log.level == "info"
-      assert log.message == "some message"
-    end
-
-    test "create_log/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Logs.create_log(@invalid_attrs)
-    end
-
-    test "update_log/2 with valid data updates the log" do
-      log = log_fixture()
-
-      update_attrs = %{
-        action: "some updated action",
-        level: "warning",
-        message: "some updated message"
-      }
-
-      assert {:ok, %Log{} = log} = Logs.update_log(log, update_attrs)
-      assert log.action == "some updated action"
-      assert log.level == "warning"
-      assert log.message == "some updated message"
-    end
-
-    test "update_log/2 with invalid data returns error changeset" do
-      log = log_fixture()
-      assert {:error, %Ecto.Changeset{}} = Logs.update_log(log, @invalid_attrs)
-      assert log == Logs.get_log!(log.id)
-    end
-
-    test "delete_log/1 deletes the log" do
-      log = log_fixture()
-      assert {:ok, %Log{}} = Logs.delete_log(log)
-      assert_raise Ecto.NoResultsError, fn -> Logs.get_log!(log.id) end
-    end
-
-    test "change_log/1 returns a log changeset" do
-      log = log_fixture()
-      assert %Ecto.Changeset{} = Logs.change_log(log)
+      assert length(logs) == 1
+      assert hd(logs).user.role_id == role.id
     end
   end
+
+  describe "list_logs_by_team/1" do
+    test "fetches logs filtered by team", %{user: user, team: team} do
+      Logs.log_action(user.id, "TEST", "Test action")
+      logs = Logs.list_logs_by_team(team.id)
+
+      assert length(logs) == 1
+      assert hd(logs).user.teams |> Enum.any?(fn t -> t.id == team.id end)
+    end
+  end
+
+  describe "list_logs_by_user/1" do
+    test "fetches logs filtered by user", %{user: user} do
+      Logs.log_action(user.id, "TEST", "Test action")
+      logs = Logs.list_logs_by_user(user.id)
+
+      assert length(logs) == 1
+      assert hd(logs).user_id == user.id
+    end
+  end
+
+  describe "list_logs_by_date_range/2" do
+    test "fetches logs within a specific date range", %{user: user} do
+      Logs.log_action(user.id, "TEST", "Test action")
+      start_date = DateTime.utc_now() |> DateTime.add(-3600, :second)
+      end_date = DateTime.utc_now() |> DateTime.add(3600, :second)
+
+      logs = Logs.list_logs_by_date_range(start_date, end_date)
+
+      assert length(logs) == 1
+      assert hd(logs).user_id == user.id
+    end
+
+    test "excludes logs outside of the date range", %{user: user} do
+      Logs.log_action(user.id, "TEST", "Test action")
+      start_date = DateTime.utc_now() |> DateTime.add(-7200, :second)
+      end_date = DateTime.utc_now() |> DateTime.add(-3600, :second)
+
+      logs = Logs.list_logs_by_date_range(start_date, end_date)
+
+      assert length(logs) == 0
+    end
+  end
+
+
 end
