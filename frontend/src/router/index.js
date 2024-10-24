@@ -30,11 +30,11 @@ const routes = [
     meta: { requiresAuth: true, role: UserRole.GENERAL_MANAGER }
   },
   {
-    path: '/manager/:userId(\\d+)',
+    path: '/manager/:userId(\\d+)/:workerId(\\d+)?',
     name: 'Manager',
     component: ManagerView,
-    props: (route) => ({ userId: Number(route.params.userId) }),
-    key: (route) => route.params.userId,
+    props: (route) => ({ userId: Number(route.params.userId), workerId: Number(route.params.workerId) }),
+    key: (route) => route.params.userId + route.params.workerId,
     meta: { requiresAuth: true, role: UserRole.MANAGER }
   },
   {

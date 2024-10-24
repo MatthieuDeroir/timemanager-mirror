@@ -123,9 +123,9 @@ export default {
 
       clockStore.loadClocks(userId)
       workingTimesStore.loadWorkingTimes(userId)
-      // if (authStore.user.role_id === UserRole.MANAGER) {
-      //   router.push({ name: 'Manager', params: { userId } })
-      // }
+      if (authStore.user.role_id === UserRole.MANAGER) {
+        router.push({ name: 'Manager', params: { userId:authStore.user.id, workerId:userId } })
+      }
       if(authStore.user.role_id === UserRole.ADMIN){
         router.push({ name: 'Administrator', params: { userId } })
       }

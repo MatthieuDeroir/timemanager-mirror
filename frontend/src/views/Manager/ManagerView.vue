@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import WorkingTimeManager from '@components/WorkingTimeManager/WorkingTimeManager.vue'
 import WorkingTimeVisualization from '@components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
 import Card from '@components/Card/Card.vue'
@@ -16,12 +16,18 @@ const props = defineProps({
   userId: {
     type: Number,
     required: true
+  },
+  workerId: {
+    type: Number
   }
 })
 const authStore = useAuthStore()
 const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
 const userGender = ref('User Information')
+const worker =  computed(()=>props.workerId === 0 ? props.userId : props.workerId);
+console.log(worker.value)
+
 
 const handleSelectedUser = (user) => {
   userTitle.value = `${user.firstname} ${user.lastname}`
@@ -81,30 +87,28 @@ const getDate = () => {
         <Card
           :logo="sliceIcon"
           color="green"
-          :subtitle="authStore.user.email"
+          :subtitle="userTitle"
           title="Working Time Visualization"
         >
-          <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
+          <WorkingTimeVisualization :userId="worker" :workingTimes="workingTimes" />
         </Card>
       </v-col>
       <v-col cols="12" md="4">
         <Card
-          :actionFunction="handleOpenPopUpCreateUser"
           :logo="userIcon"
           :otherInfo="userGender"
           :subtitle="userSubtitle"
           :title="userTitle"
-          actionButton='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>'
           color="blue"
         >
-          <UserDisplay :userId="userId" @selecteduser="handleSelectedUser" />
+          <UserDisplay :userId="worker" @selecteduser="handleSelectedUser" />
         </Card>
       </v-col>
 
 
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
-          <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
+        <Card :logo="workIcon" color="yellow" :subtitle="userTitle" title="Working Time Manager">
+          <WorkingTimeManager :userId="worker" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>
     </v-row>
