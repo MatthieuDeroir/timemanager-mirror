@@ -6,7 +6,6 @@ export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('TOKEN') || null)
 
   const login = (userData, userToken) => {
-    console.log('userData in authstore', userData)
     user.value = userData
     token.value = userToken
     localStorage.setItem('CURRENT_USER', JSON.stringify(userData))

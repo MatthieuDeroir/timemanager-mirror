@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import teamApi, {getUsersFromTeamId} from '@/api/TeamAPI.js'
+import {ca} from "vuetify/locale";
 
 export const useTeamStore = defineStore('teamStore', {
     state: () => ({
@@ -12,62 +13,98 @@ export const useTeamStore = defineStore('teamStore', {
         async loadAllTeams() {
             this.isLoading = true
             this.error = null
-            const result = await teamApi.getAllTeams().catch((error) => {
+            try {
+                const result = await teamApi.getAllTeams()
+                await this.getUsersInManyTeams(result)
+            } catch (error) {
                 this.error = error
-            })
-            await this.getUsersInManyTeams(result)
-            console.log('store',this.teams)
-            this.isLoading = false
+            }finally {
+                this.isLoading = false
+            }
         },
         async loadTeamByUserId(userId) {
             this.isLoading = true
             this.error = null
-            const result = await teamApi.getTeamsByUserId(userId)
-            await this.getUsersInManyTeams(result)
-            this.isLoading = false
-        },
-        async getUsersInManyTeams(teams){
-            for (const [index,element] of teams.entries()) {
-                if (this.teams[index] === undefined) {
-                    this.teams[index]= {}
-                }
-                this.teams[index].users = await teamApi.getUsersFromTeamId(element.id)
-                this.teams[index].id = element.id
-                this.teams[index].name = element.name
+            try {
+                const result = await teamApi.getTeamsByUserId(userId)
+                await this.getUsersInManyTeams(result)
+            }catch (error) {
+                this.error = error
+            }finally {
+                this.isLoading = false
             }
         },
-        async addUserInTeam(teamId, userId) {
-            this.isLoading = true
-            this.error = null
-            await teamApi.addUserInTeam(teamId, userId)
-            this.isLoading = false
+        async getUsersInManyTeams(teams){
+            try {
+                for (const [index,element] of teams.entries()) {
+                    if (this.teams[index] === undefined) {
+                        this.teams[index]= {}
+                    }
+                    this.teams[index].users = await teamApi.getUsersFromTeamId(element.id)
+                    this.teams[index].id = element.id
+                    this.teams[index].name = element.name
+                }
+            }catch (error) {
+                this.error = error
+            }
         },
-        async deleteUserInTeam(teamId, userId) {
+        async addUserInTeam(user_id, team_id) {
             this.isLoading = true
             this.error = null
-            await teamApi.deleteUserInTeam(teamId, userId)
-            this.isLoading = false
-        },        
+            try {
+                await teamApi.addUserInTeam(user_id, team_id)
+            }catch (error) {
+                this.error = error
+            }finally {
+                this.isLoading = false
+            }
+        },
+        async deleteUserInTeam(user_id, team_id) {
+            this.isLoading = true
+            this.error = null
+            try {
+                await teamApi.deleteUserInTeam(user_id, team_id)
+            }catch (error) {
+                this.error = error
+            }finally {
+                this.isLoading = false
+            }
+        },
         async createTeam(name) {
            this.isLoading = true
            this.error = null
-           const newTeam = await teamApi.createTeam(name)
-           this.teams.push(newTeam)
-           this.isLoading = false
+            try {
+               const newTeam = await teamApi.createTeam(name)
+               this.teams.push(newTeam)
+            }catch (error) {
+                this.error = error
+            }finally {
+                this.isLoading = false
+            }
         },
         async updateTeam(teamId, name) {
             this.isLoading = true
             this.error = null
-            const updatedTeam = await teamApi.updateTeam(teamId, name)
-            this.teams = this.teams.map((team) => (team.teamId === teamId ? updatedTeam : team))
-            this.isLoading = false
+            try {
+                const updatedTeam = await teamApi.updateTeam(teamId, name)
+                this.teams = this.teams.map((team) => (team.teamId === teamId ? updatedTeam : team))
+            }catch (error) {
+                this.error = error
+            }finally {
+                this.isLoading = false
+            }
         },
         async deleteTeam(teamId) {
             this.isLoading = true
             this.error = null
-            await teamApi.deleteTeam(teamId)
-            this.teams = this.teams.filter((team) => team.teamId !== teamId)
-            this.isLoading = false
+            try {
+                await teamApi.deleteTeam(teamId)
+                this.teams = this.teams.filter((team) => team.teamId !== teamId)
+            }catch (error) {
+                this.error = error
+            }finally {
+                this.isLoading = false
+            }
         }
     }
 })

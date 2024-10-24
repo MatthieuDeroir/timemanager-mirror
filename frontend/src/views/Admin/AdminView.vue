@@ -96,7 +96,7 @@ const getDate = () => {
         <Card
           :logo="sliceIcon"
           color="green"
-          subtitle="Working time"
+          :subtitle="userTitle"
           title="Working Time Visualization"
         >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
@@ -117,7 +117,7 @@ const getDate = () => {
       </v-col>
 
       <v-col cols="12" md="12">
-        <Card :logo="teamIcon" color="orange" subtitle="Team" title="My Team">
+        <Card :logo="teamIcon" color="orange" subtitle="All Teams" title="My Team">
           <Team :userId="userId" />
         </Card>
 

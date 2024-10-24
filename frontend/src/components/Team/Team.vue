@@ -17,12 +17,20 @@
               <th>Last Name</th>
               <th>Contact</th>
               <td v-if="authStore.user.role_id != UserRole.EMPLOYEE">
-                <svg class="add-user-in-team" @click="handleAddUserInTeam" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+                <svg class="add-user-in-team" @click="handleAddUserInTeam"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                     style="cursor: pointer">
+                  <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                </svg>
               </td>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in team.users" :key="user.id">
+            <tr v-if="addUserState"  >
+              <TeamAddUser :team_id="team.id" @onUserAddedToTeam="handleUserAddedInTeam" />
+            </tr>
+            <tr v-for="user in team.users" :key="user.id" @click="handleOpenUserInfo(user.id)"
+                :style="authStore.user.role_id !== UserRole.EMPLOYEE ? { cursor: 'pointer' } : {}">
               <td>{{ getRoleName(user.role_id) }}</td>
               <td>{{ user.position }}</td>
               <td>{{ user.firstname }}</td>
@@ -33,10 +41,12 @@
                 </a>
               </td>
               <td v-if="authStore.user.role_id != UserRole.EMPLOYEE" >
-                <svg @click="handleDeleteUserFromTeam(team.id,user.id)" class="delete-user-from-team" width="45px" height="45px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ff0000">
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-                  <g id="SVGRepo_iconCarrier"> <path d="M15 12H9" stroke="#d11a1a" stroke-width="1.5" stroke-linecap="round"/> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#d11a1a" stroke-width="1.5" stroke-linecap="round"/> </g>
+                <svg @click="handleDeleteUserFromTeam(team.id,user.id)"
+                     class="delete-user-from-team" width="45px"
+                     height="45px" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg"
+                     style="cursor: pointer">
+                  <g id="SVGRepo_iconCarrier"> <path d="M15 12H9" stroke="darkorange" stroke-width="1.5" stroke-linecap="round"/></g>
                 </svg>
               </td>
             </tr>
@@ -68,11 +78,17 @@
 </template>
 <style src="./Team.css"/>
 <script>
+import { ref, defineEmits } from 'vue';
 import { UserRole } from '@enum/User/UserRole';
 import emailIcon from '@assets/icons/icons8-mail-48.png'
 import { useAuthStore } from '@store/Auth/AuthStore.js'
 import { useTeamStore } from '@store/Team/TeamStore.js'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@store/User/UserStore'
+import { useClockStore } from '@store/Clock/ClockStore.js'
+import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
 import Loader from '@components/Loader/LoaderComponent.vue'
+import TeamAddUser from '@components/Team/TeamAddUser/TeamAddUser.vue'
 
 export default {
   props:{
@@ -84,26 +100,50 @@ export default {
   setup(){
     const teamStore = useTeamStore();
     const authStore = useAuthStore();
+    const router = useRouter()
+    const userStore = useUserStore()
+    const clockStore = useClockStore()
+    const workingTimesStore = useWorkingTimeStore()
+    const addUserState = ref(false);
 
     const handleCreateTeam = (event) => {
       event.preventDefault();
       const teamName = event.target.querySelector('.team-name-input').value;
       if (teamName !== ''){
-        teamStore.createTeam(teamName)
+        const newTeam = teamStore.createTeam(teamName)
+        teamStore.teams.map(team => {
+          if (team.id === newTeam.id) {
+            team.users.push([]);
+          }
+        });
       }
     };
+    const handleOpenUserInfo = (userId) => {
+      if(authStore.user.role_id === UserRole.EMPLOYEE) return
 
+      clockStore.loadClocks(userId)
+      workingTimesStore.loadWorkingTimes(userId)
+      // if (authStore.user.role_id === UserRole.MANAGER) {
+      //   router.push({ name: 'Manager', params: { userId } })
+      // }
+      if(authStore.user.role_id === UserRole.ADMIN){
+        router.push({ name: 'Administrator', params: { userId } })
+      }
+    };
     const handleAddUserInTeam = () => {
-      console.log('Add user in team');
+      addUserState.value = true;
+    };
+    const handleUserAddedInTeam = () => {
+      addUserState.value = false;
     };
 
-    const handleDeleteUserFromTeam = (teamId,userId) => {
+    const handleDeleteUserFromTeam = (user_id,team_id) => {
       teamStore.teams.map(team => {
-        if (team.id === teamId) {
-          team.users = team.users.filter(user => user.id !== userId);
+        if (team.id === team_id) {
+          team.users = team.users.filter(user => user.id !== user_id);
         }
       });
-      teamStore.deleteUserInTeam(teamId,userId);
+      teamStore.deleteUserInTeam(user_id,team_id);
     };
 
     const handleDeleteTeam = (teamId) => {
@@ -126,8 +166,11 @@ export default {
       handleDeleteTeam,
       handleCreateTeam,
       handleAddUserInTeam,
+      handleUserAddedInTeam,
       handleDeleteUserFromTeam,
+      handleOpenUserInfo,
       getRoleName,
+      addUserState,
       emailIcon,
       teamStore,
       authStore,
@@ -142,7 +185,8 @@ export default {
     }
   },
   components: {
-    Loader
+    Loader,
+    TeamAddUser
   }
 }
 </script>
