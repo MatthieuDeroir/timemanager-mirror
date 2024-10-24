@@ -1,3 +1,7 @@
+
+.custom{
+    background-color: rgba(var(--v-theme-surface),0) !important;
+}
 .working-times {
     display: flex;
     flex-direction: column;

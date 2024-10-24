@@ -1,32 +1,32 @@
 <template>
   
   <div v-if="loading"><Loader></Loader></div>
-  <div v-else class="working-times">
+  <div v-else class="working-times custom">
     <button class="btn-primary add-button" @click="addNewWorkingTime">Add new working time</button>
     
     <div v-if="error" class="error">{{ error }}</div>
     <!-- Hours worked table-->
-    <v-table class="table" fixed-header height="400px" density='compact' v-if="!loading">
-      <thead>
-        <tr>
-          <th style="width: 30%;">Start Time</th>
-          <th style="width: 30%;">End Time</th>
-          <th style="width: 18%;">Total</th>
-          <th style="width: 22%;">Actions</th>
+    <v-table class="table custom" fixed-header height="400px" density='compact' v-if="!loading">
+      <thead class="custom">
+        <tr class="custom">
+          <th style="width: 30%;" class="custom">Start Time</th>
+          <th style="width: 30%;" class="custom">End Time</th>
+          <th style="width: 18%;" class="custom">Total</th>
+          <th style="width: 22%;" class="custom">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="time in workingTimeStore.workingTimes" :key="time.id || time.tempId">
-          <td>
-            <input v-if="time.isEditing" v-model="time.start" type="datetime-local" />
+      <tbody class="custom">
+        <tr v-for="time in workingTimeStore.workingTimes" :key="time.id || time.tempId" class="custom">
+          <td class="custom">
+            <input v-if="time.isEditing" v-model="time.start" type="datetime-local" class="custom"/>
             <span v-else>{{ new Date(time.start).toLocaleString() }}</span>
           </td>
-          <td>
+          <td class="custom">
             <input v-if="time.isEditing" v-model="time.end" type="datetime-local" />
             <span v-else>{{ new Date(time.end).toLocaleString() }}</span>
           </td>
           <td>{{ calculateHoursWorked(time.start, time.end) }} hours</td>
-          <td class="action-button-container">
+          <td class="action-button-container custom">
             <button class="btn-primary wt-btn" v-if="time.isEditing" @click="saveWorkingTime(time)">Save</button>
             <button class="btn-primary wt-btn" v-else @click="editWorkingTime(time)">Edit</button>
             <button class="btn-danger wt-btn" @click="deleteWorkingTime(time.id || time.tempId)">Delete</button>
