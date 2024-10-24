@@ -12,22 +12,18 @@
     width: 300px;
     margin-right: 20px;
 }
-.team-expansion-panel{
-    display: flex;
+.delete-user-from-team{
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: center;
 }
 .add-user-in-team{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    background-color: #e6e6e6;
+    width: 40px;
+    height: 40px;
     fill: darkorange;
 }
 .user-container {
@@ -41,6 +37,13 @@
 }
 .no-team{
     margin:100px;
+}
+.delete-team{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
 }
 
 .mailto-link {

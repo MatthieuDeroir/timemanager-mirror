@@ -133,7 +133,7 @@ defmodule TimeManagerAppWeb.Router do
         put("/workingtime/:id", WorkingTimeController, :update)
         delete("/workingtime/:id", WorkingTimeController, :delete)
         post("/user_teams/add", UserTeamController, :add_user_to_team)
-        delete("/user_teams/remove", UserTeamController, :remove_user_from_team)
+        post("/user_teams/remove", UserTeamController, :remove_user_from_team)
       end
 
       scope "/" do

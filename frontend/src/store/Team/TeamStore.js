@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import teamApi from '@/api/TeamAPI.js'
+import teamApi, {getUsersFromTeamId} from '@/api/TeamAPI.js'
 
 export const useTeamStore = defineStore('teamStore', {
     state: () => ({
@@ -12,9 +12,10 @@ export const useTeamStore = defineStore('teamStore', {
         async loadAllTeams() {
             this.isLoading = true
             this.error = null
-            this.teams = await teamApi.getAllTeams().catch((error) => {
+            const result = await teamApi.getAllTeams().catch((error) => {
                 this.error = error
             })
+            await this.getUsersInManyTeams(result)
             console.log('store',this.teams)
             this.isLoading = false
         },
@@ -22,16 +23,18 @@ export const useTeamStore = defineStore('teamStore', {
             this.isLoading = true
             this.error = null
             const result = await teamApi.getTeamsByUserId(userId)
-            for (const [index,element] of result.entries()) {
+            await this.getUsersInManyTeams(result)
+            this.isLoading = false
+        },
+        async getUsersInManyTeams(teams){
+            for (const [index,element] of teams.entries()) {
                 if (this.teams[index] === undefined) {
                     this.teams[index]= {}
                 }
                 this.teams[index].users = await teamApi.getUsersFromTeamId(element.id)
-                this.teams[index].teamId = element.id
+                this.teams[index].id = element.id
                 this.teams[index].name = element.name
             }
-            console.log('store team',this.teams)
-            this.isLoading = false
         },
         async addUserInTeam(teamId, userId) {
             this.isLoading = true
