@@ -29,7 +29,7 @@ defmodule TimeManagerAppWeb.TeamController do
   """
   def index(conn, _params) do
     teams = Teams.list_teams()
-    render(conn, :index, teams: teams)
+    json(conn, teams)
   end
 
   @doc """

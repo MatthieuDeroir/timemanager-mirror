@@ -2,9 +2,7 @@
 import { ref } from 'vue'
 import WorkingTimeManager from '@components/WorkingTimeManager/WorkingTimeManager.vue'
 import WorkingTimeVisualization from '@components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
-import ClockManager from '@components/ClockManager/ClockManager.vue'
 import Card from '@components/Card/Card.vue'
-import clockIcon from '@assets/icons/icons8-clock-48.png'
 import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
@@ -12,6 +10,7 @@ import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
 import Team from '@components/Team/Team.vue'
 import teamIcon from '@assets/icons/icons8-team-48.png'
+import { useAuthStore } from '@store/Auth/AuthStore.js'
 
 const props = defineProps({
   userId: {
@@ -19,7 +18,7 @@ const props = defineProps({
     required: true
   }
 })
-
+const authStore = useAuthStore()
 const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
 const userGender = ref('User Information')
@@ -73,6 +72,21 @@ const getDate = () => {
   </div>
   <v-container class="padding-top-view">
     <v-row>
+      <v-col cols="12" md="6">
+        <Card :logo="teamIcon" color="orange" subtitle="Team" title="My Team">
+          <Team :userId="userId" />
+        </Card>
+      </v-col>
+      <v-col cols="12" md="6">
+        <Card
+          :logo="sliceIcon"
+          color="green"
+          :subtitle="authStore.user.email"
+          title="Working Time Visualization"
+        >
+          <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
+        </Card>
+      </v-col>
       <v-col cols="12" md="4">
         <Card
           :actionFunction="handleOpenPopUpCreateUser"
@@ -87,33 +101,10 @@ const getDate = () => {
         </Card>
       </v-col>
 
-      <v-col cols="12" md="8">
-        <Card
-          :logo="sliceIcon"
-          color="green"
-          subtitle="Working time"
-          title="Working Time Visualization"
-        >
-          <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
-        </Card>
-      </v-col>
-
-      <v-col cols="12" md="4" style="min-height: 330px">
-        <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
-          <ClockManager :userId="userId" />
-          <!--          TODO : Fix daily chart to use store-->
-          <!--          <DayliChart :workerId="workerId"/>-->
-        </Card>
-      </v-col>
 
       <v-col cols="12" md="8">
         <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
-        </Card>
-      </v-col>
-      <v-col cols="12" md="12">
-        <Card :logo="teamIcon" color="orange" subtitle="Team" title="My Team">
-          <Team :userId="userId" />
         </Card>
       </v-col>
     </v-row>
