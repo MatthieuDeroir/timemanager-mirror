@@ -21,4 +21,11 @@ defmodule TimeManagerAppWeb.FallbackController do
     |> put_view(html: TimeManagerAppWeb.ErrorHTML, json: TimeManagerAppWeb.ErrorJSON)
     |> render(:"404")
   end
+
+  # New clause to handle generic errors, such as password strength checks.
+  def call(conn, {:error, message}) when is_binary(message) do
+    conn
+    |> put_status(:bad_request)
+    |> json(%{error: message})
+  end
 end
