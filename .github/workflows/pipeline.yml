@@ -73,7 +73,7 @@ jobs:
 
   docker-build-and-push:
     name: Build and Push Docker Images
-    # needs: [build-backend, build-frontend]
+    needs: [build-backend, build-frontend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -117,3 +117,28 @@ jobs:
           -H "Accept: application/json" \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
           ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+
+  run-pentesting:
+    name: Run Pentesting Script
+    needs: deploy-to-render
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker Image for Pentest
+        uses: docker/build-push-action@v4
+        with:
+          context: ./pentest
+          push: false
+          tags: ghcr.io/matthieuderoir/timemanager-mirror/pentest:latest
+
+      - name: Run Pentest Docker Container
+        run: |
+          docker run --rm ghcr.io/matthieuderoir/timemanager-mirror/pentest:latest
+
+      - name: Upload Pentest Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pentest-report
+          path: /var/www/html/reports/pentest_report_*.txt
