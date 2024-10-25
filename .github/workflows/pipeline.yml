@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["mdr/backend"]
+    branches: ["mdr/backend", "main"]
   pull_request:
-    branches: ["mdr/backend"]
+    branches: ["mdr/backend", "main"]
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -73,7 +73,6 @@ jobs:
 
   docker-build-and-push:
     name: Build and Push Docker Images
-    needs: [build-backend, build-frontend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
