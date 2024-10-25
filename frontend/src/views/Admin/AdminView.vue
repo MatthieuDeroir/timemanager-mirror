@@ -16,7 +16,7 @@ import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
 import LogsComponent from '@components/LogsComponenet/Logs.vue'
 import Calendar from '@/components/Calendar.vue'
-import DayliChart from '@components/Chart/DayliChart.vue'
+import DayliChart from '@components/Chart/DailyChart.vue'
 
 const props = defineProps({
   userId: {
@@ -55,14 +55,6 @@ const updateWorkingTimes = (updatedTimes) => {
   workingTimes.value = updatedTimes
 }
 
-// // Authentication state
-// const isAuthenticated = ref(false)
-
-// // Function to handle successful login
-// function handleLoginSuccess() {
-//   isAuthenticated.value = true
-// }
-
 const getDate = () => {
   return new Date().toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -78,7 +70,7 @@ const getDate = () => {
   </div>
   <v-container class="padding-top-view">
     <v-row>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="5">
         <Card
           :actionFunction="handleOpenPopUpCreateUser"
           :logo="userIcon"
@@ -92,37 +84,30 @@ const getDate = () => {
         </Card>
       </v-col>
 
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="7">
+        <Card :logo="teamIcon" color="orange" title="All Teams">
+          <Team/>
+        </Card>
+      </v-col>
+
+      <v-col cols="12" md="5" style="min-height: 330px">
         <Card
-          :logo="sliceIcon"
-          color="green"
-          :subtitle="userTitle"
-          title="Working Time Visualization"
+            :logo="sliceIcon"
+            color="green"
+            :subtitle="userTitle"
+            title="Working Time Visualization"
         >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </Card>
       </v-col>
 
-      <v-col cols="12" md="4" style="min-height: 330px">
-        <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
-          <ClockManager :userId="userId" />
-          <DayliChart :userId="userId"/>
-        </Card>
-      </v-col>
-
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="7">
         <Card :logo="workIcon" :subtitle="userTitle" color="yellow" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="12">
-        <Card :logo="teamIcon" color="orange" subtitle="All Teams" title="My Team">
-          <Team :userId="userId" />
-        </Card>
-
-      </v-col>
-            <v-col cols="12" md="12">
         <Card :logo="logsIcon" color="pink" subtitle="Users Logs" title="Users Logs">
           <LogsComponent/>
         </Card>

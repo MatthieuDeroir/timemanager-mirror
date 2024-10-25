@@ -8,6 +8,7 @@ import NotFound from '@views/NotFound/NotFound.vue'
 import Unauthorized from '@views/Unauthorized/Unauthorized.vue'
 import LoginView from '@views/Login/LoginView.vue'
 import {UserRole} from '@enum/User/UserRole.js'
+import GeneralManagerView from "@views/GeneralManager/GeneralManagerView.vue";
 
 const routes = [
     {
@@ -25,7 +26,7 @@ const routes = [
     {
         path: '/general-manager/:userId(\\d+)',
         name: 'GeneralManager',
-        component: ManagerView,
+        component: GeneralManagerView,
         props: (route) => ({userId: Number(route.params.userId)}),
         key: (route) => route.params.userId,
         meta: {requiresAuth: true, role: UserRole.GENERAL_MANAGER}
@@ -95,15 +96,11 @@ router.beforeEach(async (to, from, next) => {
             return next(`/manager/${userId}`)
         }
 
-        console.log('to.params.workerId', to.params.workerId)
         await teamStore.loadTeamByUserId(userId)
         let workerIsTeamMember = false;
         for (const team of teamStore.teams) {
-            console.log('team', team)
             const userIdList = team.users.map(user => user.id)
-            console.log(userRole)
             if (userIdList.includes(parseInt(to.params.workerId) )) {
-                console.log('worker is team member')
                 workerIsTeamMember = true
                 break
             }

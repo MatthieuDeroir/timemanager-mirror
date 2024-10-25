@@ -2,7 +2,7 @@
   
   <div v-if="loading"><Loader></Loader></div>
   <div v-else class="working-times custom">
-    <button class="btn-primary add-button" @click="addNewWorkingTime">Add new working time</button>
+    <button  v-if="authStore.user.role_id !== UserRole.EMPLOYEE" class="btn-primary add-button" @click="addNewWorkingTime">Add new working time</button>
     
     <div v-if="error" class="error">{{ error }}</div>
     <!-- Hours worked table-->
@@ -12,7 +12,7 @@
           <th style="width: 30%;" class="custom">Start Time</th>
           <th style="width: 30%;" class="custom">End Time</th>
           <th style="width: 18%;" class="custom">Total</th>
-          <th style="width: 22%;" class="custom">Actions</th>
+          <th v-if="authStore.user.role_id !== UserRole.EMPLOYEE" style="width: 22%;" class="custom">Actions</th>
         </tr>
       </thead>
       <tbody class="custom">
@@ -26,7 +26,7 @@
             <span v-else>{{ new Date(time.end).toLocaleString() }}</span>
           </td>
           <td>{{ calculateHoursWorked(time.start, time.end) }} hours</td>
-          <td class="action-button-container custom">
+          <td v-if="authStore.user.role_id !== UserRole.EMPLOYEE" class="action-button-container custom">
             <button class="btn-primary wt-btn" v-if="time.isEditing" @click="saveWorkingTime(time)">Save</button>
             <button class="btn-primary wt-btn" v-else @click="editWorkingTime(time)">Edit</button>
             <button class="btn-danger wt-btn" @click="deleteWorkingTime(time.id || time.tempId)">Delete</button>
@@ -41,6 +41,8 @@
 import { ref,computed } from 'vue'
 import Loader from '@components/Loader/LoaderComponent.vue'
 import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
+import { useAuthStore } from '@store/Auth/AuthStore.js'
+import {UserRole} from "@enum/User/UserRole";
 
 // Récupérer les props
 const props = defineProps({
@@ -49,7 +51,7 @@ const props = defineProps({
     required: true
   }
 })
-
+const authStore = useAuthStore()
 const workingTimeStore = useWorkingTimeStore()
 const loading = computed(() => workingTimeStore.isLoading)
 const error = computed(() => workingTimeStore.error)
@@ -57,16 +59,6 @@ const nextTempId = ref(0) // Pour identifier temporairement les nouvelles lignes
 
 
 
-// // Fonction pour récupérer les heures de travail d'un utilisateur
-// const getWorkingTimes = async () => {
-//   try {
-//     workingTimes.value = await workingTimes.getWorkingTimesByUserId(props.userId)
-    
-//   } catch (err) {
-//     error.value = err.message || 'An error occurred'
-//   }
-// }
-//workingTimes.value.sort((a, b) => new Date(b.start) - new Date(a.start))
 
 // Fonction pour calculer les heures travaillées entre deux dates
 const calculateHoursWorked = (start, end) => {

@@ -93,15 +93,13 @@ import TeamAddUser from '@components/Team/TeamAddUser/TeamAddUser.vue'
 export default {
   props:{
     userId: {
-      type: [String, Number],
-      required: true,
+      type: [String, Number]
     }
   },
   setup(){
     const teamStore = useTeamStore();
     const authStore = useAuthStore();
     const router = useRouter()
-    const userStore = useUserStore()
     const clockStore = useClockStore()
     const workingTimesStore = useWorkingTimeStore()
     const addUserState = ref(false);
@@ -178,7 +176,7 @@ export default {
     }
   },
   mounted() {
-    if (this.authStore.user.role_id === UserRole.ADMIN) {
+    if (this.authStore.user.role_id === UserRole.ADMIN || UserRole.GENERAL_MANAGER) {
       this.teamStore.loadAllTeams();
     } else {
       this.teamStore.loadTeamByUserId(this.authStore.user.id)
