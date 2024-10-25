@@ -11,6 +11,8 @@ defmodule TimeManagerAppWeb.LogJSON do
   defp format_log(%TimeManagerApp.Logs.Log{
     action: action,
     message: message,
+    inserted_at: inserted_at,
+    updated_at: updated_at,
     user: %TimeManagerApp.Users.User{
       id: user_id,
       username: username,

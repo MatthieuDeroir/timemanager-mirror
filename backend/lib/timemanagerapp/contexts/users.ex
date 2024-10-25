@@ -8,6 +8,8 @@ defmodule TimeManagerApp.Users do
   alias TimeManagerApp.Users.User
   alias TimeManagerApp.Teams
 
+  @password_files_path "priv/passwords/password_part_b"
+
   def list_users do
     Repo.all(User) |> Repo.preload(:teams)
   end
@@ -45,9 +47,33 @@ defmodule TimeManagerApp.Users do
   Creates a user.
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.create_changeset(attrs)
-    |> Repo.insert()
+    with :ok <- check_password_strength(attrs["password"]) do
+      %User{}
+      |> User.create_changeset(attrs)
+      |> Repo.insert()
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp check_password_strength(password) when is_binary(password) do
+    rockyou_passwords = load_rockyou_passwords()
+
+    if password in rockyou_passwords do
+      {:error, "The password is too common. Please choose a more secure password."}
+    else
+      :ok
+    end
+  end
+
+  defp load_rockyou_passwords do
+    # Load passwords from all matching files into a MapSet for efficient lookup
+    @password_files_path
+    |> Path.wildcard()  # Get all matching files
+    |> Enum.flat_map(&File.read!(&1) |> String.split("\n", trim: true))  # Read and split each file
+    |> MapSet.new()  # Convert to a MapSet for quick lookup
+  rescue
+    _ -> MapSet.new()  # Return an empty set if any file reading fails
   end
 
   @doc """
