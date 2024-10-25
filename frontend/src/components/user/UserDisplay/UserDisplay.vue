@@ -140,7 +140,7 @@
       </div>
     </div>
     <div class="user-edit">
-      <div v-if="delete-user">
+      <div v-if="deleteStatus">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           @click="handleDeleteStatus" 
@@ -151,8 +151,8 @@
         </svg>
       </div>
       <div v-else>
-        <button class="btn-primary" @click="handleSaveDelete">delete</button>
-        <button class="btn-danger" @Click="handleCancelDelete">cancel</button>
+        <button class="btn-primary" @click="handleDelete(userId)">delete</button>
+        <button class="btn-danger" @click="handleDeleteStatus">cancel</button>
       </div>
       <div v-if="editStatus" class="user-edit-buttons">
         <button class="btn-primary" @click="handleSaveEdit">Save</button>
@@ -178,6 +178,8 @@
 import { onMounted, ref, watch } from 'vue'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
 import { getUserById, updateUser } from '@/api/UserAPI.js'
+import {useUserStore} from "@store/User/UserStore.js"
+import { useAuthStore } from '@store/Auth/AuthStore'
 
 const props = defineProps({
   userId: {
@@ -187,7 +189,7 @@ const props = defineProps({
 })
 const loading = ref({})
 const editStatus = ref(false)
-const deleteStatus =ref(false)
+const deleteStatus =ref(true)
 const user = ref({})
 const emit = defineEmits(['selecteduser'])
 const fetchUser = async (userId) => {
@@ -211,16 +213,25 @@ const fetchUser = async (userId) => {
   emit('selecteduser', user.value)
 }
 const handleDeleteStatus=()=>{
-  deleteStatus.value=!deleteStatus.value
-  console.log("deleteStatus:",deleteStatus);
-  
+  deleteStatus.value = !deleteStatus.value
+  editStatus.value = false
 }
-const handleDelete=() => {
+const handleDelete= async(userId)=>{
+  const userStore = useUserStore()
+  await userStore.loadAllUsers()
+
+  
+  const authStore =useAuthStore()
+  authStore.logout()
+
+  userStore.deleteUser(userId)
+  
 }
 
 
 const handleTurnOnEdit = () => {
-  editStatus.value = editStatus.value = true
+  editStatus.value = true
+  deleteStatus.value = true
 }
 const handleSaveEdit = () => {
   loading.value = true
@@ -256,7 +267,8 @@ const handleSaveEdit = () => {
 }
 
 const handleCancelEdit = () => {
-  editStatus.value = editStatus.value = false
+  editStatus.value  = false
+  deleteStatus.value = true
   fetchUser(props.userId)
 }
 onMounted(() => {
@@ -271,11 +283,4 @@ watch(
   }
 )
 
-const editUser = () => {
-  console.log('Modifier l’utilisateur')
-}
-
-const deleteUser = () => {
-  console.log('Supprimer l’utilisateur')
-}
 </script>
