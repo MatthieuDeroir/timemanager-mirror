@@ -49,13 +49,13 @@ h1 {
     font-size: large;
 }
 
-label {
+.form-group label {
     display: block;
     margin-bottom: 0.5rem;
     color: var(--color-labelPrimary);
 }
 
-input {
+.form-group input {
     width: 100%;
     padding: 0.75rem;
     border: 2px solid var(--loign-input-border-color);
@@ -67,7 +67,7 @@ input {
     width: 66%;
 }
 
-input:focus {
+.form-group input:focus {
     border-color: var(--border-focus-color);
     background-color: var(--login-background-color);
     box-shadow: 0 0 5px var(--loign-input-focus-color);
@@ -75,18 +75,18 @@ input:focus {
     border-radius: 15px;
 }
 
-input:not(:focus) {
+.form-group input:not(:focus) {
     border-color: var(--loign-input-border-color);
     background-color: var(--login-background-color);
     border-radius: 15px;
 }
 
-input:hover {
+.form-group input:hover {
     border-color: var(--login-background-color);
     border-radius: 15px;
 }
 
-input::placeholder {
+.form-group input::placeholder {
     color: var(--login-input-placeholder-color);
     border-radius: 15px;
 }

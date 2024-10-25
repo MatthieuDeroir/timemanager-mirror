@@ -26,9 +26,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-if="addUserState"  >
-              <TeamAddUser :team_id="team.id" @onUserAddedToTeam="handleUserAddedInTeam" />
-            </tr>
+            <TeamAddUser class="add-user-input" v-if="addUserState"  :team_id="team.id" @onUserAddedToTeam="handleUserAddedInTeam" />
             <tr v-for="user in team.users" :key="user.id" @click="handleOpenUserInfo(user.id)"
                 :style="authStore.user.role_id !== UserRole.EMPLOYEE ? { cursor: 'pointer' } : {}">
               <td>{{ getRoleName(user.role_id) }}</td>
