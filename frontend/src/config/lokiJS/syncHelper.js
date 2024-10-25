@@ -1,11 +1,14 @@
 import { db, syncQueue } from '@config/lokiJS/loki'
 import UserAPI from '@/api/UserAPI'
+import ClockAPI from '@/api/ClockAPI'
 import { convertDatesToISO } from '@utils/utils'
 
 const apiActions = {
   createUser: UserAPI.createUser,
   updateUser: UserAPI.updateUser,
-  deleteUser: UserAPI.deleteUser
+  deleteUser: UserAPI.deleteUser,
+
+  createClock: ClockAPI.createClock
 }
 
 /**
