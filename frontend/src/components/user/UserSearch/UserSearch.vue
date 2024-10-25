@@ -5,8 +5,9 @@
     item-title="username"
     item-value="id"
     label="Find an employee"
-    style="max-width: 350px"
+    variant="outlined"
     @update:model-value="onUserSelected"
+    class="user-search"
   ></v-autocomplete>
 </template>
 
@@ -47,5 +48,4 @@ const onUserSelected = (userId) => {
 }
 </script>
 
-<style scoped>
-</style>
+<style src="./UserSearch.css"/>

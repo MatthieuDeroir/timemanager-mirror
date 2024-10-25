@@ -5,6 +5,7 @@
       item-title="username"
       item-value="id"
       label="Find an employee"
+      variant="outlined"
       @update:model-value="onUserSelected"
   ></v-autocomplete>
 </template>
