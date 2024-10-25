@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite --mode production",
+    "dev": "vite",
     "build": "vite build --mode production",
     "build_phone": "vite build --config vite.config.phone.js --mode production",
     "preview": "vite preview",
