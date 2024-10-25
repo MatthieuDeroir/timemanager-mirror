@@ -9,17 +9,18 @@
     align-items: center;
 }
 
-.table{
+.table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    background-color: transparent !important;
 }
 
-.add-button{
+.add-button {
     margin-bottom: 20px;
 }
 
-.action-button-container{
+.action-button-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -30,9 +31,10 @@
 }
 
 .action-button-container button {
-    margin:0;
+    margin: 0;
 }
-.wt-btn{
+
+.wt-btn {
     font-size: 12px;
 }
 

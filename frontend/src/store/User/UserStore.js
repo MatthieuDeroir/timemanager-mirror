@@ -1,44 +1,66 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 import UserAPI from '@/api/UserAPI'
+import { usersCollection } from '@config/loki'
+import { handleSyncOperation } from '@utils/syncHelper'
 
-const { loadAllUsers, deleteUser, createUser, updateUser } = UserAPI
-export const useUserStore = defineStore('userStore', {
-  state: () => ({
-    users: [],
-    isLoading: false,
-    error: null
-  }),
+export const useUserStore = defineStore('userStore', () => {
+  const users = ref(usersCollection.find())
+  const isLoading = ref(false)
+  const error = ref(null)
 
-  actions: {
-    async loadAllUsers() {
-      this.isLoading = true
-      this.error = null
-      this.users = await loadAllUsers()
-      this.isLoading = false
-    },
-
-    async createUser(data) {
-      this.isLoading = true
-      this.error = null
-      const newUser = await UserAPI.createUser(data)
-      this.users.push(newUser)
-      this.isLoading = false
-    },
-
-    async updateUser(id, data) {
-      this.isLoading = true
-      this.error = null
-      const updatedUser = await updateUser(id, data)
-      this.users = this.users.map((user) => (user.id === id ? updatedUser : user))
-      this.isLoading = false
-    },
-
-    async deleteUser(id) {
-      this.isLoading = true
-      this.error = null
-      await deleteUser(id)
-      this.users = this.users.filter((user) => user.id !== id)
-      this.isLoading = false
+  const loadAllUsers = async () => {
+    isLoading.value = true
+    error.value = null
+    if (navigator.onLine) {
+      try {
+        const res = await UserAPI.loadAllUsers()
+        users.value = res
+        usersCollection.clear()
+        usersCollection.insert(res)
+        db.saveDatabase()
+      } catch (err) {
+        error.value = 'Error loading users from server.'
+      }
+    } else {
+      users.value = usersCollection.find()
     }
+    isLoading.value = false
+  }
+
+  const createUser = async (data) => {
+    isLoading.value = true
+    error.value = null
+    await handleSyncOperation('create', data, usersCollection, () => UserAPI.createUser(data))
+    users.value = usersCollection.find()
+    isLoading.value = false
+  }
+
+  const updateUser = async (id, data) => {
+    isLoading.value = true
+    error.value = null
+    await handleSyncOperation('update', { id, data }, usersCollection, () =>
+      UserAPI.updateUser(id, data)
+    )
+    users.value = usersCollection.find()
+    isLoading.value = false
+  }
+
+  const deleteUser = async (id) => {
+    isLoading.value = true
+    error.value = null
+    await handleSyncOperation('delete', { id }, usersCollection, () => UserAPI.deleteUser(id))
+    users.value = usersCollection.find()
+    isLoading.value = false
+  }
+
+  return {
+    users,
+    isLoading,
+    error,
+    loadAllUsers,
+    createUser,
+    updateUser,
+    deleteUser
   }
 })
