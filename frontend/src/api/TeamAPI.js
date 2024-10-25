@@ -1,12 +1,11 @@
 import { HttpClient } from '@/api/config/HttpClient.js'
 
-
 /**
  * getAllTeams
  * This method find all teams. Inside a component, you can use the store and the store will call this method to store the data.
  */
 export const getAllTeams = () =>
-      HttpClient.get(`/teams`)
+  HttpClient.get(`/teams`)
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error fetching teams:', error)
@@ -35,18 +34,16 @@ export const getUsersFromTeamId = (teamId) =>
       throw error
     })
 
-
 export const addUserInTeam = (user_id, team_id) =>
-  HttpClient.post(`/user_teams/add`,{user_id, team_id})
+  HttpClient.post(`/user_teams/add`, { user_id, team_id })
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error adding a new user in team:', error)
       throw error
     })
 
-
 export const deleteUserInTeam = (user_id, team_id) =>
-  HttpClient.post(`/user_teams/remove`,{user_id, team_id})
+  HttpClient.post(`/user_teams/remove`, { user_id, team_id })
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error deleting a user in team:', error)
@@ -56,9 +53,8 @@ export const deleteUserInTeam = (user_id, team_id) =>
 /**
  * createTeam
  * this create a new team
- * @param {string} start
- * @param {string} end
  * @returns {Promise<axios.AxiosResponse<any>>}
+ * @param name
  */
 export const createTeam = (name) =>
   HttpClient.post(`/teams/`, {
@@ -102,12 +98,12 @@ export const deleteTeam = (teamId) =>
     })
 
 export default {
-    getAllTeams,
-    getTeamsByUserId,
-    getUsersFromTeamId,
-    addUserInTeam,
-    deleteUserInTeam,
-    createTeam,
-    updateTeam,
-    deleteTeam
+  getAllTeams,
+  getTeamsByUserId,
+  getUsersFromTeamId,
+  addUserInTeam,
+  deleteUserInTeam,
+  createTeam,
+  updateTeam,
+  deleteTeam
 }

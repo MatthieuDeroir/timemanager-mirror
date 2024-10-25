@@ -1,44 +1,70 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 import UserAPI from '@/api/UserAPI'
+import { handleApiRequest } from '@config/lokiJS/syncHelper'
 
-const { loadAllUsers, deleteUser, createUser, updateUser } = UserAPI
-export const useUserStore = defineStore('userStore', {
-  state: () => ({
-    users: [],
-    isLoading: false,
-    error: null
-  }),
+/**
+ * Defines a store for managing user data.
+ */
+export const useUserStore = defineStore('userStore', () => {
+  const users = ref([])
+  const isLoading = ref(false)
+  const error = ref(null)
 
-  actions: {
-    async loadAllUsers() {
-      this.isLoading = true
-      this.error = null
-      this.users = await loadAllUsers()
-      this.isLoading = false
-    },
+  /**
+   * Loads all users from the API.
+   * Sets the `isLoading` state to true while loading and false after loading.
+   */
+  const loadAllUsers = async () => {
+    isLoading.value = true
+    users.value = await UserAPI.loadAllUsers()
+    isLoading.value = false
+  }
 
-    async createUser(data) {
-      this.isLoading = true
-      this.error = null
-      const newUser = await UserAPI.createUser(data)
-      this.users.push(newUser)
-      this.isLoading = false
-    },
+  /**
+   * Creates a new user.
+   * Sets the `isLoading` state to true while creating and false after creating.
+   * @param {Object} data - The data of the new user to create.
+   */
+  const createUser = async (data) => {
+    isLoading.value = true
+    const newUser = await handleApiRequest('create', data, 'createUser')
+    users.value.push(newUser)
+    isLoading.value = false
+  }
 
-    async updateUser(id, data) {
-      this.isLoading = true
-      this.error = null
-      const updatedUser = await updateUser(id, data)
-      this.users = this.users.map((user) => (user.id === id ? updatedUser : user))
-      this.isLoading = false
-    },
+  /**
+   * Updates an existing user.
+   * Sets the `isLoading` state to true while updating and false after updating.
+   * @param {string} id - The ID of the user to update.
+   * @param {Object} data - The updated data of the user.
+   */
+  const updateUser = async (id, data) => {
+    isLoading.value = true
+    const updatedUser = await handleApiRequest('update', data, 'updateUser', id)
+    users.value = users.value.map((user) => (user.id === id ? updatedUser : user))
+    isLoading.value = false
+  }
 
-    async deleteUser(id) {
-      this.isLoading = true
-      this.error = null
-      await deleteUser(id)
-      this.users = this.users.filter((user) => user.id !== id)
-      this.isLoading = false
-    }
+  /**
+   * Deletes an existing user.
+   * Sets the `isLoading` state to true while deleting and false after deleting.
+   * @param {string} id - The ID of the user to delete.
+   */
+  const deleteUser = async (id) => {
+    isLoading.value = true
+    await handleApiRequest('delete', null, 'deleteUser', id)
+    users.value = users.value.filter((user) => user.id !== id)
+    isLoading.value = false
+  }
+
+  return {
+    users,
+    isLoading,
+    error,
+    loadAllUsers,
+    createUser,
+    updateUser,
+    deleteUser
   }
 })

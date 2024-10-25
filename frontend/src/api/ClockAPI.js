@@ -1,4 +1,4 @@
-import {HttpClient} from '@/api/config/HttpClient.js'
+import { HttpClient } from '@/api/config/HttpClient.js'
 
 /**
  * getClocksByUserId
@@ -16,13 +16,13 @@ export const getClocksByUserId = (userId) =>
  * @returns {Promise} - Returns a promise with the response data.
  */
 export const createClock = (data) =>
-    HttpClient.post(`/clocks/${data.userId}`, {
-      clocks: {
-        time: data.time,
-        status: data.status,
-        userId: data.userId
-      }
-    }).then((res) => res.data)
+  HttpClient.post(`/clocks/${data.userId}`, {
+    clocks: {
+      time: data.time,
+      status: data.status,
+      userId: data.userId
+    }
+  }).then((res) => res.data)
 
 export default {
   getClocksByUserId,

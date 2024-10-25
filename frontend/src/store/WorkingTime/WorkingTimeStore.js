@@ -1,53 +1,102 @@
 import { defineStore } from 'pinia'
 import WorkingTimeAPI from '@/api/WorkingTimeAPI'
+import { ref } from 'vue'
+import { handleApiRequest } from '@config/lokiJS/syncHelper'
 
-const { getWorkingTimesByUserId, createWorkingTime, updateWorkingTime, deleteWorkingTime } =
-  WorkingTimeAPI
+/**
+ * Store for working times.
+ * You can import this store in your components and use it to manage working times.
+ * @example import { useWorkingTimeStore } from '@/store/WorkingTime/WorkingTimeStore'
+ * @example const workingTimeStore = useWorkingTimeStore()
+ * @example workingTimeStore.loadWorkingTimes(1)
+ */
+export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
+  const workingTimes = ref([])
+  const workingTimesByDay = ref([])
+  const isLoading = ref(false)
+  const error = ref(null)
 
-export const useWorkingTimeStore = defineStore('workingTimeStore', {
-  state: () => ({
-    workingTimes: [],
-    workingTimesByDay: [],
-    isLoading: false,
-    error: null
-  }),
+  /**
+   * Loads all working times for a user from the API.
+   * Sets the `isLoading` state to true while loading and false after loading.
+   */
+  const loadWorkingTimes = async (userId, start = null, end = null) => {
+    isLoading.value = true
+    error.value = null
+    workingTimes.value = await WorkingTimeAPI.getWorkingTimesByUserId(userId, start, end)
+    isLoading.value = false
+  }
 
-  actions: {
-    async loadWorkingTimes(userId, start = null, end = null) {
-      this.isLoading = true
-      this.error = null
-      this.workingTimes = await getWorkingTimesByUserId(userId, start, end)
-      this.isLoading = false
-    },
-    async loadWorkingTimesByDay(userId, start, end) {
-      this.isLoading = true
-      this.error = null
-      this.workingTimesByDay = await getWorkingTimesByUserId(userId, start, end)
-      this.isLoading = false
-    },
-    async createWorkingTime(start, end, userId) {
-      this.isLoading = true
-      this.error = null
-      const newWorkingTime = await createWorkingTime(start, end, userId) //
-      //this.workingTimes.push(newWorkingTime)
-      this.isLoading = false
-      return newWorkingTime
-    },
+  /**
+   * Loads working times for a user by day from the API.
+   * @param userId
+   * @param start
+   * @param end
+   * @returns {Promise<void>}
+   */
+  const loadWorkingTimesByDay = async (userId, start, end) => {
+    isLoading.value = true
+    error.value = null
+    workingTimesByDay.value = await WorkingTimeAPI.getWorkingTimesByUserId(userId, start, end)
+    isLoading.value = false
+  }
 
-    async updateWorkingTime(id, data) {
-      this.isLoading = true
-      this.error = null
-      const updatedWorkingTime = await updateWorkingTime(id, data)
-      this.workingTimes = this.workingTimes.map((wt) => (wt.id === id ? updatedWorkingTime : wt))
-      this.isLoading = false
-    },
+  /**
+   * Creates a new working time for a user.
+   * @param start
+   * @param end
+   * @param userId
+   * @returns {Promise<Object>}
+   */
+  const createWorkingTime = async (start, end, userId) => {
+    isLoading.value = true
+    error.value = null
+    const newWorkingTime = await handleApiRequest(
+      'create',
+      { start, end, userId },
+      'createWorkingTime'
+    )
+    workingTimes.value.push(newWorkingTime)
+    isLoading.value = false
+    return newWorkingTime
+  }
 
-    async deleteWorkingTime(id) {
-      this.isLoading = true
-      this.error = null
-      await deleteWorkingTime(id)
-      this.workingTimes = this.workingTimes.filter((wt) => wt.id !== id)
-      this.isLoading = false
-    },
+  /**
+   * Updates a working time for a user.
+   * @param id
+   * @param data
+   * @returns {Promise<void>}
+   */
+  const updateWorkingTime = async (id, data) => {
+    isLoading.value = true
+    error.value = null
+    const updatedWorkingTime = await handleApiRequest('update', data, 'updateWorkingTime', id)
+    workingTimes.value = workingTimes.value.map((wt) => (wt.id === id ? updatedWorkingTime : wt))
+    isLoading.value = false
+  }
+
+  /**
+   * Deletes a working time for a user.
+   * @param id
+   * @returns {Promise<void>}
+   */
+  const deleteWorkingTime = async (id) => {
+    isLoading.value = true
+    error.value = null
+    await handleApiRequest('delete', {}, 'deleteWorkingTime', id)
+    workingTimes.value = workingTimes.value.filter((wt) => wt.id !== id)
+    isLoading.value = false
+  }
+
+  return {
+    workingTimes,
+    workingTimesByDay,
+    isLoading,
+    error,
+    loadWorkingTimes,
+    loadWorkingTimesByDay,
+    createWorkingTime,
+    updateWorkingTime,
+    deleteWorkingTime
   }
 })
