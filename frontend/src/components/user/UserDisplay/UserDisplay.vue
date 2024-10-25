@@ -140,6 +140,20 @@
       </div>
     </div>
     <div class="user-edit">
+      <div v-if="delete-user">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          @click="handleDeleteStatus" 
+          viewBox="0 0 48 48" 
+          width="30px" height="30px">
+          <path fill="none" stroke="#FFF" stroke-miterlimit="10" stroke-width="3" d="M19.5,11.5V10c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5v1.5"/><line x1="8.5" x2="39.5" y1="11.5" y2="11.5" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/><line x1="36.5" x2="36.5" y1="23.5" y2="11.5" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/><path fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M11.5,18.7v19.8c0,2.2,1.8,4,4,4h17c2.2,0,4-1.8,4-4V31"/><line x1="20.5" x2="20.5" y1="19.5" y2="34.5" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"/><line x1="27.5" x2="27.5" y1="19.5" y2="34.5" fill="none" stroke="#FFF" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"
+          />
+        </svg>
+      </div>
+      <div v-else>
+        <button class="btn-primary" @click="handleSaveDelete">delete</button>
+        <button class="btn-danger" @Click="handleCancelDelete">cancel</button>
+      </div>
       <div v-if="editStatus" class="user-edit-buttons">
         <button class="btn-primary" @click="handleSaveEdit">Save</button>
         <button class="btn-danger" @click="handleCancelEdit">Cancel</button>
@@ -173,6 +187,7 @@ const props = defineProps({
 })
 const loading = ref({})
 const editStatus = ref(false)
+const deleteStatus =ref(false)
 const user = ref({})
 const emit = defineEmits(['selecteduser'])
 const fetchUser = async (userId) => {
@@ -195,6 +210,14 @@ const fetchUser = async (userId) => {
   loading.value = false
   emit('selecteduser', user.value)
 }
+const handleDeleteStatus=()=>{
+  deleteStatus.value=!deleteStatus.value
+  console.log("deleteStatus:",deleteStatus);
+  
+}
+const handleDelete=() => {
+}
+
 
 const handleTurnOnEdit = () => {
   editStatus.value = editStatus.value = true
