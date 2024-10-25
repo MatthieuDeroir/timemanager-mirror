@@ -3,3 +3,5 @@
 /timemanagerapp.iml
 /pentest/rockyou.txt
 /backend/priv/passwords/password_part_a*
+main.c
+pentest/venv

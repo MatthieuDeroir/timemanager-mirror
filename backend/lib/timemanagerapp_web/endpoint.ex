@@ -4,7 +4,7 @@ defmodule TimeManagerAppWeb.Endpoint do
   # Config to allow CORS requests from the frontend
   # Add the CORS plug
   plug(CORSPlug,
-    origin: ["http://localhost:5173", "http://localhost"],
+    origin: ["http://localhost:5173", "http://localhost", "https://timemanager-frontend.onrender.com"],
     max_age: 86400,
     credentials: true
   )
