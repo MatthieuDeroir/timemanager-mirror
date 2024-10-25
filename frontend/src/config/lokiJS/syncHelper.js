@@ -1,14 +1,27 @@
 import { db, syncQueue } from '@config/lokiJS/loki'
 import UserAPI from '@/api/UserAPI'
 import ClockAPI from '@/api/ClockAPI'
+import WorkingTimeAPI from '@/api/WorkingTimeAPI'
 import { convertDatesToISO } from '@utils/utils'
 
+/**
+ * Defines the API actions to call based on the action type.
+ * Checks the connection status and calls the corresponding API action.
+ * @type {{createWorkingTime: (function(Object): Promise<WorkingTimeDTO>), updateWorkingTime: (function(number, Object): Promise<WorkingTimeDTO>), createClock: (function(Object): Promise), deleteUser: (function(*): Promise<axios.AxiosResponse<*>>), updateUser: (function(*, *): *), createUser: (function(*): Promise<axios.AxiosResponse<*>>), deleteWorkingTime: (function(number): Promise<void>)}}
+ */
 const apiActions = {
+  // UserAPI
   createUser: UserAPI.createUser,
   updateUser: UserAPI.updateUser,
   deleteUser: UserAPI.deleteUser,
 
-  createClock: ClockAPI.createClock
+  // ClockAPI
+  createClock: ClockAPI.createClock,
+
+  // WorkingTimeAPI
+  createWorkingTime: (data) => WorkingTimeAPI.createWorkingTime(data.start, data.end, data.userId),
+  updateWorkingTime: WorkingTimeAPI.updateWorkingTime,
+  deleteWorkingTime: WorkingTimeAPI.deleteWorkingTime
 }
 
 /**
