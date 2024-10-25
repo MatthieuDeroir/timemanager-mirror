@@ -1,6 +1,8 @@
 <template>
   <!--  <div v-if="teamStore.error">{{ teamStore.error }}</div>-->
-  <div v-if="teamStore.isLoading"><Loader></Loader></div>
+  <div v-if="teamStore.isLoading">
+    <Loader></Loader>
+  </div>
   <v-expansion-panels v-else>
     <h3 v-if="teamStore.teams.length <= 0" class="no-team">You are not affected to any teams</h3>
     <v-expansion-panel v-for="team in teamStore.teams" :key="team.id">
@@ -19,10 +21,10 @@
               <td v-if="authStore.user.role_id != UserRole.EMPLOYEE">
                 <svg
                   class="add-user-in-team"
-                  @click="handleAddUserInTeam"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
                   style="cursor: pointer"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  @click="handleAddUserInTeam"
                 >
                   <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                 </svg>
@@ -31,16 +33,16 @@
           </thead>
           <tbody>
             <TeamAddUser
-              class="add-user-input"
               v-if="addUserState"
               :team_id="team.id"
+              class="add-user-input"
               @onUserAddedToTeam="handleUserAddedInTeam"
             />
             <tr
               v-for="user in team.users"
               :key="user.id"
-              @click="handleOpenUserInfo(user.id)"
               :style="authStore.user.role_id !== UserRole.EMPLOYEE ? { cursor: 'pointer' } : {}"
+              @click="handleOpenUserInfo(user.id)"
             >
               <td>{{ getRoleName(user.role_id) }}</td>
               <td>{{ user.position }}</td>
@@ -53,20 +55,20 @@
               </td>
               <td v-if="authStore.user.role_id != UserRole.EMPLOYEE">
                 <svg
-                  @click="handleDeleteUserFromTeam(team.id, user.id)"
                   class="delete-user-from-team"
-                  width="45px"
                   height="45px"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
                   style="cursor: pointer"
+                  viewBox="0 0 24 24"
+                  width="45px"
+                  xmlns="http://www.w3.org/2000/svg"
+                  @click="handleDeleteUserFromTeam(team.id, user.id)"
                 >
                   <g id="SVGRepo_iconCarrier">
                     <path
                       d="M15 12H9"
                       stroke="darkorange"
-                      stroke-width="1.5"
                       stroke-linecap="round"
+                      stroke-width="1.5"
                     />
                   </g>
                 </svg>
@@ -97,10 +99,10 @@
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
-  <div v-if="this.authStore.user.role_id === UserRole.ADMIN" class="team-create">
+  <div v-if="this.authStore.user?.role_id === UserRole.ADMIN" class="team-create">
     <form @submit="handleCreateTeam">
-      <input type="text" class="team-name-input" />
-      <button type="submit" class="btn-primary">Create Team</button>
+      <input class="team-name-input" type="text" />
+      <button class="btn-primary" type="submit">Create Team</button>
     </form>
   </div>
 </template>

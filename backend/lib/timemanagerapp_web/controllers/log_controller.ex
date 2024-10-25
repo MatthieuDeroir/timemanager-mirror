@@ -13,6 +13,17 @@ defmodule TimeManagerAppWeb.LogController do
     |> render("index.json", logs: logs)
   end
 
+  def index_by_user(conn, %{"user_id" => user_id, "page" => page, "page_size" => page_size}) do
+    page = String.to_integer(page || "1")
+    page_size = String.to_integer(page_size || "50")
+
+    logs = Logs.list_logs_by_user(user_id, page, page_size)
+
+    conn
+    |> put_view(TimeManagerAppWeb.LogJSON)
+    |> render("index.json", logs: logs)
+  end
+
   def show(conn, %{"id" => id}) do
     log = Logs.get_log!(id) |> TimeManagerApp.Repo.preload([user: [:role, :teams]])
     conn

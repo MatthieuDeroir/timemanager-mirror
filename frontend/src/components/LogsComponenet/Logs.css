@@ -11,36 +11,39 @@
 
 .header {
     width: 150px;
+    text-align: center;
 }
 
 .log-entry {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-    text-wrap: wrap;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .role,
-.action,
-.message,
-.date,
-.team {
+.action {
     width: 150px;
+    text-align: center;
+    word-wrap: break-word;
 }
 
 .username {
     display: flex;
     flex-direction: column;
     width: 150px;
+    text-align: center;
 }
 
-.team-info {
+.pagination {
     display: flex;
-    flex-direction: column;
-    width: 150px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.username-info,
-.team-info {
-    margin: 0;
+.pagination button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }

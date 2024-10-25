@@ -1,78 +1,90 @@
 <template>
   <div class="logs">
-    <div v-if="logsError">{{ logsError }}</div>
-    <div v-if="logsLoading"><Loader /></div>
+    <div v-if="logsStore.isLoading">
+      <Loader />
+    </div>
     <div v-else>
       <div>
         <div class="chartheader">
-          <span class="header">Level of authority</span>
+          <span class="header">Level of Authority</span>
           <span class="header">Username</span>
           <span class="header">Action</span>
-          <span class="header">Message</span>
-          <span class="header">Date</span>
-          <span class="header">Team</span>
         </div>
         <hr />
       </div>
 
-      <div v-if="logs.length === 0">
+      <div v-if="logsStore.logs.length === 0">
         <p>No logs available.</p>
       </div>
 
       <div v-else>
-        <div v-for="log in logs" :key="log.user.id + log.action">
-          <div class="log-entry">
-            <span class="role">{{ log.user.role.name }}</span>
-            <div class="username">
-              <div class="username-info">
-                {{ log.user.username }}
-              </div>
-              <div class="username-info">(id: {{ log.user.id }})</div>
-            </div>
-            <span class="action">{{ log.action }}</span>
-            <span class="message">{{ log.message || 'N/A' }}</span>
-            <span class="date">{{ formatDate(log.timestamp) }}</span>
-            <span class="team">
-              <div v-if="log.user.teams.length > 0">
-                <div class="team-info">
-                  {{ log.user.teams[0].name }}
-                </div>
-                <div class="team-info">(id: {{ log.user.teams[0].id }})</div>
-              </div>
-              <div v-else>No Team</div>
-            </span>
+        <div v-for="(log, index) in logsStore.logs.logs" :key="index" class="log-entry">
+          <span class="role">{{ log?.user?.role?.name || 'No Role' }}</span>
+          <div class="username">
+            <div class="username-info">{{ log?.user?.username || 'No Username' }}</div>
           </div>
-          <hr />
+          <span class="action">{{ log?.message || 'No Action' }}</span>
         </div>
+
+        <hr />
+      </div>
+
+      <!-- Pagination Button -->
+      <div class="pagination">
+        <button :disabled="logsStore.isLoading || page.value === 1" @click="loadPreviousLogs">
+          Page Précédente
+        </button>
+        <button :disabled="logsStore.isLoading" @click="loadMoreLogs">Page Suivante</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Loader from '@components/Loader/LoaderComponent.vue'
 import { useLogsStore } from '@store/LogsStore/LogsStore.js'
 
-const logsStore = useLogsStore()
-const logs = ref(logsStore.logs)
-const logsLoading = ref(logsStore.isLoading)
-const logsError = ref(logsStore.error)
-
-onMounted(async () => {
-  await logsStore.loadAllLogs()
+const props = defineProps({
+  userId: {
+    type: [String, Number],
+    required: true
+  }
 })
 
-watch(
-  () => logsStore.logs,
-  (newLogs) => {
-    logs.value = newLogs
-  }
-)
+const logsStore = useLogsStore()
 
-const formatDate = (timestamp) => {
-  return new Date(timestamp).toLocaleString()
+const page = ref(1)
+const pageSize = 10
+
+const loadLogs = async () => {
+  await logsStore.loadAllLogsByUserId(props.userId, page.value, pageSize)
 }
+
+/**
+ * Method used to load more logs
+ */
+const loadMoreLogs = () => {
+  page.value += 1
+  loadLogs()
+}
+
+/**
+ * Method used to load the previous logs
+ */
+const loadPreviousLogs = () => {
+  if (page.value > 1) {
+    page.value -= 1
+    loadLogs()
+  }
+}
+
+onMounted(loadLogs)
+
+watch(
+  () => props.userId,
+  () => logsStore.loadAllLogsByUserId(props.userId, page.value, pageSize)
+)
 </script>
 
 <style scoped src="./Logs.css"></style>

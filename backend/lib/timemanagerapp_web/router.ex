@@ -145,6 +145,7 @@ defmodule TimeManagerAppWeb.Router do
         pipe_through(:role_admin)
         resources("/users", UserController, except: [:new, :edit])
         resources("/logs", LogController, only: [:index, :show])
+        get "/logs/user/:user_id", LogController, :index_by_user
       end
     end
   end

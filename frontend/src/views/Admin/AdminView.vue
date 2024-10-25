@@ -93,8 +93,8 @@ const getDate = () => {
       <v-col cols="12" md="5" style="min-height: 330px">
         <Card
           :logo="sliceIcon"
-          color="green"
           :subtitle="userTitle"
+          color="green"
           title="Working Time Visualization"
         >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
@@ -108,14 +108,14 @@ const getDate = () => {
       </v-col>
 
       <v-col cols="12" md="12">
-        <Card :logo="logsIcon" color="pink" subtitle="Users Logs" title="Users Logs">
-          <LogsComponent />
+        <Card :logo="calendarIcon" color="purple" subtitle="test" title="Calendar">
+          <Calendar :userId="userId" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="12">
-        <Card :logo="calendarIcon" color="purple" title="Calendar" subtitle="test">
-          <Calendar :userId="userId" />
+        <Card :logo="logsIcon" color="pink" subtitle="Users Logs" title="Users Logs">
+          <LogsComponent :userId="userId" />
         </Card>
       </v-col>
     </v-row>

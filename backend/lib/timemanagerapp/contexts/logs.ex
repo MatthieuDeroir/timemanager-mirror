@@ -32,9 +32,13 @@ defmodule TimeManagerApp.Logs do
     |> Repo.preload([user: [:role, :teams]])
   end
 
-  def list_logs_by_user(user_id) do
+  def list_logs_by_user(user_id, page \\ 1, page_size \\ 50) do
+    offset = (page - 1) * page_size
+
     Log
     |> where([l], l.user_id == ^user_id)
+    |> limit(^page_size)
+    |> offset(^offset)
     |> Repo.all()
     |> Repo.preload([user: [:role, :teams]])
   end
