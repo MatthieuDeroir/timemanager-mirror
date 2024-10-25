@@ -26,7 +26,6 @@ const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
 const userGender = ref('User Information')
 const worker =  computed(()=>props.workerId === 0 ? props.userId : props.workerId);
-console.log(worker.value)
 
 
 const handleSelectedUser = (user) => {
