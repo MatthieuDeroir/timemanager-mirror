@@ -1,3 +1,5 @@
+import { UserRole } from '@enum/User/UserRole'
+
 /**
  * Format a date time string to a human-readable date
  * @param {string} dateTime - Date time string
@@ -37,4 +39,22 @@ export const convertDatesToISO = (data) => {
     }
   }
   return data
+}
+
+/**
+ * Method that return the role of the user based on the role id received
+ */
+export const getRoleName = (role_Id) => {
+  switch (role_Id) {
+    case UserRole.ADMIN:
+      return 'Admin'
+    case UserRole.MANAGER:
+      return 'Manager'
+    case UserRole.EMPLOYEE:
+      return 'Employee'
+    case UserRole.GENERAL_MANAGER:
+      return 'General Manager'
+    default:
+      return 'Unknown Role'
+  }
 }

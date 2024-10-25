@@ -120,8 +120,10 @@ import { useClockStore } from '@store/Clock/ClockStore.js'
 import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
 import Loader from '@components/Loader/LoaderComponent.vue'
 import TeamAddUser from '@components/Team/TeamAddUser/TeamAddUser.vue'
+import { getRoleName } from '@utils/utils.js'
 
 export default {
+  methods: { getRoleName },
   props: {
     userId: {
       type: [String, Number]
@@ -176,19 +178,6 @@ export default {
       teamStore.deleteTeam(teamId)
     }
 
-    const getRoleName = (role_Id) => {
-      if (role_Id === UserRole.ADMIN) {
-        return 'Admin'
-      } else if (role_Id === UserRole.MANAGER) {
-        return 'Manager'
-      } else if (role_Id === UserRole.EMPLOYEE) {
-        return 'Employee'
-      } else if (role_Id === UserRole.GENERAL_MANAGER) {
-        return 'General Manager'
-      } else {
-        return 'Unknown Role'
-      }
-    }
     return {
       handleDeleteTeam,
       handleCreateTeam,
@@ -196,7 +185,6 @@ export default {
       handleUserAddedInTeam,
       handleDeleteUserFromTeam,
       handleOpenUserInfo,
-      getRoleName,
       addUserState,
       emailIcon,
       teamStore,

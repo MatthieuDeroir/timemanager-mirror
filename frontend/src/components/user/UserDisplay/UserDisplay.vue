@@ -121,11 +121,10 @@
       </div>
       <div class="infos">
         <div class="label">Team:</div>
-        <div v-if="editStatus">
-          <input v-model="user.team_id" class="input-number" type="number" />
-        </div>
-        <div v-else>
-          <div>{{ user.team_id }}</div>
+        <div>
+          <div v-for="team in user.teams">
+            {{ team.name.charAt(0).toUpperCase() + team.name.slice(1) }}
+          </div>
         </div>
       </div>
       <div class="infos">
@@ -134,11 +133,84 @@
           <input v-model="user.role_id" class="input-number" type="number" />
         </div>
         <div v-else>
-          <div>{{ user.role_id }}</div>
+          <div>{{ getRoleName(user.role_id) }}</div>
         </div>
       </div>
     </div>
-    <div class="user-edit">
+    <div v-if="authStore.user?.role_id !== UserRole.EMPLOYEE" class="user-edit">
+      <div v-if="deleteStatus">
+        <svg
+          height="30px"
+          viewBox="0 0 48 48"
+          width="30px"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="handleDeleteStatus"
+        >
+          <path
+            d="M19.5,11.5V10c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5v1.5"
+            fill="none"
+            stroke="#FFF"
+            stroke-miterlimit="10"
+            stroke-width="3"
+          />
+          <line
+            fill="none"
+            stroke="#FFF"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="3"
+            x1="8.5"
+            x2="39.5"
+            y1="11.5"
+            y2="11.5"
+          />
+          <line
+            fill="none"
+            stroke="#FFF"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="3"
+            x1="36.5"
+            x2="36.5"
+            y1="23.5"
+            y2="11.5"
+          />
+          <path
+            d="M11.5,18.7v19.8c0,2.2,1.8,4,4,4h17c2.2,0,4-1.8,4-4V31"
+            fill="none"
+            stroke="#FFF"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="3"
+          />
+          <line
+            fill="none"
+            stroke="#FFF"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="3"
+            x1="20.5"
+            x2="20.5"
+            y1="19.5"
+            y2="34.5"
+          />
+          <line
+            fill="none"
+            stroke="#FFF"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="3"
+            x1="27.5"
+            x2="27.5"
+            y1="19.5"
+            y2="34.5"
+          />
+        </svg>
+      </div>
+      <div v-else>
+        <button class="btn-primary" @click="handleDelete(userId)">delete</button>
+        <button class="btn-danger" @click="handleDeleteStatus">cancel</button>
+      </div>
       <div v-if="editStatus" class="user-edit-buttons">
         <button class="btn-primary" @click="handleSaveEdit">Save</button>
         <button class="btn-danger" @click="handleCancelEdit">Cancel</button>
@@ -162,8 +234,11 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
-import { getUserById } from '@/api/UserAPI.js'
-import { useUserStore } from '@store/User/UserStore'
+import { getUserById, updateUser } from '@/api/UserAPI.js'
+import { useUserStore } from '@store/User/UserStore.js'
+import { useAuthStore } from '@store/Auth/AuthStore'
+import { UserRole } from '@enum/User/UserRole'
+import { getRoleName } from '@utils/utils'
 
 const props = defineProps({
   userId: {
@@ -174,9 +249,11 @@ const props = defineProps({
 
 const loading = ref({})
 const editStatus = ref(false)
+const deleteStatus = ref(true)
 const user = ref({})
 const emit = defineEmits(['selecteduser'])
 const userStore = useUserStore()
+const authStore = useAuthStore()
 
 const fetchUser = async (userId) => {
   user.value = await getUserById(userId)
@@ -198,9 +275,17 @@ const fetchUser = async (userId) => {
   loading.value = false
   emit('selecteduser', user.value)
 }
+const handleDeleteStatus = () => {
+  deleteStatus.value = !deleteStatus.value
+  editStatus.value = false
+}
+const handleDelete = async (userId) => {
+  await userStore.deleteUser(userId)
+}
 
 const handleTurnOnEdit = () => {
-  editStatus.value = editStatus.value = true
+  editStatus.value = true
+  deleteStatus.value = true
 }
 const handleSaveEdit = async () => {
   loading.value = true
@@ -237,7 +322,8 @@ const handleSaveEdit = async () => {
 }
 
 const handleCancelEdit = () => {
-  editStatus.value = editStatus.value = false
+  editStatus.value = false
+  deleteStatus.value = true
   fetchUser(props.userId)
 }
 onMounted(() => {
