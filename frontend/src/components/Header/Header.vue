@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <img alt="Gotham Logo" class="navbar-logo" src="@/assets/global/batman.png" />
-    <div v-if="authStore.user && authStore.user.role_id === UserRole.ADMIN">
+    <div v-if="authStore.user && authStore.user.role_id === UserRole.ADMIN || authStore.user.role_id === UserRole.GENERAL_MANAGER">
       <UserSearch @user-selected="handleUserSelected" />
     </div>
     <div>

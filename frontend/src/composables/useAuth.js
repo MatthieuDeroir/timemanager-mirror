@@ -31,7 +31,7 @@ export function useAuth() {
 
     switch (roleId) {
       case UserRole.ADMIN:
-        router.push(`/admin/${1}`)
+        router.push(`/admin/${userId}`)
         break
 
       case UserRole.GENERAL_MANAGER:

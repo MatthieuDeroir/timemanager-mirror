@@ -163,4 +163,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped src="./DayliChart.css"></style>
+<style scoped src="./DailyChart.css"></style>

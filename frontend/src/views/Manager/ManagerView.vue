@@ -7,7 +7,6 @@ import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
-import UserCreate from '@components/user/UserCreate/UserCreate.vue'
 import Team from '@components/Team/Team.vue'
 import teamIcon from '@assets/icons/icons8-team-48.png'
 import { useAuthStore } from '@store/Auth/AuthStore.js'
@@ -25,22 +24,13 @@ const authStore = useAuthStore()
 const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
 const userGender = ref('User Information')
-const worker =  computed(()=>props.workerId === 0 ? props.userId : props.workerId);
+const worker =  computed(()=> props.workerId === 0 ? props.userId : props.workerId);
 
 
 const handleSelectedUser = (user) => {
   userTitle.value = `${user.firstname} ${user.lastname}`
   userSubtitle.value = user.email
   userGender.value = `(${user.gender})`
-}
-const createUserPopUp = ref(false)
-const handleOpenPopUpCreateUser = () => {
-  createUserPopUp.value = true
-  document.body.style.overflow = 'hidden'
-}
-const handleClosePopUp = () => {
-  createUserPopUp.value = false
-  document.body.style.overflow = 'auto'
 }
 
 // Used to store the working times
@@ -72,9 +62,6 @@ const getDate = () => {
 </script>
 
 <template>
-  <div v-if="createUserPopUp">
-    <UserCreate @clickOut="handleClosePopUp"></UserCreate>
-  </div>
   <v-container class="padding-top-view">
     <v-row>
       <v-col cols="12" md="6">
