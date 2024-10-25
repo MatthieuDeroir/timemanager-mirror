@@ -13,12 +13,8 @@ function toggleTheme () {
 
   const change = () => {
     if (darkModeQuery.matches) {
-      console.log("dark")
-      theme.global.name.value = 'myCustomDarkTheme',
-      console.log("theme.global.name.value:", theme.global.name.value)
-
+      theme.global.name.value = 'myCustomDarkTheme'
     } else {
-      console.log("ligt")
       theme.global.name.value = 'myCustomLightTheme'
     }
   };
