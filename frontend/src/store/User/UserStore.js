@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import UserAPI from '@/api/UserAPI'
 import { handleApiRequest } from '@config/lokiJS/syncHelper'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 /**
  * Defines a store for managing user data.
@@ -10,6 +12,12 @@ export const useUserStore = defineStore('userStore', () => {
   const users = ref([])
   const isLoading = ref(false)
   const error = ref(null)
+  const $toast = useToast()
+  const options = {
+    position: 'top-left',
+    duration: 1000,
+    dismissible: true
+  }
 
   /**
    * Loads all users from the API.
@@ -28,7 +36,8 @@ export const useUserStore = defineStore('userStore', () => {
    */
   const createUser = async (data) => {
     isLoading.value = true
-    const newUser = await handleApiRequest('create', data, 'createUser')
+    const newUser = await handleApiRequest('create', data, 'createUser').then()
+    $toast.success('Employee successfully created.', options)
     users.value.push(newUser)
     isLoading.value = false
   }
@@ -42,6 +51,7 @@ export const useUserStore = defineStore('userStore', () => {
   const updateUser = async (id, data) => {
     isLoading.value = true
     const updatedUser = await handleApiRequest('update', data, 'updateUser', id)
+    $toast.success('Employee successfully edited.', options)
     users.value = users.value.map((user) => (user.id === id ? updatedUser : user))
     isLoading.value = false
   }
@@ -54,6 +64,7 @@ export const useUserStore = defineStore('userStore', () => {
   const deleteUser = async (id) => {
     isLoading.value = true
     await handleApiRequest('delete', null, 'deleteUser', id)
+    $toast.success('Employee successfully deleted.', options)
     users.value = users.value.filter((user) => user.id !== id)
     isLoading.value = false
   }

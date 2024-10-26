@@ -2,11 +2,18 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { createClock, getClocksByUserId } from '@/api/ClockAPI'
 import { handleApiRequest } from '@config/lokiJS/syncHelper'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 export const useClockStore = defineStore('clockStore', () => {
   const clocks = ref([])
   const isLoading = ref(false)
-  const error = ref(null)
+  const $toast = useToast()
+  const options = {
+    position: 'top-left',
+    duration: 1000,
+    dismissible: true
+  }
 
   /**
    * Function to load clocks for a user.
@@ -15,7 +22,6 @@ export const useClockStore = defineStore('clockStore', () => {
    */
   const loadClocks = async (userId) => {
     isLoading.value = true
-    error.value = null
     clocks.value = await getClocksByUserId(userId)
     isLoading.value = false
   }
@@ -26,8 +32,8 @@ export const useClockStore = defineStore('clockStore', () => {
    */
   const createClock = async (data) => {
     isLoading.value = true
-    error.value = null
     const newClock = await handleApiRequest('create', data, 'createClock')
+    $toast.success('Clock-in/out done!', options)
     clocks.value.push(newClock)
     isLoading.value = false
   }
@@ -35,7 +41,6 @@ export const useClockStore = defineStore('clockStore', () => {
   return {
     clocks,
     isLoading,
-    error,
     loadClocks,
     createClock
   }

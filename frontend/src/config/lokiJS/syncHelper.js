@@ -25,6 +25,8 @@ const apiActions = {
   deleteWorkingTime: WorkingTimeAPI.deleteWorkingTime,
 
   // TeamAPI
+  getTeamsByUserId: TeamAPI.getTeamsByUserId,
+  getAllTeams: TeamAPI.getAllTeams,
   createTeam: TeamAPI.createTeam,
   updateTeam: TeamAPI.updateTeam,
   deleteTeam: TeamAPI.deleteTeam

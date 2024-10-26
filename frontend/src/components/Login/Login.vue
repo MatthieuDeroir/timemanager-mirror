@@ -29,7 +29,12 @@
             />
           </div>
           <div class="white-circle">
-            <button class="image-button" type="submit" @click="handleSubmit" @touchstart="handleSubmit">
+            <button
+              class="image-button"
+              type="submit"
+              @click="handleSubmit"
+              @touchstart="handleSubmit"
+            >
               <img alt="Batman Logo" class="logo" src="../../assets/global/batman.png" />
             </button>
           </div>
@@ -39,20 +44,43 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script>
 import { ref } from 'vue'
 import { useAuth } from '@/composables/useAuth'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
-const email = ref('')
-const password = ref('')
+export default {
+  setup() {
+    const $toast = useToast()
 
-const { login } = useAuth()
-
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  await login({ email: email.value, password: password.value });
-};
-
+    const email = ref('')
+    const password = ref('')
+    const loginError = ref('')
+    const { login } = useAuth()
+    const handleSubmit = async (event) => {
+      event.preventDefault()
+      try {
+        await login({ email: email.value, password: password.value })
+      } catch (error) {
+        $toast.open({
+          message: error.toString(),
+          type: 'warning',
+          position: 'top-left',
+          duration: 3000,
+          dismissible: true
+        })
+        loginError.value = error
+      }
+    }
+    return {
+      handleSubmit,
+      loginError,
+      password,
+      email
+    }
+  }
+}
 </script>
 
 <style src="./Login.css"></style>

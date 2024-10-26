@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import teamApi from '@/api/TeamAPI.js'
 import { ref } from 'vue'
 import { handleApiRequest } from '@config/lokiJS/syncHelper'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 /**
  * Store for teams.
@@ -13,23 +15,21 @@ import { handleApiRequest } from '@config/lokiJS/syncHelper'
 export const useTeamStore = defineStore('teamStore', () => {
   const teams = ref([])
   const isLoading = ref(false)
-  const error = ref(null)
-
+  const $toast = useToast()
+  const options = {
+    position: 'top-left',
+    duration: 1000,
+    dismissible: true
+  }
   /**
    * Loads all teams from the API.
    * Sets the `isLoading` state to true while loading and false after loading.
    */
   const loadAllTeams = async () => {
     isLoading.value = true
-    error.value = null
-    try {
-      const result = await handleApiRequest('get', {}, 'getAllTeams')
-      await getUsersInManyTeams(result)
-    } catch (err) {
-      error.value = err.message || 'Failed to load teams'
-    } finally {
-      isLoading.value = false
-    }
+    const result = await handleApiRequest('get', {}, 'getAllTeams')
+    await getUsersInManyTeams(result)
+    isLoading.value = false
   }
 
   /**
@@ -38,15 +38,9 @@ export const useTeamStore = defineStore('teamStore', () => {
    */
   const loadTeamByUserId = async (userId) => {
     isLoading.value = true
-    error.value = null
-    try {
-      const result = await handleApiRequest('get', { userId }, 'getTeamsByUserId')
-      await getUsersInManyTeams(result)
-    } catch (err) {
-      error.value = err.message || 'Failed to load teams for user'
-    } finally {
-      isLoading.value = false
-    }
+    const result = await handleApiRequest('get', userId, 'getTeamsByUserId')
+    await getUsersInManyTeams(result)
+    isLoading.value = false
   }
 
   /**
@@ -55,17 +49,13 @@ export const useTeamStore = defineStore('teamStore', () => {
    * @param teamsData
    */
   const getUsersInManyTeams = async (teamsData) => {
-    try {
-      for (const [index, team] of teamsData.entries()) {
-        if (!teams.value[index]) {
-          teams.value[index] = {}
-        }
-        teams.value[index].users = await teamApi.getUsersFromTeamId(team.id)
-        teams.value[index].id = team.id
-        teams.value[index].name = team.name
+    for (const [index, team] of teamsData.entries()) {
+      if (!teams.value[index]) {
+        teams.value[index] = {}
       }
-    } catch (err) {
-      error.value = err.message || 'Failed to load users for teams'
+      teams.value[index].users = await teamApi.getUsersFromTeamId(team.id)
+      teams.value[index].id = team.id
+      teams.value[index].name = team.name
     }
   }
 
@@ -76,8 +66,8 @@ export const useTeamStore = defineStore('teamStore', () => {
    */
   const addUserInTeam = async (user_id, team_id) => {
     isLoading.value = true
-    error.value = null
     await handleApiRequest('create', { user_id, team_id }, 'addUserInTeam')
+    $toast.success('Employee successfully added to the team.', options)
     isLoading.value = false
   }
 
@@ -88,8 +78,8 @@ export const useTeamStore = defineStore('teamStore', () => {
    */
   const deleteUserInTeam = async (user_id, team_id) => {
     isLoading.value = true
-    error.value = null
     await handleApiRequest('delete', { user_id, team_id }, 'deleteUserInTeam')
+    $toast.success('Employee successfully removed of the team.', options)
     isLoading.value = false
   }
 
@@ -99,8 +89,8 @@ export const useTeamStore = defineStore('teamStore', () => {
    */
   const createTeam = async (name) => {
     isLoading.value = true
-    error.value = null
     const newTeam = await handleApiRequest('create', name, 'createTeam')
+    $toast.success('Team successfully created.', options)
     teams.value.push(newTeam)
     isLoading.value = false
   }
@@ -112,9 +102,9 @@ export const useTeamStore = defineStore('teamStore', () => {
    */
   const updateTeam = async (teamId, name) => {
     isLoading.value = true
-    error.value = null
     const updatedTeam = await handleApiRequest('update', { name }, 'updateTeam', teamId)
     teams.value = teams.value.map((team) => (team.id === teamId ? updatedTeam : team))
+    $toast.success('Team successfully edited.', options)
     isLoading.value = false
   }
 
@@ -124,16 +114,15 @@ export const useTeamStore = defineStore('teamStore', () => {
    */
   const deleteTeam = async (teamId) => {
     isLoading.value = true
-    error.value = null
     await handleApiRequest('delete', {}, 'deleteTeam', teamId)
     teams.value = teams.value.filter((team) => team.id !== teamId)
+    $toast.success('Team successfully deleted.', options)
     isLoading.value = false
   }
 
   return {
     teams,
     isLoading,
-    error,
     loadAllTeams,
     loadTeamByUserId,
     getUsersInManyTeams,

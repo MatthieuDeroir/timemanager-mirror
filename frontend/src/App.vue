@@ -1,3 +1,18 @@
+<template>
+  <div>
+    <header v-if="!shouldHideNavbar">
+      <HeaderComponent @colorSelected="updateColorClass" />
+    </header>
+    <main class="main-content">
+      <div :class="[selectedColorClass]" class="background"></div>
+      <!-- <v-btn style="margin-top: 100px;" @click="toggleTheme">toggle theme</v-btn>   -->
+      <router-view />
+    </main>
+  </div>
+</template>
+
+<style src="./App.css"></style>
+
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
@@ -7,9 +22,9 @@ import { useTheme } from 'vuetify'
 
 const theme = useTheme()
 
-function toggleTheme () {
+function toggleTheme() {
   const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  console.log(darkModeQuery);
+  console.log(darkModeQuery)
 
   const change = () => {
     if (darkModeQuery.matches) {
@@ -17,7 +32,7 @@ function toggleTheme () {
     } else {
       theme.global.name.value = 'myCustomLightTheme'
     }
-  };
+  }
   darkModeQuery.addEventListener('change', change)
   change()
 }
@@ -43,18 +58,3 @@ toggleTheme()
 
 const shouldHideNavbar = computed(() => route.meta.hideNavbar)
 </script>
-
-<template>
-  <div>
-    <header v-if="!shouldHideNavbar">
-      <HeaderComponent @colorSelected="updateColorClass" />
-    </header>
-    <main class="main-content">
-      <div :class="[selectedColorClass]" class="background"></div>
-      <!-- <v-btn style="margin-top: 100px;" @click="toggleTheme">toggle theme</v-btn>   -->
-      <router-view />
-    </main>
-  </div>
-</template>
-
-<style src="./App.css"></style>

@@ -1,27 +1,23 @@
-import { defineStore } from 'pinia';
-import LogsAPI from '@/api/LogsAPI';
+import { defineStore } from 'pinia'
+import LogsAPI from '@/api/LogsAPI'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
-const { LoadAllLogs } = LogsAPI;
+const { LoadAllLogs } = LogsAPI
 
 export const useLogsStore = defineStore('logsStore', {
   state: () => ({
     logs: [],
-    isLoading: false,
-    error: null,
+    isLoading: false
   }),
 
   actions: {
     async loadAllLogs() {
-      this.isLoading = true;
-      this.error = null;
+      this.isLoading = true
 
-      try {
-        this.logs = await LoadAllLogs();
-      } catch (err) {
-        this.error = 'Failed to load logs';
-      } finally {
-        this.isLoading = false;
-      }
-    },
-  },
-});
+      this.logs = await LoadAllLogs()
+
+      this.isLoading = false
+    }
+  }
+})

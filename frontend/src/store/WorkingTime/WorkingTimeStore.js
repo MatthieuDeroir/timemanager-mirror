@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import WorkingTimeAPI from '@/api/WorkingTimeAPI'
 import { ref } from 'vue'
 import { handleApiRequest } from '@config/lokiJS/syncHelper'
+import { useToast } from 'vue-toast-notification'
+import 'vue-toast-notification/dist/theme-sugar.css'
 
 /**
  * Store for working times.
@@ -15,6 +17,12 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
   const workingTimesByDay = ref([])
   const isLoading = ref(false)
   const error = ref(null)
+  const $toast = useToast()
+  const options = {
+    position: 'top-left',
+    duration: 1000,
+    dismissible: true
+  }
 
   /**
    * Loads all working times for a user from the API.
@@ -56,6 +64,7 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
       { start, end, userId },
       'createWorkingTime'
     )
+    $toast.success('WorkingTime successfully created.', options)
     workingTimes.value.push(newWorkingTime)
     isLoading.value = false
     return newWorkingTime
@@ -71,6 +80,7 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
     isLoading.value = true
     error.value = null
     const updatedWorkingTime = await handleApiRequest('update', data, 'updateWorkingTime', id)
+    $toast.success('WorkingTime successfully edited.', options)
     workingTimes.value = workingTimes.value.map((wt) => (wt.id === id ? updatedWorkingTime : wt))
     isLoading.value = false
   }
@@ -84,6 +94,7 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
     isLoading.value = true
     error.value = null
     await handleApiRequest('delete', {}, 'deleteWorkingTime', id)
+    $toast.success('WorkingTime successfully deleted.', options)
     workingTimes.value = workingTimes.value.filter((wt) => wt.id !== id)
     isLoading.value = false
   }

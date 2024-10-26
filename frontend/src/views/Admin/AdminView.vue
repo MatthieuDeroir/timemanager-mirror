@@ -66,7 +66,7 @@ const getDate = () => {
 
 <template>
   <div v-if="createUserPopUp">
-    <UserCreate @clickOut="handleClosePopUp"></UserCreate>
+    <UserCreate @closePopUp="handleClosePopUp"></UserCreate>
   </div>
   <v-container class="padding-top-view">
     <v-row>
@@ -86,16 +86,16 @@ const getDate = () => {
 
       <v-col cols="12" md="7">
         <Card :logo="teamIcon" color="orange" title="All Teams">
-          <Team/>
+          <Team />
         </Card>
       </v-col>
 
       <v-col cols="12" md="5" style="min-height: 330px">
         <Card
-            :logo="sliceIcon"
-            color="green"
-            :subtitle="userTitle"
-            title="Working Time Visualization"
+          :logo="sliceIcon"
+          color="green"
+          :subtitle="userTitle"
+          title="Working Time Visualization"
         >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </Card>
@@ -109,13 +109,13 @@ const getDate = () => {
 
       <v-col cols="12" md="12">
         <Card :logo="logsIcon" color="pink" subtitle="Users Logs" title="Users Logs">
-          <LogsComponent/>
+          <LogsComponent />
         </Card>
       </v-col>
 
       <v-col cols="12" md="12">
         <Card :logo="calendarIcon" color="purple" title="Calendar" subtitle="test">
-          <Calendar :userId="userId"/>
+          <Calendar :userId="userId" />
         </Card>
       </v-col>
     </v-row>
