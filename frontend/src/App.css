@@ -1,0 +1,91 @@
+@import url(@styles/base.css);
+
+.main-content {
+    color: var(--color-labelPrimary);
+    font-family: SF Pro Display, Helvetica Neue, sans-serif;
+}
+
+.background {
+    background: url("assets/global/wallpaper.svg");
+    position: fixed;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+
+.background:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: hard-light;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+
+.background.blue:after {
+    background: var(--linear-blue);
+}
+
+.background.yellow:after {
+    background: var(--linear-yellow);
+}
+
+.background.purple:after {
+    background: var(--linear-purple);
+}
+
+.background.orange:after {
+    background: var(--linear-orange);
+}
+
+.background.green:after {
+    background: var(--linear-green);
+}
+
+.background.red:after {
+    background: var(--linear-red);
+}
+
+@media (prefers-color-scheme: dark) {
+    .background {
+        background-image: url(assets/global/wallpaper_dark.svg);
+    }
+
+    .background.blue:after {
+        background: linear-gradient(64deg, #00355f, #002f6c 44.5%, #02006c);
+    }
+
+    .background.yellow:after {
+        background: linear-gradient(64deg, #482a00, #ae5f00 46%, #854300);
+    }
+
+    .background.purple:after {
+        background: linear-gradient(64deg, #1f0943, #351574 48%, #210056);
+    }
+
+    .background.orange:after {
+        background: linear-gradient(64deg, #711d00, #9d2e00 44%, #742c03);
+    }
+
+    .background.green:after {
+        background: linear-gradient(64deg, #032700, #0b3300 45%, #0d2a00);
+    }
+
+    .background.red:after {
+        background: linear-gradient(64deg, #360200, #6e1515 46%, #5c0303);
+    }
+
+    .background {
+        background-image: url(assets/global/wallpaper_dark.svg);
+    }
+}

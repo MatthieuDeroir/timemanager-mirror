@@ -1,0 +1,14 @@
+.chart-manager {
+    padding: 20px;
+}
+
+.chart-manager h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.chart-manager .chart {
+    margin: 20px auto;
+    max-width: 800px;
+}
+  

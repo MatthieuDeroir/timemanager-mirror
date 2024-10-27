@@ -1,0 +1,53 @@
+
+.clock-manager-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 0 10px 10px;
+}
+
+.row-clock-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.row-clock {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-items: start;
+    width: 120px;
+    margin: 10px;
+}
+
+.arrow-icon {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+
+.row-clock-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.clock-type {
+    color: var(--color-labelSecondary);
+}
+
+.clock-time {
+    color: var(--color-labelPrimary);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+    font-size: 17px;
+}

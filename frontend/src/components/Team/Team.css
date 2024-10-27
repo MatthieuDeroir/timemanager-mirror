@@ -1,0 +1,73 @@
+.team-create {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+}
+
+.team-name-input {
+    padding: 5px 10px;
+    width: 300px;
+    margin-right: 20px;
+    border: 1px solid var(--color-labelPrimary);
+    border-radius: 10px;
+}
+
+.delete-user-from-team {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-user-in-team {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    fill: darkorange;
+}
+
+.user-container {
+    display: flex;
+    align-items: center;
+}
+
+.user-firstname, .user-lastname, .user-position, .user-role {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.no-team {
+    margin: 100px;
+}
+
+.add-user-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 500%;
+}
+
+.delete-team {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.mailto-link {
+    display: flex;
+    align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .mailto-link {
+        filter: invert(1);
+    }
+}

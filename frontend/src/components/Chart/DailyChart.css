@@ -1,0 +1,27 @@
+#DayliChart {
+    width: auto;
+    height: 250px;
+    /* position: relative; */
+    display: flex;
+    justify-content: center;
+}
+
+#DayliChart canvas {
+    display: flex;
+    /* margin-left: 100px; */
+    /* align-items: center;/ */
+    /* position: relative; */
+    /* top: 0; */
+    /* left: 0; */
+    /* bottom: 0; */
+    /* right: 0; */
+
+}
+
+/* #DayliChart{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+} */

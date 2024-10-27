@@ -1,0 +1,52 @@
+
+.custom {
+    background-color: rgba(var(--v-theme-surface), 0) !important;
+}
+
+.working-times {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: transparent !important;
+}
+
+.add-button {
+    margin-bottom: 20px;
+}
+
+.action-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 !important;
+    margin: 0;
+    height: 100%;
+}
+
+.action-button-container button {
+    margin: 0;
+}
+
+.wt-btn {
+    font-size: 12px;
+}
+
+.date-filter {
+    margin-bottom: 20px;
+}
+
+.working-time-form {
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+}

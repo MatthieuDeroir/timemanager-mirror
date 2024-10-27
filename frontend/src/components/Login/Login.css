@@ -1,0 +1,124 @@
+@import url(../../styles/base.css);
+
+.login-wrapper {
+    transform: scale(0.6);
+    transform-origin: center;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: auto;
+    background-color: transparent;
+}
+
+.login-container {
+    padding: 2rem;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    background-color: var(--color-cardHeader-background);
+    max-width: 40%;
+    min-width: 500px;
+    width: 100%;
+    height: auto;
+    min-height: 600px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+}
+
+h1 {
+    margin-bottom: 1.5rem;
+    color: var(--color-labelPrimary);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    font-weight: 400;
+    font-style: normal;
+    font-size: large;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-labelPrimary);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--loign-input-border-color);
+    border-radius: 15px;
+    background-color: var(--login-background-color);
+    color: var(--color-text-base);
+    font-size: 16px;
+    transition: border 0.3s, background 0.3s;
+    width: 66%;
+}
+
+.form-group input:focus {
+    border-color: var(--border-focus-color);
+    background-color: var(--login-background-color);
+    box-shadow: 0 0 5px var(--loign-input-focus-color);
+    outline: none;
+    border-radius: 15px;
+}
+
+.form-group input:not(:focus) {
+    border-color: var(--loign-input-border-color);
+    background-color: var(--login-background-color);
+    border-radius: 15px;
+}
+
+.form-group input:hover {
+    border-color: var(--login-background-color);
+    border-radius: 15px;
+}
+
+.form-group input::placeholder {
+    color: var(--login-input-placeholder-color);
+    border-radius: 15px;
+}
+
+
+.image-button {
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.image-button:hover {
+    border-radius: 4px;
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.white-circle {
+    background-color: var(--inverted-color-card-background);
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.main-content {
+    color: var(--color-labelPrimary);
+}
+
+.textcenter {
+    text-align: center;
+}
+
