@@ -49,7 +49,7 @@
           </td>
           <td>{{ calculateHoursWorked(time.start, time.end) }} hours</td>
           <td
-            v-if="authStore.user.role_id !== UserRole.EMPLOYEE"
+            v-if="authStore.user?.role_id !== UserRole.EMPLOYEE"
             class="action-button-container custom"
           >
             <button v-if="time.isEditing" class="btn-primary wt-btn" @click="saveWorkingTime(time)">

@@ -202,7 +202,7 @@ export default {
     }
   },
   mounted() {
-    if (this.authStore.user.role_id === UserRole.ADMIN || UserRole.GENERAL_MANAGER) {
+    if (this.authStore.user.role_id === (UserRole.ADMIN || UserRole.GENERAL_MANAGER)) {
       this.teamStore.loadAllTeams()
     } else {
       this.teamStore.loadTeamByUserId(this.authStore.user.id)
