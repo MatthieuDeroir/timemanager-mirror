@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import WorkingTimeManager from '@components/WorkingTimeManager/WorkingTimeManager.vue'
 import WorkingTimeVisualization from '@components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
 import Card from '@components/Card/Card.vue'
@@ -24,8 +24,7 @@ const authStore = useAuthStore()
 const userTitle = ref('User Info')
 const userSubtitle = ref('User Information')
 const userGender = ref('User Information')
-const worker =  computed(()=> props.workerId === 0 ? props.userId : props.workerId);
-
+const worker = computed(() => (props.workerId === 0 ? props.userId : props.workerId))
 
 const handleSelectedUser = (user) => {
   userTitle.value = `${user.firstname} ${user.lastname}`
@@ -72,8 +71,8 @@ const getDate = () => {
       <v-col cols="12" md="6">
         <Card
           :logo="sliceIcon"
-          color="green"
           :subtitle="userTitle"
+          color="green"
           title="Working Time Visualization"
         >
           <WorkingTimeVisualization :userId="worker" :workingTimes="workingTimes" />
@@ -91,9 +90,8 @@ const getDate = () => {
         </Card>
       </v-col>
 
-
       <v-col cols="12" md="8">
-        <Card :logo="workIcon" color="yellow" :subtitle="userTitle" title="Working Time Manager">
+        <Card :logo="workIcon" :subtitle="userTitle" color="yellow" title="Working Time Manager">
           <WorkingTimeManager :userId="worker" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>

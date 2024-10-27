@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { Line } from 'vue-chartjs';
+import { Line } from 'vue-chartjs'
 
 export default {
   name: 'LineChart',
@@ -14,22 +14,22 @@ export default {
   watch: {
     chartData(newData) {
       if (newData) {
-        this.renderChart(newData, this.options);
+        this.renderChart(newData, this.options)
       }
-    },
+    }
   },
   data() {
     return {
       options: {
         responsive: true,
-        maintainAspectRatio: false,
-      },
-    };
+        maintainAspectRatio: false
+      }
+    }
   },
   mounted() {
     if (this.chartData) {
-      this.renderChart(this.chartData, this.options);
+      this.renderChart(this.chartData, this.options)
     }
-  },
-};
+  }
+}
 </script>

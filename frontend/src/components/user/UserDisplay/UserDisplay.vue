@@ -234,7 +234,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
-import { getUserById, updateUser } from '@/api/UserAPI.js'
+import { getUserById } from '@/api/UserAPI.js'
 import { useUserStore } from '@store/User/UserStore.js'
 import { useAuthStore } from '@store/Auth/AuthStore'
 import { UserRole } from '@enum/User/UserRole'

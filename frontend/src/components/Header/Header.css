@@ -13,7 +13,7 @@
     backdrop-filter: blur(14px);
 }
 
-.user-preferences{
+.user-preferences {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -24,7 +24,6 @@
     border-radius: 100%;
     cursor: pointer;
 }
-
 
 
 .navbar-logo {

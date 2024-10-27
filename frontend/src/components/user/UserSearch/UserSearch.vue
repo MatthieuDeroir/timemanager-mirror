@@ -1,13 +1,13 @@
 <template>
   <v-autocomplete
     :items="userList"
+    class="user-search"
     item-text="username"
     item-title="username"
     item-value="id"
     label="Find an employee"
     variant="outlined"
     @update:model-value="onUserSelected"
-    class="user-search"
   ></v-autocomplete>
 </template>
 
@@ -25,7 +25,6 @@ const userStore = useUserStore()
 const clockStore = useClockStore()
 const authStore = useAuthStore()
 const workingTimesStore = useWorkingTimeStore()
-
 
 const fetchUsers = async () => {
   await userStore.loadAllUsers()
@@ -48,4 +47,4 @@ const onUserSelected = (userId) => {
 }
 </script>
 
-<style src="./UserSearch.css"/>
+<style src="./UserSearch.css" />

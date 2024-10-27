@@ -77,7 +77,7 @@ const getDate = () => {
       <v-col cols="12" md="6" style="min-height: 330px">
         <Card :logo="clockIcon" :subtitle="getDate()" color="red" title="Clock Manager">
           <ClockManager :userId="userId" />
-            <DailyChart :userId="userId"/>
+          <DailyChart :userId="userId" />
         </Card>
       </v-col>
 
@@ -92,13 +92,12 @@ const getDate = () => {
         </Card>
       </v-col>
 
-
       <v-col cols="12" md="6">
         <Card :logo="workIcon" color="yellow" subtitle="Manager" title="Working Time Manager">
           <WorkingTimeManager :userId="userId" @workingTimesUpdated="updateWorkingTimes" />
         </Card>
       </v-col>
-      
+
       <v-col cols="12" md="12">
         <Card :logo="teamIcon" color="orange" subtitle="Team" title="My Team">
           <Team :userId="userId" />

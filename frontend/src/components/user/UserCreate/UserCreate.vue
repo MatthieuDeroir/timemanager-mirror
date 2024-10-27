@@ -84,7 +84,7 @@
 </template>
 <style src="./UserCreate.css"></style>
 <script setup>
-import {defineEmits, onBeforeUnmount, onMounted, ref} from 'vue'
+import { defineEmits, onBeforeUnmount, onMounted, ref } from 'vue'
 import Card from '@/components/Card/Card.vue'
 import AddUser from '@assets/icons/icons8-add-48.png'
 import { useUserStore } from '@store/User/UserStore.js'
@@ -120,15 +120,15 @@ async function handleCreateUser() {
 
 const handleEscKey = (event) => {
   if (event.key === 'Escape' || event.key === 'Esc') {
-    handleClosePopUp();
+    handleClosePopUp()
   }
-};
+}
 
 onMounted(() => {
-  document.addEventListener('keydown', handleEscKey);
-});
+  document.addEventListener('keydown', handleEscKey)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleEscKey);
-});
+  document.removeEventListener('keydown', handleEscKey)
+})
 </script>

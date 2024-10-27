@@ -5,7 +5,7 @@
       <div class="login-container">
         <img alt="Gotham City Logo" class="logo" src="../../assets/global/gotam-logo.png" />
         <h1>Login to Gotham</h1>
-        <form @submit.prevent="handleSubmit" method="post">
+        <form method="post" @submit.prevent="handleSubmit">
           <div class="form-group">
             <label for="email">Email:</label>
             <input

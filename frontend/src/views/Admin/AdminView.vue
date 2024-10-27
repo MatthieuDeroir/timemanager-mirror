@@ -2,9 +2,7 @@
 import { ref } from 'vue'
 import WorkingTimeManager from '@components/WorkingTimeManager/WorkingTimeManager.vue'
 import WorkingTimeVisualization from '@components/WorkingTimeVisualization/WorkingTimeVisualization.vue'
-import ClockManager from '@components/ClockManager/ClockManager.vue'
 import Card from '@components/Card/Card.vue'
-import clockIcon from '@assets/icons/icons8-clock-48.png'
 import userIcon from '@assets/icons/icons8-user-48.png'
 import workIcon from '@assets/icons/icons8-work-48.png'
 import sliceIcon from '@assets/icons/icons8-slice-48.png'
@@ -107,7 +105,7 @@ const getDate = () => {
       </v-col>
 
       <v-col cols="12" md="12">
-        <Card :logo="calendarIcon" color="purple" subtitle="test" title="Calendar">
+        <Card :logo="calendarIcon" color="purple" subtitle="Working Times of user" title="Calendar">
           <Calendar :userId="userId" />
         </Card>
       </v-col>

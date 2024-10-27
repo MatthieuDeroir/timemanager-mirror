@@ -6,11 +6,11 @@
     <v-row class="date-range-picker">
       <v-col cols="6">
         <input
-            id="startDate"
-            v-model="workingTimeStore.startDate"
-            :max="maxDate"
-            type="date"
-            @change="workingTimeStore.loadWorkingTimesForDateRange(userId)"
+          id="startDate"
+          v-model="workingTimeStore.startDate"
+          :max="maxDate"
+          type="date"
+          @change="workingTimeStore.loadWorkingTimesForDateRange(userId)"
         />
       </v-col>
       <v-col cols="6">
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import LoaderComponent from '@components/Loader/LoaderComponent.vue'
 import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
@@ -37,6 +37,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js'
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const workingTimeStore = useWorkingTimeStore()
@@ -83,5 +84,8 @@ onMounted(() => {
   workingTimeStore.loadWorkingTimesForDateRange(props.userId)
 })
 // Watch userId to reload data
-watch(() => props.userId, () => workingTimeStore.loadWorkingTimesForDateRange(props.userId))
+watch(
+  () => props.userId,
+  () => workingTimeStore.loadWorkingTimesForDateRange(props.userId)
+)
 </script>

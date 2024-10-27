@@ -47,9 +47,9 @@ export default defineComponent({
     this.loaded = false
 
     const formatDateToISO = (date) => {
-      return date.toISOString().slice(0, 19) + 'Z' 
+      return date.toISOString().slice(0, 19) + 'Z'
     }
-    //init Date 
+    //init Date
     let dayStart = new Date()
     let dayEnd = new Date()
     dayStart.setHours(0, 0, 0, 0)
@@ -58,7 +58,7 @@ export default defineComponent({
     dayStart = formatDateToISO(dayStart)
 
     const startDate = dayStart
-    const endDate = dayEnd 
+    const endDate = dayEnd
 
     const workingTimeStore = useWorkingTimeStore()
     await workingTimeStore.loadWorkingTimesByDay(this.userId, startDate, endDate)
@@ -66,11 +66,11 @@ export default defineComponent({
 
     // Calculate total hours worked per day
     const totalHoursByDay = this.calculateTotalHoursByDay(workingTimes)
-      
+
     // Prepare the chart data
     this.chartData = this.createChartData(totalHoursByDay)
     this.loaded = true
-  
+
     this.loaded = true
   },
   methods: {
@@ -80,7 +80,7 @@ export default defineComponent({
       workingTimes.forEach((time) => {
         const start = new Date(time.start)
         const end = new Date(time.end)
-        const dateKey = start.toLocaleDateString() 
+        const dateKey = start.toLocaleDateString()
         const hoursWorked = (end - start) / (1000 * 60 * 60) // Convert ms to hours
 
         if (totalHours[dateKey]) {
@@ -94,9 +94,8 @@ export default defineComponent({
     },
 
     createChartData(totalHoursByDay) {
-
-      const labels = ['worked hours'] 
-      const data = Object.values(totalHoursByDay) 
+      const labels = ['worked hours']
+      const data = Object.values(totalHoursByDay)
 
       const decimalHoursToPourentage = (decimalHours, referenceHours = 8) => {
         const pourcentageHours = (decimalHours / referenceHours) * 100
@@ -107,30 +106,29 @@ export default defineComponent({
       const dataOver = (dataPourcentageOver * 8) / 100
       const quotientDataPourcentage = Math.floor(dataPourcentage / 100)
       const prepareDataset = []
- 
 
-      if (quotientDataPourcentage>0){
+      if (quotientDataPourcentage > 0) {
         if (quotientDataPourcentage >= 1) {
-        for (let i = 0; i < quotientDataPourcentage; i++) {
-          prepareDataset.push({
-            label: 'Work Duration (Hours)',
-            backgroundColor: ['#03a10e', '#aaaaaa'],
-            data: [8, 0]
-          })
-          labels.push('overtime')
+          for (let i = 0; i < quotientDataPourcentage; i++) {
+            prepareDataset.push({
+              label: 'Work Duration (Hours)',
+              backgroundColor: ['#03a10e', '#aaaaaa'],
+              data: [8, 0]
+            })
+            labels.push('overtime')
+          }
         }
-      }
-      prepareDataset.push({
-        label: 'Work Duration (Hours)',
-        backgroundColor: ['#ff9500', '#aaaaaa'],
-        data: [dataOver, 8 - dataOver,]
-      })}
-      else{
         prepareDataset.push({
-        label: 'Work Duration (Hours)',
-        backgroundColor: ['#03a10e', '#aaaaaa'],
-        data: [dataOver, 8 - dataOver,]
-      })
+          label: 'Work Duration (Hours)',
+          backgroundColor: ['#ff9500', '#aaaaaa'],
+          data: [dataOver, 8 - dataOver]
+        })
+      } else {
+        prepareDataset.push({
+          label: 'Work Duration (Hours)',
+          backgroundColor: ['#03a10e', '#aaaaaa'],
+          data: [dataOver, 8 - dataOver]
+        })
       }
 
       // Ensure that chartData has labels and datasets

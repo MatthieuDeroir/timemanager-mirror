@@ -66,9 +66,11 @@
     margin: 0;
     font-weight: normal;
 }
+
 .v-field__input {
     padding: 0 0 0 15px !important;
 }
+
 .v-input--density-default {
     --v-input-control-height: 0px !important;
     --v-input-padding-top: 0px !important;
@@ -78,7 +80,7 @@ body {
     min-height: 100vh;
     color: var(--color-labelPrimary);
     transition: color 0.5s,
-        background-color 0.5s;
+    background-color 0.5s;
     line-height: 1.6;
     font-family: SF Pro Display, Helvetica Neue, sans-serif;
     font-size: 14px;
@@ -96,9 +98,11 @@ body {
     width: fit-content;
     height: fit-content;
 }
+
 .btn-primary:hover {
     background-color: #00b0ff;
 }
+
 .btn-danger:active, .btn-primary:active {
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.3);
 }
@@ -112,9 +116,11 @@ body {
     width: fit-content;
     height: fit-content;
 }
+
 .btn-danger:hover {
     background-color: #ff4d4d;
 }
+
 .padding-top-view {
     padding-top: 125px;
     padding-bottom: 80px;

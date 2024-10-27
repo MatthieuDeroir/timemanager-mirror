@@ -9,10 +9,13 @@
         <v-list-item
           v-for="(color, index) in colors"
           :key="index"
-          @click="selectColor(color)"
           class="item"
-        >          
-          <div class="circle-colour" :style="{ background: 'var(--linear-'+color.name+')' }"></div>
+          @click="selectColor(color)"
+        >
+          <div
+            :style="{ background: 'var(--linear-' + color.name + ')' }"
+            class="circle-colour"
+          ></div>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -20,11 +23,11 @@
 </template>
 <!-- color.colors[1] -->
 <script lang="ts" setup>
-import { defineEmits, ref } from 'vue';
+import { defineEmits, ref } from 'vue'
 
-const selectedColor = ref(null);
+const selectedColor = ref(null)
 
-const emit = defineEmits(['colorSelected']);
+const emit = defineEmits(['colorSelected'])
 
 const colors = ref([
   { name: 'blue' },
@@ -33,15 +36,15 @@ const colors = ref([
   { name: 'orange' },
   { name: 'green' },
   { name: 'red' }
-]);
+])
 
-const location = ref('start');
+const location = ref('start')
 
 const selectColor = (color) => {
-  selectedColor.value = color;
-  localStorage.setItem('selectedColor', JSON.stringify(color)); 
-  emit('colorSelected', color); 
-};
+  selectedColor.value = color
+  localStorage.setItem('selectedColor', JSON.stringify(color))
+  emit('colorSelected', color)
+}
 </script>
 
 <style scoped src="./ColourPicker.css"></style>

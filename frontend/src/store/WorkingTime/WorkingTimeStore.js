@@ -107,7 +107,6 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
     error.value = null
     await handleApiRequest('delete', {}, 'deleteWorkingTime', id)
 
-
     $toast.success('WorkingTime successfully deleted.', options)
     workingTimes.value = workingTimes.value.filter((wt) => wt.id !== id)
     updateChartData()
@@ -147,7 +146,7 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
       return date.toLocaleDateString('fr-FR')
     }).slice(0, 7)
 
-    sortedDates.forEach(day => {
+    sortedDates.forEach((day) => {
       regularHoursByDay[day] = 0
       overtimeByDay[day] = 0
     })
@@ -175,9 +174,9 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
 
     endDate.value = calculateEndDate(startDate.value)
     await WorkingTimeAPI.getWorkingTimesByUserId(
-        userId,
-        formatStartDate(startDate.value),
-        formatEndDate(endDate.value)
+      userId,
+      formatStartDate(startDate.value),
+      formatEndDate(endDate.value)
     )
 
     updateChartData()

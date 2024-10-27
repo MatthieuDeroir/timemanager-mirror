@@ -1,4 +1,4 @@
-.off-side{
+.off-side {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,14 +11,16 @@
     justify-content: center;
     align-items: center;
 }
-.create-container{
+
+.create-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 60vw;
 }
-.create-container form{
+
+.create-container form {
     display: flex;
     flex-direction: column;
     max-height: 600px;
@@ -26,7 +28,8 @@
     justify-content: center;
     align-items: center;
 }
-.sections-container{
+
+.sections-container {
     display: flex;
     flex-direction: row;
     max-height: 600px;
@@ -34,7 +37,7 @@
     justify-content: space-evenly;
 }
 
-.employee-section, .contract-section{
+.employee-section, .contract-section {
     display: flex;
     flex-direction: column;
     margin: 20px;
@@ -42,14 +45,16 @@
     max-height: 80vh;
     flex-wrap: wrap;
 }
-.input-container{
+
+.input-container {
     display: flex;
     flex-direction: column;
     margin: 0;
     width: fit-content;
-    
+
 }
-.employee-section div, .contract-section div{
+
+.employee-section div, .contract-section div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -57,14 +62,15 @@
     width: 100%;
     flex-wrap: wrap;
 }
-.employee-section label, .contract-section label{
+
+.employee-section label, .contract-section label {
     font-size: 14px;
     margin: 0 0 0 5px;
     width: 150px;
 
 }
 
-.employee-section input, .contract-section input{
+.employee-section input, .contract-section input {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid var(--loign-input-border-color);
@@ -75,20 +81,22 @@
     margin: 0;
 }
 
-.submit-create-user{
+.submit-create-user {
     margin: 20px 0 10px 0;
     width: fit-content;
 }
 
-@media (max-width: 768px){
-    .create-container{
+@media (max-width: 768px) {
+    .create-container {
         width: 90vw;
     }
-    .sections-container{
+
+    .sections-container {
         flex-direction: column;
         overflow-y: scroll;
     }
-    .employee-section, .contract-section{
+
+    .employee-section, .contract-section {
         width: 90%;
     }
 }

@@ -2,8 +2,8 @@
   <div class="card">
     <div class="card-header-container">
       <div class="card-header">
-        <div class="card-logo" :style="{ 'background': 'var(--linear-' + color + ')'}">
-          <img :src="logo" alt="logo" class="icon">
+        <div :style="{ background: 'var(--linear-' + color + ')' }" class="card-logo">
+          <img :src="logo" alt="logo" class="icon" />
         </div>
         <div class="card-titles">
           <div class="card-title-container">
@@ -13,16 +13,23 @@
           <div class="card-subtitle">{{ subtitle }}</div>
         </div>
       </div>
-      <div v-html="actionButton" v-if="actionButton" class="card-action" :style="{'fill':'var(--color-'+color+')'}" @click="triggerAction"></div>
+      <div
+        v-if="actionButton"
+        :style="{ fill: 'var(--color-' + color + ')' }"
+        class="card-action"
+        @click="triggerAction"
+        v-html="actionButton"
+      ></div>
     </div>
     <div class="card-body">
       <slot></slot>
     </div>
   </div>
 </template>
-<style src="./Card.css"/>
+<style src="./Card.css" />
 <script>
-import { toRefs } from "vue";
+import { toRefs } from 'vue'
+
 export default {
   props: {
     title: {
@@ -32,7 +39,7 @@ export default {
     subtitle: {
       type: String
     },
-    otherInfo:{
+    otherInfo: {
       type: String
     },
     logo: {
@@ -41,22 +48,22 @@ export default {
     color: {
       type: String
     },
-    actionButton:{
+    actionButton: {
       type: String
     },
-    actionFunction:{
+    actionFunction: {
       type: Function
     }
   },
   setup(props) {
-    return toRefs(props);
+    return toRefs(props)
   },
-  methods:{
-    triggerAction(){
-      if(this.actionFunction){
+  methods: {
+    triggerAction() {
+      if (this.actionFunction) {
         this.actionFunction()
       }
     }
   }
-};
+}
 </script>

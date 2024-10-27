@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {handleError} from './handleError.js'
+import { handleError } from './handleError.js'
 
 // Configuration d'Axios
 export const HttpClient = axios.create({

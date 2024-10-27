@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import Loader from '@components/Loader/LoaderComponent.vue'
 import { useWorkingTimeStore } from '@store/WorkingTime/WorkingTimeStore.js'
 import { useAuthStore } from '@store/Auth/AuthStore.js'

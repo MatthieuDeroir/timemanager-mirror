@@ -14,7 +14,7 @@
 <style src="./App.css"></style>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import HeaderComponent from '@/components/Header/Header.vue'
 

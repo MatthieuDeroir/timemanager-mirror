@@ -1,4 +1,4 @@
-import {HttpClient} from '@/api/config/HttpClient.js'
+import { HttpClient } from '@/api/config/HttpClient.js'
 
 /**
  * LoadAllUsers

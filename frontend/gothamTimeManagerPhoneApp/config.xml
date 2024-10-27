@@ -1,25 +1,26 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"
+>
     <name>gothamTimeManagerApp</name>
     <description>Sample Apache Cordova App</description>
     <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
         Apache Cordova Team
     </author>
-    <content src="http://localhost/index.html" />
+    <content src="http://localhost/index.html"/>
 
     <!-- Allow HTTP and HTTPS -->
-    <allow-navigation href="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
+    <allow-navigation href="*"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
 
     <!-- Platform-specific settings for Android -->
-<platform name="android">
-    <preference name="enableOnBackInvokedCallback" value="true" />
-    <preference name="android:enableOnBackInvokedCallback" value="true" />
-    <preference name="usesCleartexTraffic" value="true" />
-    <preference name="android:usesCleartexTraffic" value="true" />
+    <platform name="android">
+        <preference name="enableOnBackInvokedCallback" value="true"/>
+        <preference name="android:enableOnBackInvokedCallback" value="true"/>
+        <preference name="usesCleartexTraffic" value="true"/>
+        <preference name="android:usesCleartexTraffic" value="true"/>
 
 
-</platform>
+    </platform>
 
 </widget>
