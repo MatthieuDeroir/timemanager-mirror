@@ -9,7 +9,7 @@
       <v-expansion-panel-title>
         <h3>{{ team.name }}</h3>
       </v-expansion-panel-title>
-      <v-expansion-panel-text v-if="team.users.length !== 0">
+      <v-expansion-panel-text>
         <v-table density="compact">
           <thead>
             <tr>
@@ -31,7 +31,7 @@
               </td>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="team.users.length !== 0">
             <TeamAddUser
               v-if="addUserState"
               :team_id="team.id"
@@ -75,19 +75,20 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <tr>
+              <TeamAddUser
+                v-if="addUserState"
+                :team_id="team.id"
+                class="add-user-input"
+                @onUserAddedToTeam="handleUserAddedInTeam"
+              />
+            </tr>
+            <tr>
+              <td colspan="5" style="text-align: center">No users found for this team.</td>
+            </tr>
+          </tbody>
         </v-table>
-        <div class="delete-team">
-          <button
-            v-if="this.authStore.user.role_id === UserRole.ADMIN"
-            class="btn-danger"
-            @click="handleDeleteTeam(team.id)"
-          >
-            Delete Team
-          </button>
-        </div>
-      </v-expansion-panel-text>
-      <v-expansion-panel-text v-else>
-        <p style="width: 100%; text-align: center">No users found for this team.</p>
         <div class="delete-team">
           <button
             v-if="this.authStore.user.role_id === UserRole.ADMIN"
@@ -182,6 +183,8 @@ export default {
         return 'Manager'
       } else if (role_Id === UserRole.EMPLOYEE) {
         return 'Employee'
+      } else if (role_Id === UserRole.GENERAL_MANAGER) {
+        return 'General Manager'
       } else {
         return 'Unknown Role'
       }

@@ -29,7 +29,8 @@ const apiActions = {
   getAllTeams: TeamAPI.getAllTeams,
   createTeam: TeamAPI.createTeam,
   updateTeam: TeamAPI.updateTeam,
-  deleteTeam: TeamAPI.deleteTeam
+  deleteTeam: TeamAPI.deleteTeam,
+  addUserInTeam: TeamAPI.addUserInTeam
 }
 
 /**
