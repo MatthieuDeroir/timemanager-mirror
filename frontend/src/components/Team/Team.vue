@@ -91,7 +91,10 @@
         </v-table>
         <div class="delete-team">
           <button
-            v-if="this.authStore.user.role_id === UserRole.ADMIN"
+            v-if="
+              this.authStore.user.role_id === UserRole.ADMIN ||
+              this.authStore.user.role_id === UserRole.GENERAL_MANAGER
+            "
             class="btn-danger"
             @click="handleDeleteTeam(team.id)"
           >
@@ -193,7 +196,10 @@ export default {
     }
   },
   mounted() {
-    if (this.authStore.user.role_id === (UserRole.ADMIN || UserRole.GENERAL_MANAGER)) {
+    if (
+      this.authStore.user.role_id === UserRole.ADMIN ||
+      this.authStore.user.role_id === UserRole.GENERAL_MANAGER
+    ) {
       this.teamStore.loadAllTeams()
     } else {
       this.teamStore.loadTeamByUserId(this.authStore.user.id)
