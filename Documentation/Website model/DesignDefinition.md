@@ -17,7 +17,8 @@ Our design project is structured across two primary pages within the Figma link:
 ### Page 1: Initial Design Concept
 
 - **Description**: This page showcases the first design concept we created for the website. It served as an exploration of our initial ideas for layout, color scheme, and typography. This draft allowed us to experiment and gather feedback on the core visual elements before refining the concept further.
-- **Goal**: To present the initial layout and stylistic ideas, setting a baseline for further refinements based on user and team feedback.
+- **Goal**: To present the initial layout and stylistic ideas, setting a baselin
+e for further refinements based on user and team feedback.
 
 ### Page 2: Finalized Design and Prototype
 
