@@ -49,14 +49,12 @@ export const useTeamStore = defineStore('teamStore', () => {
    * @param teamsData
    */
   const getUsersInManyTeams = async (teamsData) => {
-    for (const [index, team] of teamsData.entries()) {
-      if (!teams.value[index]) {
-        teams.value[index] = {}
-      }
-      teams.value[index].users = await teamApi.getUsersFromTeamId(team.id)
-      teams.value[index].id = team.id
-      teams.value[index].name = team.name
-    }
+    teams.value = await Promise.all(
+      teamsData.map(async (team) => {
+        const users = await teamApi.getUsersFromTeamId(team.id)
+        return { id: team.id, name: team.name, users }
+      })
+    )
   }
 
   /**
@@ -90,8 +88,12 @@ export const useTeamStore = defineStore('teamStore', () => {
   const createTeam = async (name) => {
     isLoading.value = true
     const newTeam = await handleApiRequest('create', name, 'createTeam')
+    teams.value.push({
+      id: newTeam.data.id,
+      name: newTeam.data.name,
+      users: []
+    })
     $toast.success('Team successfully created.', options)
-    teams.value.push(newTeam)
     isLoading.value = false
   }
 

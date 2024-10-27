@@ -13,7 +13,7 @@ import WorkingTimeVisualization from '@components/WorkingTimeVisualization/Worki
 import Card from '@components/Card/Card.vue'
 import Team from '@components/Team/Team.vue'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
-import Calendar from '@/components/Calendar.vue'
+import Calendar from '@components/Calendar/Calendar.vue'
 
 const props = defineProps({
   userId: {
@@ -43,7 +43,6 @@ const updateWorkingTimes = (updatedTimes) => {
   workingTimes.value = updatedTimes
 }
 
-
 const getDate = () => {
   return new Date().toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -58,28 +57,28 @@ const getDate = () => {
     <v-row>
       <v-col cols="12" md="5">
         <Card
-            :logo="userIcon"
-            :otherInfo="userGender"
-            :subtitle="userSubtitle"
-            :title="userTitle"
-            color="blue"
+          :logo="userIcon"
+          :otherInfo="userGender"
+          :subtitle="userSubtitle"
+          :title="userTitle"
+          color="blue"
         >
           <UserDisplay :userId="userId" @selecteduser="handleSelectedUser" />
         </Card>
       </v-col>
 
       <v-col cols="12" md="7">
-        <Card :logo="teamIcon" color="orange"  title="All Teams">
-          <Team/>
+        <Card :logo="teamIcon" color="orange" title="All Teams">
+          <Team />
         </Card>
       </v-col>
 
       <v-col cols="12" md="5" style="min-height: 330px">
         <Card
-            :logo="sliceIcon"
-            color="green"
-            :subtitle="userTitle"
-            title="Working Time Visualization"
+          :logo="sliceIcon"
+          color="green"
+          :subtitle="userTitle"
+          title="Working Time Visualization"
         >
           <WorkingTimeVisualization :userId="userId" :workingTimes="workingTimes" />
         </Card>
@@ -93,7 +92,7 @@ const getDate = () => {
 
       <v-col cols="12" md="12">
         <Card :logo="calendarIcon" color="purple" title="Calendar" :subtitle="userTitle">
-          <Calendar :userId="userId"/>
+          <Calendar :userId="userId" />
         </Card>
       </v-col>
     </v-row>

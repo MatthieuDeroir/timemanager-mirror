@@ -9,7 +9,7 @@
       <v-expansion-panel-title>
         <h3>{{ team.name }}</h3>
       </v-expansion-panel-title>
-      <v-expansion-panel-text v-if="team.users">
+      <v-expansion-panel-text v-if="team.users.length !== 0">
         <v-table density="compact">
           <thead>
             <tr>
@@ -18,7 +18,7 @@
               <th>First Name</th>
               <th>Last Name</th>
               <th>Contact</th>
-              <td v-if="authStore.user.role_id != UserRole.EMPLOYEE">
+              <td v-if="authStore.user.role_id !== UserRole.EMPLOYEE">
                 <svg
                   class="add-user-in-team"
                   style="cursor: pointer"
@@ -76,7 +76,6 @@
             </tr>
           </tbody>
         </v-table>
-        <p v-if="team.users.length == 0">No users found for this team.</p>
         <div class="delete-team">
           <button
             v-if="this.authStore.user.role_id === UserRole.ADMIN"
@@ -88,14 +87,16 @@
         </div>
       </v-expansion-panel-text>
       <v-expansion-panel-text v-else>
-        Issue loading users for this team.
-        <button
-          v-if="this.authStore.user.role_id === UserRole.ADMIN"
-          class="btn-danger"
-          @click="handleDeleteTeam(team.id)"
-        >
-          Delete Team
-        </button>
+        <p style="width: 100%; text-align: center">No users found for this team.</p>
+        <div class="delete-team">
+          <button
+            v-if="this.authStore.user.role_id === UserRole.ADMIN"
+            class="btn-danger"
+            @click="handleDeleteTeam(team.id)"
+          >
+            Delete Team
+          </button>
+        </div>
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -137,12 +138,8 @@ export default {
       event.preventDefault()
       const teamName = event.target.querySelector('.team-name-input').value
       if (teamName !== '') {
-        const newTeam = teamStore.createTeam(teamName)
-        teamStore.teams.map((team) => {
-          if (team.id === newTeam.id) {
-            team.users.push([])
-          }
-        })
+        teamStore.createTeam(teamName)
+        event.target.querySelector('.team-name-input').value = ''
       }
     }
     const handleOpenUserInfo = (userId) => {

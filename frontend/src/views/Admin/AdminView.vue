@@ -15,7 +15,7 @@ import Team from '@components/Team/Team.vue'
 import UserDisplay from '@components/user/UserDisplay/UserDisplay.vue'
 import UserCreate from '@components/user/UserCreate/UserCreate.vue'
 import LogsComponent from '@components/LogsComponenet/Logs.vue'
-import Calendar from '@/components/Calendar.vue'
+import Calendar from '@components/Calendar/Calendar.vue'
 import DayliChart from '@components/Chart/DailyChart.vue'
 
 const props = defineProps({
