@@ -24,7 +24,6 @@ const theme = useTheme()
 
 function toggleTheme() {
   const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  console.log(darkModeQuery)
 
   const change = () => {
     if (darkModeQuery.matches) {

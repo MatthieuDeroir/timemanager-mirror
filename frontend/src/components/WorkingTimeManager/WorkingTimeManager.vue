@@ -110,7 +110,6 @@ const saveWorkingTime = async (time) => {
 
 // Supprimer une entrée de temps de travail
 const deleteWorkingTime = async (idOrTempId) => {
-  console.log(idOrTempId)
   const time = workingTimeStore.workingTimes.find((t) => t.id === idOrTempId || t.tempId === idOrTempId)
   if (time.id) {
     await workingTimeStore.deleteWorkingTime(time.id) // Si l'entrée existe dans la base, on la supprime

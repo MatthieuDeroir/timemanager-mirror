@@ -13,7 +13,6 @@ const pieChartData = ref(null);
 
 onMounted(async () => {
   const userId = route.params.userid;
-  console.log('User ID from route:', userId);
   await loadChartData(userId);
 });
 

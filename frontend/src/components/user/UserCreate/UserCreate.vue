@@ -116,7 +116,6 @@ const handleClosePopUp = () => {
 
 async function handleCreateUser() {
   const response = await userStore.createUser(user)
-  console.log(response)
 }
 
 const handleEscKey = (event) => {
