@@ -80,9 +80,10 @@ const chartOptions = {
   scales: { x: { stacked: true }, y: { stacked: true } }
 }
 
-onMounted(() => {
+onMounted(async () => {
   workingTimeStore.loadWorkingTimesForDateRange(props.userId)
 })
+
 // Watch userId to reload data
 watch(
   () => props.userId,

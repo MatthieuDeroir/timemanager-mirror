@@ -169,19 +169,23 @@ export const useWorkingTimeStore = defineStore('workingTimeStore', () => {
    * @param userId
    * @returns {Promise<void>}
    */
-  async function loadWorkingTimesForDateRange(userId) {
+  const loadWorkingTimesForDateRange = (userId) => {
     isLoading.value = true
-
     endDate.value = calculateEndDate(startDate.value)
-    await WorkingTimeAPI.getWorkingTimesByUserId(
+
+    WorkingTimeAPI.getWorkingTimesByUserId(
       userId,
       formatStartDate(startDate.value),
       formatEndDate(endDate.value)
     )
-
-    updateChartData()
-
-    isLoading.value = false
+      .then((data) => {
+        workingTimes.value = data
+        updateChartData()
+        isLoading.value = false
+      })
+      .catch(() => {
+        isLoading.value = false
+      })
   }
 
   /**

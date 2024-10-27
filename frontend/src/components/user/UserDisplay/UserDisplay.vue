@@ -137,7 +137,7 @@
         </div>
       </div>
     </div>
-    <div v-if="authStore.user?.role_id !== UserRole.EMPLOYEE" class="user-edit">
+    <div v-if="authStore.user?.role_id === UserRole.ADMIN" class="user-edit">
       <div v-if="deleteStatus">
         <svg
           height="30px"
