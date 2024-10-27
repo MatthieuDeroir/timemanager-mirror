@@ -34,8 +34,8 @@ export const getUsersFromTeamId = (teamId) =>
       throw error
     })
 
-export const addUserInTeam = (user_id, team_id) =>
-  HttpClient.post(`/user_teams/add`, { user_id, team_id })
+export const addUserInTeam = (data) =>
+  HttpClient.post(`/user_teams/add`, data)
     .then((res) => res.data)
     .catch((error) => {
       console.error('Error adding a new user in team:', error)
