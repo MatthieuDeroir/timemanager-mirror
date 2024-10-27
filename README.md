@@ -57,15 +57,10 @@ Key components and store modules are organized for ease of navigation and mainta
    cd T-POO-700-NAN_5
    ```
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Configure Backend API**:
+2. **Configure Backend API**:
    - to congifure the backend, please refere to the ReadMe in the Backend folder.
 
-4. **Run the application**:
+3. **Run the application**:
    - to run the frontend please refere to the ReadMe in the Frontend folder.
 
 ---
