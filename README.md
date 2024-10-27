@@ -59,6 +59,7 @@ Key components and store modules are organized for ease of navigation and mainta
 
 2. **Install dependencies**:
    ```bash
+   cd frontend
    npm install
    ```
 
